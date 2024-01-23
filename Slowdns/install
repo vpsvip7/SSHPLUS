@@ -43,15 +43,15 @@ fun_att () {
 apt install ncurses-utils -y
 mkdir /etc/slowdns
 cd /etc/slowdns
-wget https://github.com/kiritosshxd/SSHPLUS/raw/main/Slowdns/dns-server; chmod +x dns-server
-wget https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Slowdns/remove-slow; chmod +x remove-slow
-wget https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Slowdns/slowdns-info; chmod +x slowdns-info
-wget https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Slowdns/slowdns-drop; chmod +x slowdns-drop
-wget https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Slowdns/slowdns-ssh; chmod +x slowdns-ssh
-wget https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Slowdns/slowdns-ssl; chmod +x slowdns-ssl
-wget https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Slowdns/slowdns-socks; chmod +x slowdns-socks
-wget https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Slowdns/slowdns; chmod +x slowdns; cp slowdns /bin/
-wget https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Slowdns/stopdns; chmod +x stopdns
+wget https://github.com/vpsvip7/SSHPLUS/raw/main/Slowdns/dns-server; chmod +x dns-server
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Slowdns/remove-slow; chmod +x remove-slow
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Slowdns/slowdns-info; chmod +x slowdns-info
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Slowdns/slowdns-drop; chmod +x slowdns-drop
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Slowdns/slowdns-ssh; chmod +x slowdns-ssh
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Slowdns/slowdns-ssl; chmod +x slowdns-ssl
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Slowdns/slowdns-socks; chmod +x slowdns-socks
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Slowdns/slowdns; chmod +x slowdns; cp slowdns /bin/
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Slowdns/stopdns; chmod +x stopdns
 }
 fun_bar 'fun_att'
 echo -e "CONFIGURANDO FIREWALL..."
@@ -73,7 +73,7 @@ echo -e "\033[1;31m════════════════════�
 tput setaf 7 ; tput setab 4 ; tput bold ; printf '%40s%s%-12s\n' "INSTALADOR SLOWDNS MANAGER" ; tput sgr0
 echo -e "\033[1;31m════════════════════════════════════════════════════\033[0m"
 echo ""
-echo -e "          \033[1;33mINSTALAÇÃO CONCLUIDA!\033[0m          "
+echo -e "          \033[1;33mINSTALACION CONCLUIDA!\033[0m          "
 echo ""
 echo -e "Para abrir o menu, use o comando: \033[1;33mslowdns\033[0m"
 cd
