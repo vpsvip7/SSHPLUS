@@ -9,7 +9,7 @@ GREEN='\033[1;32m'
 YELLOW='\033[1;33m'
 SCOLOR='\033[0m'
 msg01='\033[1;37m\033[1;33mUsuário Nulo\033[1;31m'
-msg02='\033[1;37m\033[1;33mNome muito curto (MIN: 2 CHARACTERS)\033[1;31m'
+msg02='\033[1;37m\033[1;33mNome muito curto (MIN: 2 CARACTERS)\033[1;31m'
 msg03='\033[1;37m\033[1;33mNome muito grande (MAX: 5 CARACTERES)\033[1;31m'
 msg04='\033[1;37m\033[1;33mSenha Nula\033[1;31m'
 msg05='\033[1;37m\033[1;33mSenha muito curta\033[1;31m'
@@ -48,7 +48,7 @@ msg17='\033[1;37m\033[1;33m(Sem imformação - Para Cancelar Digite CRTL + C)\03
 
     intallv2ray () {
     apt install python3-pip -y 
-    source <(curl -sL https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Modulos/v2ray)
+    source <(curl -sL https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Modulos/v2ray)
     echo -e "\033[1;37m\033[1;33mIntalado com Exito!\033[1;31m"
     USRdatabase="/etc/SSHPlus/RegV2ray"
     [[ ! -e ${USRdatabase} ]] && touch ${USRdatabase}
@@ -61,7 +61,7 @@ msg17='\033[1;37m\033[1;33m(Sem imformação - Para Cancelar Digite CRTL + C)\03
 
     protocolv2ray () {
     echo -e "\E[44;1;37m            ALTERAR PROTOCOLO V2RAY             \E[0m"
-    echo -e "\033[1;37m• \033[1;33mEscolha a opção 3 e coloque o domínio do seu IP\033[1;31m"
+    echo -e "\033[1;37m• \033[1;33mEscoja a opcion 3 y coloque o dominio do su IP\033[1;31m"
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     v2ray stream
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -70,14 +70,14 @@ msg17='\033[1;37m\033[1;33m(Sem imformação - Para Cancelar Digite CRTL + C)\03
     }
     tls () {
     clear
-    echo -e "\E[44;1;37m            Ativar ou Desativar TLS             \E[0m"
+    echo -e "\E[44;1;37m            Activar o Desactivar TLS             \E[0m"
     v2ray tls
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo -e "\033[1;37m• \033[1;33mEnter Para Continuar\033[1;31m" && read enter
     fun_v2raymanager
     }
     portv () {
-    echo -e "\E[44;1;37m            ALTERAR PORTA V2RAY             \E[0m"
+    echo -e "\E[44;1;37m            ALTERAR PUERTO V2RAY             \E[0m"
     v2ray port
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo -e "\033[1;37m• \033[1;33mEnter Para Continuar\033[1;31m" && read enter
@@ -91,15 +91,15 @@ msg17='\033[1;37m\033[1;33m(Sem imformação - Para Cancelar Digite CRTL + C)\03
     fun_v2raymanager
     }
     unistallv2 () {
-    source <(curl -sL https://raw.githubusercontent.com/kiritosshxd/SSHPLUS/main/Modulos/v2ray) --remove > /dev/null 2>&1
+    source <(curl -sL https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Modulos/v2ray) --remove > /dev/null 2>&1
     rm -rf /etc/SSHPlus/RegV2ray > /dev/null 2>&1
-    echo -e "\n\033[1;32mV2RAY REMOVIDO COM SUCESSO !\033[0m"
+    echo -e "\n\033[1;32mV2RAY REMOVIDO COn SUCESSO !\033[0m"
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo -e "\033[1;37m• \033[1;33mEnter Para Continuar\033[1;31m" && read enter
     fun_v2raymanager
     }
     infocuenta () {
-    echo -e "\E[44;1;37m            INFORMAÇÃO DE CONTA             \E[0m"
+    echo -e "\E[44;1;37m            INFORMACION DE CUENTA             \E[0m"
     v2ray info
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo -e "\033[1;37m• \033[1;33mEnter Para Continuar\033[1;31m" && read enter
@@ -162,7 +162,7 @@ msg17='\033[1;37m\033[1;33m(Sem imformação - Para Cancelar Digite CRTL + C)\03
     sed -n ${suma}p /etc/SSHPlus/v2ray/confuuid.log 
     echo ""
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-    echo -e "\e[92m           UUID ADICIONADO COM EXITO "
+    echo -e "\e[92m           UUID ADICIONADO CON EXITO "
     echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
     echo -e "\033[1;37m• \033[1;33mEnter Para Continuar\033[1;31m" && read enter
     fun_v2raymanager
