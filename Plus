@@ -119,12 +119,12 @@ echo "crz: $(date)" > /usr/share/.plus/.plus
 fun_bar 'fun_attlist'
 clear
 echo ""
-echo -e "          \033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mINSTALANDO PACOTES \033[1;33m[\033[1;31m!\033[1;33m] \033[0m"
+echo -e "          \033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mINSTALANDO PAKETES \033[1;33m[\033[1;31m!\033[1;33m] \033[0m"
 echo ""
 echo -e "\033[1;33mALGUNOS PAKETES SON EXTREMAMENTE  NECESARIOS !\033[0m"
 echo ""
 inst_pct () {
-_pacotes=("bc" "screen" "nano" "unzip" "lsof" "netstat" "net-tools" "dos2unix" "nload" "jq" "curl" "figlet" "python3" "python-pip")
+_pacotes=("bc" "python" "speedtest-cli" "htop" "git" "screen" "nano" "unzip" "lsof" "netstat" "net-tools" "dos2unix" "nload" "jq" "curl" "figlet" "python3" "python-pip")
 for _prog in ${_pacotes[@]}; do
 apt install $_prog -y
 done
@@ -136,7 +136,7 @@ clear
 echo ""
 echo -e "              \033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mFINALIZANDO \033[1;33m[\033[1;31m!\033[1;33m] \033[0m"
 echo ""
-echo -e "      \033[1;33mCONCLUYENDO FUNCIONES Y CONFIG! \033[0m"
+echo -e "      \033[1;33mCONCLUYENDO FUNCIONES Y CONFIGURACIONES! \033[0m"
 echo ""
 fun_bar "$_Ink/list $_lnk $_Ink $_1nk $key"
 clear
