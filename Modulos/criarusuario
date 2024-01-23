@@ -389,11 +389,8 @@ echo "$username $sshlimiter" >>/root/usuarios.db
 	}
 } || {
 	clear
-	echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
-	echo -e "\n\033[1;32mIP: \033[1;37m$IP"
-	echo -e "\033[1;32mUsuário: \033[1;37m$username"
-        echo -e "\033[1;32mUser y contra: \033[1;37m$username:$password"
-	echo -e "\033[1;32mSenha: \033[1;37m$password"
-	echo -e "\033[1;32mExpira em: \033[1;37m$gui"
-	echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"
+	echo -e "\E[44;1;37m       CUENTA VPS CREADA !      \E[0m"
+        echo -e "\033[1;32mLimite $sshlimiter Expira en: $gui "
+	echo -e "\n UDP: \033[1;37m$IP:1-600@$username:$password"
+        echo -e "\n WS: unpkg.com:80@$username:$password"
 }
