@@ -28,7 +28,7 @@ installslowdns() {
         conexao
     }
     mkdir /etc/SSHPlus/dns >/dev/null 2>&1
-    wget -P $DIR https://github.com/rodrigo12xd/SSHPLUS/raw/master/Install/dns-server >/dev/null 2>&1
+    wget -P $DIR https://github.com/vpsvip7/SSHPLUS/raw/main/Install/dns-server >/dev/null 2>&1
     chmod 777 $DIR/dns-server >/dev/null 2>&1
     $DIR/dns-server -gen-key -privkey-file $DIR/server.key -pubkey-file $DIR/server.pub >/dev/null 2>&1
     configdns >/dev/null 2>&1
@@ -61,7 +61,7 @@ initslow() {
         elif [[ "$op" == '3' ]]; then
             [[ -e $DIR/server.pub ]] && keypub=$(cat $DIR/server.pub) || keypub='Null'
             [[ -e $DIR/autodns ]] && nameserver=$(grep -w 'server.key' /etc/SSHPlus/dns/autodns | awk -F' ' '{print $9}') || nameserver='Null'
-            tmx='curl -sO https://raw.githubusercontent.com/rodrigo12xd/SSHPLUS/master/Install/slowdns && chmod +x slowdns && ./slowdns'
+            tmx='curl -sO https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Install/slowdns && chmod +x slowdns && ./slowdns'
             clear
             echo -e "${CORTITLE}           SSHPLUS SLOWDNS (Beta)            ${SCOLOR}"
             echo -e "\n${YELLOW}NAMESERVER(NS)${SCOLOR}: $nameserver"
@@ -142,7 +142,7 @@ initslow() {
         echo "screen -dmS slow_dns $DIR/dns-server -udp :5300 -privkey-file $DIR/server.key ${ns} 0.0.0.0:${ptdns}" >/etc/SSHPlus/dns/autodns
         chmod 777 /etc/SSHPlus/dns/autodns >/dev/null 2>&1
         echo "ss -lu|grep -w '5300' || /etc/SSHPlus/dns/autodns" >>/etc/autostart
-        tmx='curl -sO https://raw.githubusercontent.com/rodrigo12xd/SSHPLUS/master/Install/slowdns && chmod +x slowdns && ./slowdns'
+        tmx='curl -sO https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Install/slowdns && chmod +x slowdns && ./slowdns'
         echo -e "\n${GREEN}SLOWDNS ATIVADO !${SCOLOR}"
         echo -e "\n${YELLOW}COMANDO TERMUX${SCOLOR}: ${tmx} ${ns} ${keypub}"
         echo -ne "\n${RED}ENTER${YELLOW} para retornar ao${GREEN} MENU!${SCOLOR}"
