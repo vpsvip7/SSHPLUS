@@ -392,6 +392,7 @@ echo "$username $sshlimiter" >>/root/usuarios.db
 	echo -e "\E[44;1;37m       CONTA SSH CRIADA !      \E[0m"
 	echo -e "\n\033[1;32mIP: \033[1;37m$IP"
 	echo -e "\033[1;32mUsuário: \033[1;37m$username"
+        echo -e "\033[1;32mUser y contra: \033[1;37m$username:$password"
 	echo -e "\033[1;32mSenha: \033[1;37m$password"
 	echo -e "\033[1;32mExpira em: \033[1;37m$gui"
 	echo -e "\033[1;32mLimite de conexões: \033[1;37m$sshlimiter"
