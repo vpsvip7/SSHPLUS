@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-echo -e "\E[44;1;37m Usuario         Senha       limite      validade \E[0m"
+echo -e "\E[44;1;37m Usuario         Pasword       limite      valides \E[0m"
 echo ""
 [[ ! -e /bin/versao ]] && rm -rf /bin/menu
 for users in `awk -F : '$3 > 900 { print $1 }' /etc/passwd |sort |grep -v "nobody" |grep -vi polkitd |grep -vi system-`
@@ -24,7 +24,7 @@ else
     hoje="$(date -d today +"%Y%m%d")"
     if [ $hoje -ge $databr ]
     then
-    data="\033[1;31mVenceu\033[0m"
+    data="\033[1;31mVencio\033[0m"
     else
     dat="$(date -d"$datauser" '+%Y-%m-%d')"
     data=$(echo -e "$((($(date -ud $dat +%s)-$(date -ud $(date +%Y-%m-%d) +%s))/86400)) \033[1;37mDias\033[0m")
