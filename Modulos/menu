@@ -62,7 +62,7 @@ fun_tst () {
 speedtest --share > speed
 }
 echo ""
-echo -e "   \033[1;32mTESTANDO A VELOCIDADE DO SERVIDOR !\033[0m"
+echo -e "   \033[1;32mTESTANDO LA VELOCIDAD Del VPS !\033[0m"
 echo ""
 aguarde 'fun_tst'
 echo ""
@@ -81,7 +81,7 @@ rm -rf $HOME/speed
 #limiter
 function limit1 () {
    clear
-   echo -e "\n\033[1;32mINICIANDO O LIMITER... \033[0m"
+   echo -e "\n\033[1;32mINICIANDO el LIMITER... \033[0m"
    echo ""
    fun_bar 'screen -dmS limiter limiter' 'sleep 3'
    [[ $(grep -wc "limiter" /etc/autostart) = '0' ]] && {
@@ -118,7 +118,7 @@ function limit_ssh () {
 #onlineapp
 function onapp1 () {
    clear
-   echo -e "\n\033[1;32mINICIANDO O ONLINE APP... \033[0m"
+   echo -e "\n\033[1;32mINICIANDO  ONLINE APP... \033[0m"
    echo ""
    apt install apache2 -y > /dev/null 2>&1
    sed -i "s/Listen 80/Listen 8888/g" /etc/apache2/ports.conf >/dev/null 2>&1
@@ -141,7 +141,7 @@ function onapp1 () {
 }
 function onapp2 () {
    clear
-   echo -e "\033[1;32mPARANDO O ONLINE APP... \033[0m"
+   echo -e "\033[1;32mPARANDO  ONLINE APP... \033[0m"
    echo ""
    fun_stponlineapp () {
       sleep 1
@@ -225,7 +225,7 @@ _userexp=$(printf '%-5s' "$_expuser")
 _tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
 clear
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\E[41;1;37m       ⇱ VENTA DE DROPLET:@diegovip7⇲       \E[0m"
+echo -e "\E[41;1;37m       ⇱ VENTA DE DROPLET 🇦🇷➡👉🏻:@diegovip7⇲       \E[0m"
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "\033[1;32mSISTEMA            MEMÓRIA RAM      PROCESSADOR "
 echo -e "\033[1;31mOS: \033[1;37m$_system \033[1;31mTotal:\033[1;37m$_ram \033[1;31mNucleos: \033[1;37m$_core\033[0m"
