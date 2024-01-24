@@ -66,8 +66,8 @@ echo -e "   \033[1;32mTESTANDO LA VELOCIDAD Del VPS !\033[0m"
 echo ""
 aguarde 'fun_tst'
 echo ""
-png=$(cat speed | sed -n '5 p' |awk -F : {'print $NF'})
-down=$(cat speed | sed -n '7 p' |awk -F :  {'print $NF'})
+png=$(cat speed | sed -n '7 p' |awk -F : {'print $NF'})
+down=$(cat speed | sed -n '8 p' |awk -F :  {'print $NF'})
 upl=$(cat speed | sed -n '9 p' |awk -F :  {'print $NF'})
 lnk=$(cat speed | sed -n '10 p' |awk {'print $NF'})
 echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
