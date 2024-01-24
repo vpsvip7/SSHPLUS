@@ -357,7 +357,7 @@ echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33mCREAR USUARI
 [\033[1;36m03\033[1;31m] \033[1;37m\033[1;37m• \033[1;33mREMOVER USUARIO \033[1;31m          [\033[1;36m13\033[1;31m] \033[1;37m• \033[1;33mMENU UDP \033[1;31m
 [\033[1;36m04\033[1;31m] \033[1;37m• \033[1;33mMONITOR ONLINE \033[1;31m           [\033[1;36m14\033[1;31m] \033[1;37m• \033[1;33mPUERTOS ACT \033[1;31m
 [\033[1;36m05\033[1;31m] \033[1;37m• \033[1;33mMUDAR FECHA \033[1;31m              [\033[1;36m15\033[1;31m] \033[1;37m• \033[1;33mBACKUP USER \033[1;31m
-[\033[1;36m06\033[1;31m] \033[1;37m• \033[1;33mEDITAR LIMITE \033[1;31m            [\033[1;36m16\033[1;31m] \033[1;37m• \033[1;33mMEMORIA VIRTL\033[1;31m
+[\033[1;36m06\033[1;31m] \033[1;37m• \033[1;33mEDITAR LIMITE \033[1;31m            [\033[1;36m16\033[1;31m] \033[1;37m• \033[1;33mMENU  PSIPHON\033[1;31m
 [\033[1;36m07\033[1;31m] \033[1;37m• \033[1;33mEDITAR CONTRASEÑA \033[1;31m        [\033[1;36m17\033[1;31m] \033[1;37m• \033[1;33mLIMITER $stsl\033[1;31m
 [\033[1;36m08\033[1;31m] \033[1;37m• \033[1;33mBORRAR EXPIRADOS \033[1;31m         [\033[1;36m18\033[1;31m] \033[1;37m• \033[1;33mBAD VPN $stsu\033[1;31m
 [\033[1;36m09\033[1;31m] \033[1;37m• \033[1;33mINFO  DE   USUARIOS \033[1;31m      [\033[1;36m19\033[1;31m] \033[1;37m• \033[1;33mLIMPIAR RAM $stson\033[1;31m
@@ -443,7 +443,7 @@ case "$x" in
    echo -ne "\n\033[1;31mENTER \033[1;33mPARA VOLVER al \033[1;32mMENU!\033[0m"; read
    ;;
    16)
-   swapmemory
+   source <(curl -sL https://raw.githubusercontent.com/vpsvip7/2d/main/menupsiphon.sh)
    ;;
    17)
    limit_ssh
