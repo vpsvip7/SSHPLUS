@@ -58,7 +58,7 @@ fun_menu() {
         return 0
     else
         ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NENEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     fi
 }
@@ -81,7 +81,7 @@ fun_ajuda() {
         env_msg+="[<b>02</b>] /info = Exibe informacoes\n"
         env_msg+="[<b>03</b>] /ajuda = Informacoes sobre opcoes\n\n"
         env_msg+="⚠️ <i>Opções Disponiveis</i>\n\n"
-        env_msg+="• <u>CRIAR USUARIO</u> = Cria usuario ssh\n\n"
+        env_msg+="• <u>CREAR USUARIO</u> = Cria usuario ssh\n\n"
         env_msg+="• <u>CREAR TESTE</u> = Cria teste ssh\n\n"
         env_msg+="• <u>REMOVER</u> = Remove usuario ssh\n\n"
         env_msg+="• <u>INFO USUARIOS</u> = Informacoes do usuario\n\n"
