@@ -14,23 +14,23 @@
     echo ""
     echo -ne "\033[1;32mMENSAGEM DE BOAS VINDAS:\033[1;37m "
     read bvindo
-    echo -ne "\033[1;32mMENSAGEM FINAL:\033[1;37m "
+    echo -ne "\033[1;32mMENSAJE FINAL:\033[1;37m "
     read mfinal
     clear
-    echo -ne "\033[1;32mNOME DO BOTÃO 1(GERADOR SSH):\033[1;37m "
+    echo -ne "\033[1;32mNOMBRE DE BOTON 1(GENERADOR SSH):\033[1;37m "
     read bt1
     clear
-    echo -ne "\033[1;32mNOME DO BOTÃO 2(PERSONALIZADO):\033[1;37m "
+    echo -ne "\033[1;32mNOMBRE DE BOTON 2(PERSONALIZADO):\033[1;37m "
     read bt2
-    echo -ne "\033[1;32mLINK DO BOTÃO 2:\033[1;37m "
+    echo -ne "\033[1;32mLINK DE BOTON 2:\033[1;37m "
     read link2
     clear
-    echo -ne "\033[1;32mNOME DO BOTÃO 3(PERSONALIZADO):\033[1;37m "
+    echo -ne "\033[1;32mNOMBRE DE BOTON 3(PERSONALIZADO):\033[1;37m "
     read bt3
-    echo -ne "\033[1;32mLINK DO BOTÃO 3:\033[1;37m "
+    echo -ne "\033[1;32mLINK DE BOTON 3:\033[1;37m "
     read link3
     clear
-    echo -ne "\033[1;32mDURAÇÃO DO TESTE(EM HORAS):\033[1;37m "
+    echo -ne "\033[1;32mDURACION DE TESTE(EN HORAS):\033[1;37m "
     read dtempo
     clear
     echo ""
