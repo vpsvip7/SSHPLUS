@@ -65,9 +65,9 @@ backbot=$1
 	}
 	echo -e "\E[44;1;37m             Gerenciador De Backups              \E[0m"
 	echo ""
-	echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m• \033[1;33mCRIAR BACKUP"
+	echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m• \033[1;33mCREAR BACKUP"
 	echo -e "\033[1;31m[\033[1;36m2\033[1;31m] \033[1;37m• \033[1;33mRESTAURAR BACKUP"
-	echo -e "\033[1;31m[\033[1;36m3\033[1;31m] \033[1;37m• \033[1;33mVOLTAR\033[1;37m"
+	echo -e "\033[1;31m[\033[1;36m3\033[1;31m] \033[1;37m• \033[1;33mVOLVER\033[1;37m"
 	echo ""
 	echo -ne "\033[1;32mOQUE DESEJA FAZER\033[1;31m ?\033[1;37m : "; read opcao
 	if [[ "$opcao" = '1' ]]; then
@@ -102,7 +102,7 @@ backbot=$1
 			fi
 		else
 			echo ""
-			echo -e "\033[1;32mCriando backup...\033[0m"
+			echo -e "\033[1;32mCREANDO BACKUP .\033[0m"
 			echo ""
 			tar cvf /root/backup.vps /etc/shadow /etc/passwd /etc/group /etc/gshadow /etc/SSHPlus/senha > /dev/null 2>&1
 			sleep 2s
