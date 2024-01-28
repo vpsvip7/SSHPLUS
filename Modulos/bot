@@ -25,7 +25,7 @@ fun_menu() {
         env_msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
         env_msg+="<b>WEP INICIAMOS (a) EL BOT SSHPLUS</b>\n"
         env_msg+="=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=\n\n"
-        env_msg+="⚠️ <i>SELECIONE UMA OPCAO ABAIXO !</i>\n\n"
+        env_msg+="⚠️ <i>SELECIONE UNA OPCION ABAJO !</i>\n\n"
         ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "$env_msg" \
             --reply_markup "$keyboard1" \
             --parse_mode html
@@ -39,7 +39,7 @@ fun_menu() {
     if [[ "$(grep -w "${message_from_username}" $ativos | grep -wc 'revenda')" != '0' ]]; then
         local env_msg
         env_msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
-        env_msg+="<b>WEP INICIAMOSVINDO(a) EL BOT SSHPLUS</b>\n"
+        env_msg+="<b>WEP INICIAMOS EL BOT SSHPLUS</b>\n"
         env_msg+="=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=\n\n"
         env_msg+="⚠️ <i>SELECIONE UNA OPCION ABAJO !</i>\n\n"
         ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "$env_msg" \
@@ -49,7 +49,7 @@ fun_menu() {
     elif [[ "$(grep -w "${message_from_username}" $ativos | grep -wc 'subrevenda')" != '0' ]]; then
         local env_msg
         env_msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
-        env_msg+="<b>WEP TODO BIEN (a) BOT SSHPLUS</b>\n"
+        env_msg+="<b>WEP TODO BIEN  BOT SSHPLUS</b>\n"
         env_msg+="=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=×=\n\n"
         env_msg+="⚠️ <i>SELECIONE UNA OPCION ABAJO !</i>\n\n"
         ShellBot.sendMessage --chat_id ${message_chat_id[$id]} --text "$env_msg" \
@@ -58,7 +58,7 @@ fun_menu() {
         return 0
     else
         ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NENEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     fi
 }
@@ -80,7 +80,7 @@ fun_ajuda() {
         env_msg+="[<b>01</b>] /menu = Exibe menu\n"
         env_msg+="[<b>02</b>] /info = Exibe informacoes\n"
         env_msg+="[<b>03</b>] /ajuda = Informacoes sobre opcoes\n\n"
-        env_msg+="⚠️ <i>Opções Disponiveis</i>\n\n"
+        env_msg+="⚠️ <i>OPCIONES DISPONIBLES</i>\n\n"
         env_msg+="• <u>CRIAR USUARIO</u> = Cria usuario ssh\n\n"
         env_msg+="• <u>CREAR TESTE</u> = Cria teste ssh\n\n"
         env_msg+="• <u>REMOVER</u> = Remove usuario ssh\n\n"
@@ -110,14 +110,14 @@ fun_ajuda() {
     elif [[ "$(grep -w "$id_name" $ativos | awk '{print $NF}')" == 'revenda' ]]; then
         local env_msg
         env_msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
-        env_msg+="<b>WEP 🇦🇷(a)  BOT SSHPLUS</b>\n"
+        env_msg+="<b>WEP 🇦🇷  BOT SSHPLUS</b>\n"
         env_msg+="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n\n"
         env_msg+="⚠️ <i>Comandos Disponiveis</i>\n\n"
         env_msg+="[<b>01</b>] /menu = Exibe menu\n"
         env_msg+="[<b>02</b>] /info = Exibe informacoes\n"
         env_msg+="[<b>03</b>] /ajuda = Informacoes sobre opcoes\n\n"
-        env_msg+="⚠️ <i>Opções Disponiveis</i>\n\n"
-        env_msg+="• <u>CRIAR USUARIO</u> = Cria usuario ssh\n\n"
+        env_msg+="⚠️ <i>OPCIONES DISPONIBLES</i>\n\n"
+        env_msg+="• <u>CREAR USUARIO</u> = Cria usuario ssh\n\n"
         env_msg+="• <u>CREAR TESTE</u> = Cria teste ssh\n\n"
         env_msg+="• <u>REMOVER</u> = Remove usuario ssh\n\n"
         env_msg+="• <u>INFO USUARIOS</u> = Informacoes do usuario\n\n"
@@ -128,7 +128,7 @@ fun_ajuda() {
         env_msg+="• <u>EXPIRADOS</u> = Remove ssh expirados\n\n"
         env_msg+="• <u>REVENDAS</u> = Gerenciar Revendas\n\n"
         env_msg+="• <u>RELATORIO</u> = Informacoes sobre revendas\n\n"
-        env_msg+="• <u>AJUDA</u> = Informacoes sobre opcoes\n\n"
+        env_msg+="• <u>AYUDA</u> = Informacoes sobre opcoes\n\n"
         ShellBot.sendMessage --chat_id $id_chatuser \
             --text "$(echo -e $env_msg)" \
             --parse_mode html
@@ -136,15 +136,15 @@ fun_ajuda() {
     elif [[ "$(grep -w "$id_name" $ativos | awk '{print $NF}')" == 'subrevenda' ]]; then
         local env_msg
         env_msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
-        env_msg+="<b>BEM VINDO(a) AO BOT SSHPLUS</b>\n"
+        env_msg+="<b>INICIAMOS EL BOT SSHPLUS</b>\n"
         env_msg+="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n\n"
         env_msg+="⚠️ <i>Comandos Disponiveis</i>\n\n"
         env_msg+="[<b>01</b>] /menu = Exibe menu\n"
         env_msg+="[<b>02</b>] /info = Exibe informacoes\n"
         env_msg+="[<b>03</b>] /ajuda = Informacoes sobre opcoes\n\n"
         env_msg+="⚠️ <i>Opções Disponiveis</i>\n\n"
-        env_msg+="• <u>CRIAR USUARIO</u> = Cria usuario ssh\n\n"
-        env_msg+="• <u>CRIAR TESTE</u> = Cria teste ssh\n\n"
+        env_msg+="• <u>CREAR USUARIO</u> = Cria usuario ssh\n\n"
+        env_msg+="• <u>CREAR TESTE</u> = Cria teste ssh\n\n"
         env_msg+="• <u>REMOVER</u> = Remove usuario ssh\n\n"
         env_msg+="• <u>INFO USUARIOS</u> = Informacoes do usuario\n\n"
         env_msg+="• <u>USUARIOS ONLINE</u> = Exibe Usuários onlines\n\n"
@@ -152,14 +152,14 @@ fun_ajuda() {
         env_msg+="• <u>ALTERAR LIMITE</u> = Altera limite ssh\n\n"
         env_msg+="• <u>ALTERAR DATA</u> = Altera data ssh\n\n"
         env_msg+="• <u>EXPIRADOS</u> = Remove ssh expirados\n\n"
-        env_msg+="• <u>AJUDA</u> = Informacoes sobre opcoes\n\n"
+        env_msg+="• <u>AYUDA</u> = Informacoes sobre opcoes\n\n"
         ShellBot.sendMessage --chat_id $id_chatuser \
             --text "$(echo -e $env_msg)" \
             --parse_mode html
         return 0
     else
         ShellBot.sendMessage --chat_id $id_chatuser \
-            --text "$(echo -e 🚫 ACESSO NEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     fi
 }
@@ -185,7 +185,7 @@ fun_adduser() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -220,7 +220,7 @@ criar_user() {
         ) | passwd "${usuario}"
     else
         ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
-            --text "$(echo -e "❌ ERRO AO CRIAR USUARIO ❌")" \
+            --text "$(echo -e "❌ ERROR AL CRIAR USUARIO ❌")" \
             --parse_mode html
         return 0
     fi
@@ -250,7 +250,7 @@ fun_deluser() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -309,7 +309,7 @@ alterar_senha() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -339,7 +339,7 @@ alterar_limite() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -403,7 +403,7 @@ alterar_data() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -535,7 +535,7 @@ ver_users() {
         done
     else
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     fi
 }
@@ -676,7 +676,7 @@ monitor_ssh() {
         }
     else
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     fi
 }
@@ -712,7 +712,7 @@ fun_verif_user() {
 fun_down() {
     [[ "${callback_query_from_id[$id]}" != "$id_admin" ]] && {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
     [[ ! -d /tmp/file ]] && mkdir /tmp/file
@@ -724,7 +724,7 @@ fun_down() {
 infovps() {
     [[ "${callback_query_from_id[$id]}" != "$id_admin" ]] && {
         ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     }
     PTs='/tmp/prts'
@@ -808,7 +808,7 @@ fun_download() {
 otimizer() {
     [[ "${callback_query_from_id[$id]}" != "$id_admin" ]] && {
         ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     }
     MEM1=$(free | awk '/Mem:/ {print int(100*$3/$2)}')
@@ -844,7 +844,7 @@ otimizer() {
 speed_test() {
     [[ "${callback_query_from_id[$id]}" != "$id_admin" ]] && {
         ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     }
     rm -rf $HOME/speed >/dev/null 2>&1
@@ -875,7 +875,7 @@ speed_test() {
 backup_users() {
     [[ "${callback_query_from_id[$id]}" != "$id_admin" ]] && {
         ShellBot.sendMessage --chat_id ${callback_query_message_chat_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     }
     rm /root/backup.vps 1>/dev/null 2>/dev/null
@@ -927,7 +927,7 @@ fun_add_teste() {
         }
     else
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     fi
 }
@@ -1048,7 +1048,7 @@ fun_exp_user() {
         return 0
     else
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "$(echo -e 🚫 ACESSO NEGADO 🚫)"
+            --text "$(echo -e 🚫 ACESSO DENEGADO 🚫)"
         return 0
     fi
 }
@@ -1201,7 +1201,7 @@ relatorio_rev() {
     else
 
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     fi
 }
@@ -1319,7 +1319,7 @@ fun_add_revenda() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -1363,7 +1363,7 @@ fun_del_rev() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -1481,7 +1481,7 @@ fun_lim_rev() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -1527,7 +1527,7 @@ fun_dat_rev() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -1622,7 +1622,7 @@ fun_list_rev() {
         }
     else
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     fi
 }
@@ -1639,7 +1639,7 @@ fun_susp_rev() {
             --reply_markup "$(ShellBot.ForceReply)"
     } || {
         ShellBot.answerCallbackQuery --callback_query_id ${callback_query_id[$id]} \
-            --text "🚫 ACESSO NEGADO 🚫"
+            --text "🚫 ACESSO DENEGADO 🚫"
         return 0
     }
 }
@@ -1794,13 +1794,13 @@ ShellBot.InlineKeyboardButton --button 'menu2' --line 1 --text 'CREAR USUARIO' -
 ShellBot.InlineKeyboardButton --button 'menu2' --line 1 --text 'CREAR TESTE' --callback_data '_criarteste2'
 ShellBot.InlineKeyboardButton --button 'menu2' --line 2 --text 'REMOVER' --callback_data '_deluser2'
 ShellBot.InlineKeyboardButton --button 'menu2' --line 2 --text 'USUARIOS ONLINE' --callback_data '_monitor2'
-ShellBot.InlineKeyboardButton --button 'menu2' --line 3 --text 'ALTERAR LIMITE' --callback_data '_altlimite2'
+ShellBot.InlineKeyboardButton --button 'menu2' --line 3 --text 'EDITAR LIMITE' --callback_data '_altlimite2'
 ShellBot.InlineKeyboardButton --button 'menu2' --line 3 --text 'INFO USUARIOS' --callback_data '_verusers2'
 ShellBot.InlineKeyboardButton --button 'menu2' --line 4 --text 'ALTERAR CONTRASEÑA' --callback_data '_altsenha2'
 ShellBot.InlineKeyboardButton --button 'menu2' --line 4 --text 'EXPIRADOS' --callback_data '_expirados2'
-ShellBot.InlineKeyboardButton --button 'menu2' --line 5 --text 'ALTERAR DATA' --callback_data '_altdata2'
+ShellBot.InlineKeyboardButton --button 'menu2' --line 5 --text 'EDITAR FECHA' --callback_data '_altdata2'
 ShellBot.InlineKeyboardButton --button 'menu2' --line 5 --text 'REVENDA' --callback_data '_opcoesrev2'
-ShellBot.InlineKeyboardButton --button 'menu2' --line 6 --text 'RELATORIO' --callback_data '_relatorio2'
+ShellBot.InlineKeyboardButton --button 'menu2' --line 6 --text 'TUS VENTAS' --callback_data '_relatorio2'
 ShellBot.InlineKeyboardButton --button 'menu2' --line 6 --text 'AYUDA' --callback_data '_ajuda2'
 ShellBot.regHandleFunction --function fun_adduser --callback_data _criaruser2
 ShellBot.regHandleFunction --function fun_add_teste --callback_data _criarteste2
