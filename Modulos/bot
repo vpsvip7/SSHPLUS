@@ -2006,8 +2006,8 @@ while :; do
                     } || {
                         ShellBot.sendMessage --chat_id ${message_from_id[$id]} \
                             --text "<b>✅ CREADO CON EXITO ✅</b>\n\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nEXPIRA EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)\n
-        $(cat /etc/IP):1-600@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ) 
-             
+      <code>  $(cat /etc/IP):1-600@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n <code>
+unpkg.com:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ) </code>             
                     " \
                             --parse_mode html
                         break
