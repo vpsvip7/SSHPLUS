@@ -245,7 +245,7 @@ fun_edithost() {
         sleep 2
     else
         echo ""
-        echo -e "\033[1;31mOpcao invalida !\033[0m"
+        echo -e "\033[1;31mOpcion invalida !\033[0m"
         sleep 2
         fun_edithost
     fi
@@ -274,19 +274,19 @@ sizemin=$(echo ${#username})
 	exit 1
 }
 sizemax=$(echo ${#username})
-[[ $sizemax -gt 10 ]] && {
-	echo -e "\n${cor1}Você digitou um nome de usuário muito grande"
-	echo -e "${cor1}use no máximo 10 caracteres!${scor}\n"
+[[ $sizemax -gt 32 ]] && {
+	echo -e "\n${cor1}wep digitou un nombre de usuário mui grande"
+	echo -e "${cor1}use un máximo 32 caracteres!${scor}\n"
 	exit 1
 }
 echo -ne "\033[1;32mSenha:\033[1;37m ";read password
 [[ -z $password ]] && {
-	echo -e "\n${cor1}Senha vazia ou invalida!${scor}\n"
+	echo -e "\n${cor1}contraseña vacia o invalida!${scor}\n"
 	exit 1
 }
 sizepass=$(echo ${#password})
 [[ $sizepass -lt 4 ]] && {
-	echo -e "\n${cor1}Senha curta!, use no mínimo 4 caracteres${scor}\n"
+	echo -e "\n${cor1}contraseña corta!, use un mínimo 4 caracteres${scor}\n"
 	exit 1
 }
 echo -ne "\033[1;32mDias para expirar:\033[1;37m ";read dias
