@@ -853,7 +853,7 @@ speed_test() {
     speedtest --share >speed
     png=$(cat speed | sed -n '5 p' | awk -F : {'print $NF'})
     down=$(cat speed | sed -n '7 p' | awk -F : {'print $NF'})
-    upl=$(cat speed | sed -n '9 p' | awk -F : {'print $NF'})
+    upl=$(cat speed | sed -n '11 p' | awk -F : {'print $NF'})
     lnk=$(cat speed | sed -n '10 p' | awk {'print $NF'})
     local msg
     msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
