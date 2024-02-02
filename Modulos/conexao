@@ -105,17 +105,17 @@ SCOLOR='\033[0m'
 			echo -e "\E[44;1;37m              INSTALADOR SQUID                \E[0m"
 			echo ""
 			IP=$(wget -qO- ipv4.icanhazip.com)
-			echo -ne "\033[1;32mPARA CONTINUAR CONFIRME SEU IP: \033[1;37m"
+			echo -ne "\033[1;32mPARA CONTINUAR CONFIRME SU IP: \033[1;37m"
 			read -e -i $IP ipdovps
 			[[ -z "$ipdovps" ]] && {
 				echo -e "\n\033[1;31mIP invalido\033[1;32m"
 				echo ""
 				read -p "Digite seu IP: " IP
 			}
-			echo -e "\n\033[1;33mQUAIS PORTAS DESEA ULTILIZAR EN SQUID \033[1;31m?"
-			echo -e "\n\033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mDEFINA AS PORTAS EM SEQUENCIA \033[1;33mEX: \033[1;37m80 8080"
+			echo -e "\n\033[1;33mCUAL PUERTO DESEA ULTILIZAR EN SQUID \033[1;31m?"
+			echo -e "\n\033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mDEFINA LOS PORTOS EN SECUENCIA \033[1;33mEX: \033[1;37m80 8080"
 			echo ""
-			echo -ne "\033[1;32mINFORME AS PORTAS\033[1;37m: "
+			echo -ne "\033[1;32mINFORME LOS PORTOS\033[1;37m: "
 			read portass
 			[[ -z "$portass" ]] && {
 				echo -e "\n\033[1;31mPorta invalida!"
@@ -153,7 +153,7 @@ SCOLOR='\033[0m'
 				var_sqd="/etc/squid3/squid.conf"
 				var_pay="/etc/squid3/payload.txt"
 			else
-				echo -e "\n\033[1;33m[\033[1;31mERRO\033[1;33m]\033[1;37m: \033[1;33mO SQUID PROXY CORROMPEU\033[0m"
+				echo -e "\n\033[1;33m[\033[1;31mERRO\033[1;33m]\033[1;37m: \033[1;33mO SQUID PROXY CORROMPIDO\033[0m"
 				sleep 2
 				fun_conexao
 			fi
@@ -206,27 +206,27 @@ SCOLOR='\033[0m'
 			echo -e "\n\033[1;32mCONFIGURANDO SQUID PROXY\033[0m"
 			echo ""
 			fun_bar 'sqd_conf'
-			echo -e "\n\033[1;32mSQUID INSTALADO COM SUCESSO!\033[0m"
+			echo -e "\n\033[1;32mSQUID INSTALADO CON EXITO!\033[0m"
 			sleep 2.5s
 			fun_conexao
 		fi
 	}
 
 	addpt_sqd() {
-		echo -e "\E[44;1;37m         ADICIONAR PORTA AO SQUID         \E[0m"
-		echo -e "\n\033[1;33mPORTAS EM USO: \033[1;32m$sqdp\n"
+		echo -e "\E[44;1;37m         ADICIONAR PUERTO A SQUID         \E[0m"
+		echo -e "\n\033[1;33mPUERTOS EN USO: \033[1;32m$sqdp\n"
 		if [[ -f "/etc/squid/squid.conf" ]]; then
 			var_sqd="/etc/squid/squid.conf"
 		elif [[ -f "/etc/squid3/squid.conf" ]]; then
 			var_sqd="/etc/squid3/squid.conf"
 		else
-			echo -e "\n\033[1;31mSQUID NAO ESTA INSTALADO!\033[0m"
+			echo -e "\n\033[1;31mSQUID NO ESTA INSTALADO!\033[0m"
 			echo -e "\n\033[1;31mRetornando...\033[0m"
 			sleep 2
 			clear
 			fun_squid
 		fi
-		echo -ne "\033[1;32mQUAL PORTA DESEJA ADICIONAR \033[1;33m?\033[1;37m "
+		echo -ne "\033[1;32mCUAL PUERTO DESEA ADICIONAR \033[1;33m?\033[1;37m "
 		read pt
 		[[ -z "$pt" ]] && {
 			echo -e "\n\033[1;31mPorta invalida!"
@@ -235,7 +235,7 @@ SCOLOR='\033[0m'
 			fun_conexao
 		}
 		verif_ptrs $pt
-		echo -e "\n\033[1;32mADICIONANDO PORTA AO SQUID!"
+		echo -e "\n\033[1;32mADICIONANDO PUERTO A SQUID!"
 		echo ""
 		sed -i "s/#Portas/#Portas\nhttp_port $pt/g" $var_sqd
 		fun_bar 'sleep 2'
@@ -1489,7 +1489,7 @@ exit 0' >$RCLOCAL
 
 	fun_socks() {
 		clear
-		echo -e "\E[44;1;37m            G PROXY WEBSOCKET             \E[0m"
+		echo -e "\E[44;1;37m             PROXY WEBSOCKET             \E[0m"
 		echo ""
 		[[ $(netstat -nplt | grep -wc 'python') != '0' ]] && {
 			sks='\033[1;32mON'
@@ -1505,11 +1505,11 @@ exit 0' >$RCLOCAL
 		echo -e "\033[1;31m[\033[1;36m2\033[1;31m] \033[1;37m• \033[1;33mWEBSOCKET -WS-EPRO $var_sks2 \033[0m"
 		echo -e "\033[1;31m[\033[1;36m3\033[1;31m] \033[1;37m• \033[1;33mSOCKS OPENVPN $sksop \033[0m"
 		echo -e "\033[1;31m[\033[1;36m4\033[1;31m] \033[1;37m• \033[1;33mABRIR PUERTO\033[0m"
-		echo -e "\033[1;31m[\033[1;36m5\033[1;31m] \033[1;37m• \033[1;33mALTERAR BSNNER SOCKS SSH\033[0m"
+		echo -e "\033[1;31m[\033[1;36m5\033[1;31m] \033[1;37m• \033[1;33mALTERAR BANNER SOCKS SSH\033[0m"
 		echo -e "\033[1;31m[\033[1;36m6\033[1;31m] \033[1;37m• \033[1;33mALTERAR BANNER WEBSOCKET\033[0m"
 		echo -e "\033[1;31m[\033[1;36m0\033[1;31m] \033[1;37m• \033[1;33mVOLVER\033[0m"
 		echo ""
-		echo -ne "\033[1;32mOQUE DESEJA FAZER \033[1;33m?\033[1;37m "
+		echo -ne "\033[1;32m QUE DESEA HAZER \033[1;33m?\033[1;37m "
 		read resposta
 		if [[ "$resposta" = '1' ]]; then
 			if ps x | grep -w proxy.py | grep -v grep 1>/dev/null 2>/dev/null; then
@@ -1526,11 +1526,11 @@ exit 0' >$RCLOCAL
 					sleep 1
 					screen -wipe >/dev/null
 				}
-				echo -e "\033[1;32mDESATIVANDO  PROXY SOCKS\033[1;33m"
+				echo -e "\033[1;32mDESACTIVANDO  PROXY SOCKS\033[1;33m"
 				echo ""
 				fun_bar 'fun_socksoff'
 				echo ""
-				echo -e "\033[1;32mPROXY SOCKS DESATIVADO CON SUCESSO!\033[1;33m"
+				echo -e "\033[1;32mPROXY SOCKS DESACTIVADO CON SUCESSO!\033[1;33m"
 				sleep 3
 				fun_socks
 			else
@@ -1562,7 +1562,7 @@ exit 0' >$RCLOCAL
 				echo ""
 				fun_bar 'fun_inisocks'
 				echo ""
-				echo -e "\033[1;32mSOCKS ATIVADO COM SUCESSO\033[1;33m"
+				echo -e "\033[1;32mSOCKS ATIVADO CON SUCESSO\033[1;33m"
 				sleep 3
 				fun_socks
 			fi
@@ -1617,7 +1617,7 @@ exit 0' >$RCLOCAL
 				echo ""
 				fun_bar 'fun_iniwssocks'
 				echo ""
-				echo -e "\033[1;32WSSOCKS ATIVADO CON SUCESSO\033[1;33m"
+				echo -e "\033[1;32WS SOCKS ATIVADO CON SUCESSO\033[1;33m"
 				sleep 3
 				fun_socks
 			fi
@@ -1636,18 +1636,18 @@ exit 0' >$RCLOCAL
 					sleep 1
 					screen -wipe >/dev/null
 				}
-				echo -e "\033[1;32mDESATIVANDO O SOCKS OPEN\033[1;33m"
+				echo -e "\033[1;32mDESATIVANDO  SOCKS OPEN\033[1;33m"
 				echo ""
 				fun_bar 'fun_socksopenoff'
 				echo ""
-				echo -e "\033[1;32mSOCKS DESATIVADO COM SUCESSO!\033[1;33m"
+				echo -e "\033[1;32mSOCKS DESATIVADO CON SUCESSO!\033[1;33m"
 				sleep 2
 				fun_socks
 			else
 				clear
 				echo -e "\E[41;1;37m            SOCKS OPENVPN             \E[0m"
 				echo ""
-				echo -ne "\033[1;32mQUAL PORTA DESEJA ULTILIZAR \033[1;33m?\033[1;37m: "
+				echo -ne "\033[1;32mCUAL PORTA DESEA ULTILIZAR \033[1;33m?\033[1;37m: "
 				read porta
 				[[ -z "$porta" ]] && {
 					echo ""
@@ -1687,9 +1687,9 @@ exit 0' >$RCLOCAL
 				clear
 				echo -e "\E[44;1;37m            PROXY SOCKS             \E[0m"
 				echo ""
-				echo -e "\033[1;33mPORTAS EM USO: \033[1;32m$sockspt"
+				echo -e "\033[1;33mPUERTOS EN USO: \033[1;32m$sockspt"
 				echo ""
-				echo -ne "\033[1;32mQUAL PORTA DESEJA ULTILIZAR \033[1;33m?\033[1;37m: "
+				echo -ne "\033[1;32m CUAL PUERTO DESEA ULTILIZAR \033[1;33m?\033[1;37m: "
 				read porta
 				[[ -z "$porta" ]] && {
 					echo ""
@@ -1700,7 +1700,7 @@ exit 0' >$RCLOCAL
 				}
 				verif_ptrs $porta
 				echo ""
-				echo -e "\033[1;32mINICIANDO O PROXY SOCKS NA PORTA \033[1;31m$porta\033[1;33m"
+				echo -e "\033[1;32mINICIANDO O PROXY SOCKS EN PUERTO \033[1;31m$porta\033[1;33m"
 				echo ""
 				abrirptsks() {
 					sleep 1
@@ -1709,12 +1709,12 @@ exit 0' >$RCLOCAL
 				}
 				fun_bar 'abrirptsks'
 				echo ""
-				echo -e "\033[1;32mPROXY SOCKS ATIVADO COM SUCESSO\033[1;33m"
+				echo -e "\033[1;32mPROXY SOCKS ATIVADO CON SUCESSO\033[1;33m"
 				sleep 2
 				fun_socks
 			else
 				clear
-				echo -e "\033[1;31mFUNCAO INDISPONIVEL\n\n\033[1;33mATIVE O SOCKS PRIMEIRO !\033[1;33m"
+				echo -e "\033[1;31mFUNCION NO DISPONIBLE\n\n\033[1;33mACTIVE  SOCKS PRIMERO !\033[1;33m"
 				sleep 2
 				fun_socks
 			fi
@@ -1726,7 +1726,7 @@ exit 0' >$RCLOCAL
 				echo ""
 				echo -e "\033[1;33mSTATUS: \033[1;32m$msgsocks"
 				echo""
-				echo -ne "\033[1;32mINFORME SEU STATUS\033[1;31m:\033[1;37m "
+				echo -ne "\033[1;32mINFORME SU STATUS\033[1;31m:\033[1;37m "
 				read msgg
 				[[ -z "$msgg" ]] && {
 					echo -e "\n\033[1;31mStatus invalido!"
@@ -1741,13 +1741,13 @@ exit 0' >$RCLOCAL
 				echo -e "\n\033[1;31m[\033[1;36m01\033[1;31m]\033[1;33m AZUL"
 				echo -e "\033[1;31m[\033[1;36m02\033[1;31m]\033[1;33m VERDE"
 				echo -e "\033[1;31m[\033[1;36m03\033[1;31m]\033[1;33m VERMELHO"
-				echo -e "\033[1;31m[\033[1;36m04\033[1;31m]\033[1;33m AMARELO"
+				echo -e "\033[1;31m[\033[1;36m04\033[1;31m]\033[1;33m AMARILLO"
 				echo -e "\033[1;31m[\033[1;36m05\033[1;31m]\033[1;33m ROSA"
 				echo -e "\033[1;31m[\033[1;36m06\033[1;31m]\033[1;33m CYANO"
 				echo -e "\033[1;31m[\033[1;36m07\033[1;31m]\033[1;33m LARANJA"
-				echo -e "\033[1;31m[\033[1;36m08\033[1;31m]\033[1;33m ROXO"
+				echo -e "\033[1;31m[\033[1;36m08\033[1;31m]\033[1;33m ROJO"
 				echo -e "\033[1;31m[\033[1;36m09\033[1;31m]\033[1;33m PRETO"
-				echo -e "\033[1;31m[\033[1;36m10\033[1;31m]\033[1;33m SEM COR"
+				echo -e "\033[1;31m[\033[1;36m10\033[1;31m]\033[1;33m SIN COLOR"
 				echo ""
 				echo -ne "\033[1;32mQUAL A COR\033[1;31m ?\033[1;37m : "
 				read sts_cor
@@ -1772,7 +1772,7 @@ exit 0' >$RCLOCAL
 				elif [[ "$sts_cor" = "10" ]]; then
 					cor_sts='null'
 				else
-					echo -e "\n\033[1;33mOPCAO INVALIDA !"
+					echo -e "\n\033[1;33mOPCION INVALIDA !"
 					cor_sts='null'
 				fi
 				fun_msgsocks() {
@@ -1804,12 +1804,12 @@ exit 0' >$RCLOCAL
 				echo ""
 				fun_bar 'restartsocks'
 				echo ""
-				echo -e "\033[1;32mSTATUS ALTERADO COM SUCESSO!"
+				echo -e "\033[1;32mSTATUS ALTERADO CON SUCESSO!"
 				sleep 2
 				fun_socks
 			else
 				clear
-				echo -e "\033[1;31mFUNCAO INDISPONIVEL\n\n\033[1;33mATIVE O SOCKS SSH PRIMEIRO !\033[1;33m"
+				echo -e "\033[1;31mFUNCION NO  DISPONIBLE\n\n\033[1;33mACTIVE  SOCKS SSH PRIMERO !\033[1;33m"
 				sleep 2
 				fun_socks
 			fi
@@ -1821,7 +1821,7 @@ exit 0' >$RCLOCAL
 				echo ""
 				echo -e "\033[1;33mSTATUS: \033[1;32m$msgsocks"
 				echo""
-				echo -ne "\033[1;32mINFORME SEU STATUS\033[1;31m:\033[1;37m "
+				echo -ne "\033[1;32mINFORME SU STATUS\033[1;31m:\033[1;37m "
 				read msgg
 				[[ -z "$msgg" ]] && {
 					echo -e "\n\033[1;31mStatus invalido!"
@@ -1836,15 +1836,15 @@ exit 0' >$RCLOCAL
 				echo -e "\n\033[1;31m[\033[1;36m01\033[1;31m]\033[1;33m AZUL"
 				echo -e "\033[1;31m[\033[1;36m02\033[1;31m]\033[1;33m VERDE"
 				echo -e "\033[1;31m[\033[1;36m03\033[1;31m]\033[1;33m VERMELHO"
-				echo -e "\033[1;31m[\033[1;36m04\033[1;31m]\033[1;33m AMARELO"
+				echo -e "\033[1;31m[\033[1;36m04\033[1;31m]\033[1;33m AMARILLO"
 				echo -e "\033[1;31m[\033[1;36m05\033[1;31m]\033[1;33m ROSA"
 				echo -e "\033[1;31m[\033[1;36m06\033[1;31m]\033[1;33m CYANO"
 				echo -e "\033[1;31m[\033[1;36m07\033[1;31m]\033[1;33m LARANJA"
-				echo -e "\033[1;31m[\033[1;36m08\033[1;31m]\033[1;33m ROXO"
+				echo -e "\033[1;31m[\033[1;36m08\033[1;31m]\033[1;33m ROJO"
 				echo -e "\033[1;31m[\033[1;36m09\033[1;31m]\033[1;33m PRETO"
 				echo -e "\033[1;31m[\033[1;36m10\033[1;31m]\033[1;33m SEM COR"
 				echo ""
-				echo -ne "\033[1;32mQUAL A COR\033[1;31m ?\033[1;37m : "
+				echo -ne "\033[1;32mCUAL  COLOR\033[1;31m ?\033[1;37m : "
 				read sts_cor
 				if [[ "$sts_cor" = "1" ]] || [[ "$sts_cor" = "01" ]]; then
 					cor_sts='blue'
@@ -1904,7 +1904,7 @@ exit 0' >$RCLOCAL
 				fun_socks
 			else
 				clear
-				echo -e "\033[1;31mFUNCAO INDISPONIVEL\n\n\033[1;33mATIVE O WEBSOCKET PRIMEIRO !\033[1;33m"
+				echo -e "\033[1;31mFUNCION NO DISPONIBLE\n\n\033[1;33mACTIVE  WEBSOCKET PRIMERO !\033[1;33m"
 				sleep 2
 				fun_socks
 			fi
