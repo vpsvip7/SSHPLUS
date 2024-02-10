@@ -16,7 +16,7 @@ ${comando[1]} -y > /dev/null 2>&1
 touch $HOME/fim
 ) > /dev/null 2>&1 &
 tput civis
-echo -ne "  \033[1;33mAGUARDE \033[1;37m- \033[1;33m["
+echo -ne "  \033[1;33mESPERE SENTADO OK \033[1;37m- \033[1;33m["
 while true; do
 for((i=0; i<18; i++)); do
 echo -ne "\033[1;31m#"
@@ -27,7 +27,7 @@ echo -e "\033[1;33m]"
 sleep 1s
 tput cuu1
 tput dl1
-echo -ne "  \033[1;33mAGUARDE \033[1;37m- \033[1;33m["
+echo -ne "  \033[1;33mESPERE SENTADO OK \033[1;37m- \033[1;33m["
 done
 echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"
 tput cnorm
@@ -47,11 +47,11 @@ echo -e "\033[1;31m════════════════════�
 echo ""
 echo -e "             \033[1;31mATENCION! \033[1;33mESTE SCRIPT IRA !\033[0m"
 echo ""
-echo -e "\033[1;31m• \033[1;33mINSTALAR UN CONJUNTO DE SCRIPTS COMO HERRAMIENTAS\033[0m"
-echo -e "\033[1;33m  PARA ADMINISTRAR METODOS, EL SISTEMA Y USUARIOS\033[0m"
+echo -e "\033[1;31m• \033[1;33mPARA INFO SOBRE DOPLET Y MAS 🇦🇷\033[0m"
+echo -e "\033[1;33m  VISITAR EL CANAL DE TELEGRAM @vps10\033[0m"
 echo ""
-echo -e "\033[1;32m• \033[1;32mWEP 😎😎! \033[1;33mULTILIZE EL TEMA DARK EN SU TERMINAL PARA\033[0m"
-echo -e "\033[1;33m  UNA MEJOR EXPERIENCIA Y VISUALIZACION DEL MISMO!\033[0m"
+echo -e "\033[1;32m• \033[1;32mWEP 😎😎! \033[1;33mULTILIZE EL TEMA OSCURO EN SU TERMINAL PARA\033[0m"
+echo -e "\033[1;33m  UNA MEJOR VISUALIZACION DEL MISMO!\033[0m"
 echo ""
 echo -e "\033[1;31m≠×≠×≠×≠×≠×≠×≠×[\033[1;33m • \033[1;32mDROPLET 🇦🇷👉🏻👉🏻:@vps10\033[1;33m •\033[1;31m ]≠×≠×≠×≠×≠×≠×≠×\033[0m"
 echo ""
@@ -81,7 +81,7 @@ wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Sistema/ShellBot.sh 
 chmod 777 ShellBot.sh > /dev/null 2>&1
 cd > /dev/null 2>&1
 #-----------------------------------------------------------------------------------------------------------------
-echo -e "\n\033[1;32mKEY VALIDA!\033[1;32m"
+echo -e "\n\033[1;32mTODO CORREPTO 😎!\033[1;32m"
 sleep 1s
 echo ""
 [[ -f "$HOME/usuarios.db" ]] && {
@@ -91,8 +91,8 @@ echo ""
 echo -e "                 \033[1;33m• \033[1;31mATENCION \033[1;33m• \033[0m"
 echo ""
 echo -e "\033[1;33mUna base de Datos de Usuários \033[1;32m(usuarios.db) \033[1;33mFue"
-echo -e "Encontrada! Deseja mantê-la preservando o limite"
-echo -e "de Coneciones simultaneas dos usuários ? O Desea"
+echo -e "Encontrada! Deseja mantenerlos preservando el limite"
+echo -e "de Coneciones simultaneas de usuários ? O Desea"
 echo -e "crear una nueva base de datos ?\033[0m"
 echo -e "\n\033[1;37m[\033[1;31m1\033[1;37m] \033[1;33mManter Base de Datos Actual\033[0m"
 echo -e "\033[1;37m[\033[1;31m2\033[1;37m] \033[1;33mCrear una Nueva Base de Datos\033[0m"
