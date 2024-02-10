@@ -98,7 +98,7 @@ fun_ajuda() {
         env_msg+="• <u>REVENDEDOR</u> = Menu Revendas\n\n"
         env_msg+="• <u>AUTOBACKUP</u> = lig/Des Backup automatico\n\n"
         env_msg+="• <u>INFO REVENDEDOR</u> = Informacoes sobre revendas\n\n"
-        env_msg+="• <u>AYUDA</u> = Informacoes sobre opcoes\n\n"
+        env_msg+="• <u>COMPRAR DROPLET 🇦🇷</u> = @diegovip7\n\n"
         ShellBot.sendMessage --chat_id $id_chatuser \
             --text "$(echo -e $env_msg)" \
             --parse_mode html
