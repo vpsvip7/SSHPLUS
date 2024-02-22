@@ -70,7 +70,7 @@ fi
 echo -e "\033[1;31m• \033[1;31mSERVICIOS EN EJECUCION\033[1;31m •\033[0m"
 echo ""
 PT=$(lsof -V -i tcp -P -n | grep -v "ESTABLISHED" |grep -v "COMMAND" | grep "LISTEN")
-for port in `echo -e "$PT" | cut -d: -f2 | cut -d' ' -f1 | uniq`; do
+for porta in `echo -e "$PT" | cut -d: -f2 | cut -d' ' -f1 | uniq`; do
     svcs=$(echo -e "$PT" | grep -w "$porta" | awk '{print $1}' | uniq)
     echo -e "\033[1;33mServicio \033[1;37m$svcs \033[1;33mPuerto \033[1;37m$porta"
 done
