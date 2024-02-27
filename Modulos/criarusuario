@@ -391,7 +391,7 @@ echo "$username $sshlimiter" >>/root/usuarios.db
 	clear
 	echo -e "\E[44;1;37m  USER CREADO ! @diegovip7    \E[0m"
         echo -e "\033[1;32mLimite $sshlimiter Expira en: $gui "
-	echo -e "\n Udp Donweb: \033[1;37m$IP:1-600@$username:$password"
+	echo -e "\n Udp Donweb: \033[1;37m$IP:1-36712@$username:$password"
        echo -e "\n Udp inet: \033[1;37m$IP:1-65535@$username:$password"
         echo -e "\n WS: unpkg.com:80@$username:$password"
      
