@@ -396,4 +396,4 @@ echo "$username $sshlimiter" >>/root/usuarios.db
         echo -e "\n WS: unpkg.com:80@$username:$password"
      
 }
-echo -e "\n Droplet 🇦🇷👉🏻 https://t.me/vps10"
+echo -e "\n Argentina 🇦🇷 ⭐⭐⭐"
