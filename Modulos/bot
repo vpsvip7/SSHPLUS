@@ -74,9 +74,9 @@ fun_ajuda() {
     if [[ "$id_chatuser" = "$id_admin" ]]; then
         local env_msg
         env_msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
-        env_msg+="<b>WEB TODO BIEN(a)  BOT SSHPLUS</b>\n"
+        env_msg+="<b>WEB TODO BIEN 🤠?  BOT SSHPLUS</b>\n"
         env_msg+="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n\n"
-        env_msg+="⚠️ <i>Comandos Disponiveis</i>\n\n"
+        env_msg+="⚠️ <i>Comandos Disponibles</i>\n\n"
         env_msg+="[<b>01</b>] /menu =  menu principal\n"
         env_msg+="[<b>02</b>] /info = ver info\n"
         env_msg+="[<b>03</b>] /ajuda = Informacion sobre opcoes\n\n"
@@ -112,10 +112,10 @@ fun_ajuda() {
         env_msg="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n"
         env_msg+="<b>WEP 🇦🇷  BOT SSHPLUS</b>\n"
         env_msg+="=×=×=×=×=×=×=×=×=×=×=×=×=×=\n\n"
-        env_msg+="⚠️ <i>Comandos Disponiveis</i>\n\n"
+        env_msg+="⚠️ <i>Comandos Disponibles</i>\n\n"
         env_msg+="[<b>01</b>] /menu = Exibe menu\n"
-        env_msg+="[<b>02</b>] /info = Exibe informacoes\n"
-        env_msg+="[<b>03</b>] /ajuda = Informacoes sobre opcoes\n\n"
+        env_msg+="[<b>02</b>] /info = Exibe info\n"
+        env_msg+="[<b>03</b>] /ajuda = Info sobre opciones\n\n"
         env_msg+="⚠️ <i>OPCIONES DISPONIBLES</i>\n\n"
         env_msg+="• <u>CREAR USUARIO</u> = Cria usuario ssh\n\n"
         env_msg+="• <u>CREAR TESTE</u> = Cria teste ssh\n\n"
@@ -2007,8 +2007,8 @@ while :; do
                             --reply_markup "$(ShellBot.ForceReply)"
                     } || {
                         ShellBot.sendMessage --chat_id ${message_from_id[$id]} \
-                            --text "<b>✅ CREADO CON EXITO ✅</b>\n\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nEXPIRA EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)\n
-     USER UDP Inet \n<code>$(cat /etc/IP):1-65535@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n USER UDP DonWeb \n<code>$(cat /etc/IP):1-36712@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n User websocket x zona \n<code>
+                            --text "<b>✅ <code>CREADO CON EXITO ✅</b>\n\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nEXPIRA EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)</code>\n
+     <b>USER UDP INET</b> \n<code>$(cat /etc/IP):1-65535@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n <b>USER UDP DonWeb</b> \n<code>$(cat /etc/IP):1-36712@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n <b>User Websocket x Zona</b> \n<code>
 unpkg.com:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ) </code>             
                     " \
                             --parse_mode html
