@@ -2008,7 +2008,7 @@ while :; do
                     } || {
                         ShellBot.sendMessage --chat_id ${message_from_id[$id]} \
                             --text "<b>✅ CREADO CON EXITO ✅</b>\n\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nEXPIRA EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)\n
-     USER UDP Inet <code>  $(cat /etc/IP):1-65535@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n USER UDP donWeb <code>  $(cat /etc/IP):1-36712@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n User websocket x zona \n<code>
+     USER UDP Inet \n<code>$(cat /etc/IP):1-65535@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n USER UDP DonWeb \n<code>$(cat /etc/IP):1-36712@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code> \n User websocket x zona \n<code>
 unpkg.com:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ) </code>             
                     " \
                             --parse_mode html
