@@ -387,7 +387,7 @@ case "$x" in
    4 | 04)
    clear
    sshmonitor
-   echo -ne "\n\033[1;31mDROPLET 🇦🇷 \033[1;33m VPS: \033[1;32m@diegovip7!\033[0m
+   echo -ne "\n\033[1;31mARGENTINA 🇦🇷 \033[1;33m VPS: \033[1;32m@diegovip7!\033[0m
 \n\033[1;31mENTER \033[1;33mpara VOLVER al \033[1;32mMENU!\033[0m"; read
    ;;      
    5 | 05)
