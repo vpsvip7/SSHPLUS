@@ -391,11 +391,11 @@ echo "$username $sshlimiter" >>/root/usuarios.db
 	clear
 	echo -e "\E[44;1;37m  USER CREADO ! @diegovip7    \E[0m"
         echo -e "\033[1;32mLimite $sshlimiter Expira en: $gui "
-	echo -e "\n Udp Donweb: \033[1;31m$IP:1-36712@$username:$password"
+	echo -e "\n Udp Donweb: \033[1;31m$IP:1-36712@$username:$password\e[m"
        echo -e "\n Udp inet: \033[1;37m$IP:1-65535@$username:$password"
         echo -e "\n WS: 104.16.123.175:80@$username:$password"
         echo -e "\n CLARO: gloft.co:80@$username:$password"
-    echo -e "\n Udp Donweb: \033[1;32mgloft.co:80@$username:$password"
+    echo -e "\n WS Claro: \033[1;32m gloft.co:80@$username:$password\e[m"
      
 }
 echo -e "\n Argentina🇦🇷 ⭐⭐⭐"
