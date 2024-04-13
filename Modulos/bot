@@ -2010,7 +2010,8 @@ while :; do
                         ShellBot.sendMessage --chat_id ${message_from_id[$id]} \
                             --text "<b><code>✅ TU USUARIO ⭐⭐⭐🇦🇷 ✅\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nVENCE : $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ) </code></b> \n .... <b>USER👤 UDP Inet</b> 👇🏻 \n    <code>$IP:1-65535@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>
                             <b>USER👤 UDP Donweb</b> 👇🏻 \n    <code>$IP:1-36712@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>
-                          <b>USER👤 WebSocket</b> 👇🏻 \n    <code>104.16.123.175:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>     \n  ..
+                          <b>USER👤 WS Movistar</b> 👇🏻 \n    <code>104.16.123.175:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>     \n
+                          <b>USER👤 WS Claro</b> 👇🏻 \n    <code>claroar.com.ar:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>     \n  ..
                
                     " \
                             --parse_mode html
