@@ -398,7 +398,7 @@ echo "$username $sshlimiter" >>/root/usuarios.db
    echo -e "\n  USUARIO WS MOVISTAR👇🏻🌞"
       echo -e "\n  104.16.123.175:80@$username:$password"
     echo -e "\n  USUARIO WS CLARO👇🏻🌝"
-     echo -e "\n  gloft.co:80@$username:$password"
+     echo -e "\n  claroar.com.ar:80@$username:$password"
      
 }
      echo -e "Argentina🇦🇷🌎 ⭐⭐⭐"
