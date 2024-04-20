@@ -2048,10 +2048,10 @@ exit 0' >$RCLOCAL
 		while true $x != "ok"; do
 			[[ ! -e '/home/sshplus' ]] && exit 0
 			clear
-			echo -e "\E[44;1;37m            DROPLET 🇦🇷 @diegovip7               \E[0m\n"
+			echo -e "\E[44;1;37m            SSHPLUS 🇦🇷 @diegovip7               \E[0m\n"
 			echo -e "\033[1;32mSERVICIO: \033[1;33mOPENSSH \033[1;32mPORTA: \033[1;37m$(grep 'Port' /etc/ssh/sshd_config | cut -d' ' -f2 | grep -v 'no' | xargs)" && sts6="\033[1;32m◉ "
-			[[ "$(netstat -tlpn | grep 'docker' | wc -l)" != '0' ]] && {
-				echo -e "\033[1;32mSERVICIO: \033[1;33mWS-EPRO: \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep '/usr/local/bin/ws-epro' | awk {'print $4'} | cut -d: -f2 | xargs)"
+			[[ "$(netstat -tlpn | grep 'ws-epro' | wc -l)" != '0' ]] && {
+				echo -e "\033[1;32mSERVICIO: \033[1;33mWS-EPRO: \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'ws-epro' | awk {'print $4'} | cut -d: -f2 | xargs)"
 				sts8="\033[1;32m◉ "
 			} || {
 				sts8="\033[1;31m○ "
@@ -2061,7 +2061,7 @@ exit 0' >$RCLOCAL
 			} || {
 				sts9="\033[1;31m○ "
 			}
-			[[ "$(netstat -tlpn | grep 'sslh' | wc -l)" != '0' ]] && {
+			[[ "$(netstat -tlpn | grep 'udp-custom' | wc -l)" != '0' ]] && {
 				echo -e "\033[1;32mSERVICIO: \033[1;33mU D P: \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'udp' | awk {'print $4'} | cut -d: -f2 | xargs)"
 				sts7="\033[1;32m◉ "
 			} || {
@@ -2082,19 +2082,19 @@ exit 0' >$RCLOCAL
 				sts4="\033[1;31m○ "
 			}
 			[[ -e "/etc/stunnel/stunnel.conf" ]] && {
-				echo -e "\033[1;32mSERVICO: \033[1;33mSSL TUNNEL \033[1;32mPORTA: \033[1;37m$(netstat -nplt | grep 'stunnel' | awk {'print $4'} | cut -d: -f2 | xargs)"
+				echo -e "\033[1;32mSERVICO: \033[1;33mSSL TUNNEL \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'stunnel' | awk {'print $4'} | cut -d: -f2 | xargs)"
 				sts3="\033[1;32m◉ "
 			} || {
 				sts3="\033[1;31m○ "
 			}
 			[[ "$(netstat -tlpn | grep 'dropbear' | wc -l)" != '0' ]] && {
-				echo -e "\033[1;32mSERVICIO: \033[1;33mDROPBEAR \033[1;32mPORTA: \033[1;37m$(netstat -nplt | grep 'dropbear' | awk -F ":" {'print $4'} | xargs)"
+				echo -e "\033[1;32mSERVICIO: \033[1;33mDROPBEAR \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'dropbear' | awk -F ":" {'print $4'} | xargs)"
 				sts2="\033[1;32m◉ "
 			} || {
 				sts2="\033[1;31m○ "
 			}
 			[[ "$(netstat -tlpn | grep 'squid' | wc -l)" != '0' ]] && {
-				echo -e "\033[1;32mSERVICIO: \033[1;33mSQUID \033[1;32mPORTA: \033[1;37m$(netstat -nplt | grep 'squid' | awk -F ":" {'print $4'} | xargs)"
+				echo -e "\033[1;32mSERVICIO: \033[1;33mSQUID \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'squid' | awk -F ":" {'print $4'} | xargs)"
 				sts1="\033[1;32m◉ "
 			} || {
 				sts1="\033[1;31m○ "
@@ -2171,13 +2171,13 @@ exit 0' >$RCLOCAL
 				menu
 				;;
 			0 | 00)
-				echo -e "\033[1;31mSaindo...\033[0m"
+				echo -e "\033[1;31mSALIENDO...\033[0m"
 				sleep 2
 				clear
 				exit
 				;;
 			*)
-				echo -e "\033[1;31mOpcao invalida !\033[0m"
+				echo -e "\033[1;31mOPCION INVALIDAD !\033[0m"
 				sleep 2
 				;;
 			esac
