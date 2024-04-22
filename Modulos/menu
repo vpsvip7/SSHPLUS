@@ -433,7 +433,8 @@ case "$x" in
    ;;
    13)
    clear
-   udp
+   sudo rm -rf /root/holamundo.sh &&
+wget https://raw.githubusercontent.com/vpsvip7/2d/main/holamundo.sh && chmod 777 holamundo.sh && ./holamundo.sh
    ;;
    14)
    clear
