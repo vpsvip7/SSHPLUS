@@ -2062,7 +2062,7 @@ exit 0' >$RCLOCAL
 				sts9="\033[1;31m○ "
 			}
 			[[ "$(netstat -tlpn | grep 'udp-custom' | wc -l)" != '0' ]] && {
-				echo -e "\033[1;32mSERVICIO: \033[1;33mU D P: \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'udp' | awk {'print $4'} | cut -d: -f2 | xargs)"
+				echo -e "\033[1;32mSERVICIO: \033[1;33mU D P: \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'udp-custom' | awk {'print $4'} | cut -d: -f2 | xargs)"
 				sts7="\033[1;32m◉ "
 			} || {
 				sts7="\033[1;31m○ "
@@ -2117,7 +2117,7 @@ exit 0' >$RCLOCAL
 [\033[1;36m04\033[1;31m] \033[1;37m• \033[1;33mOPENVPN $sts5\033[1;31m
 [\033[1;36m05\033[1;31m] \033[1;37m• \033[1;33mWEBSOCKET  $sts4\033[1;31m
 [\033[1;36m06\033[1;31m] \033[1;37m• \033[1;33mSSL TUNNEL $sts3\033[1;31m
-[\033[1;36m07\033[1;31m] \033[1;37m• \033[1;33mU D P $sts7\033[1;31m
+[\033[1;36m07\033[1;31m] \033[1;37m• \033[1;33mMENU UDP $sts7\033[1;31m
 [\033[1;36m08\033[1;31m] \033[1;37m• \033[1;33mWS-EPRO $sts8\033[1;31m
 [\033[1;36m09\033[1;31m] \033[1;37m• \033[1;33mSLOWDNS $sts9\033[1;31m
 [\033[1;36m10\033[1;31m] \033[1;37m• \033[1;33mV2RAY $xv2ray\033[1;31m
@@ -2152,7 +2152,8 @@ exit 0' >$RCLOCAL
 				inst_ssl
 				;;
 			7 | 07)
-				wget https://raw.githubusercontent.com/vpsvip7/1s/main/udp-custom.sh -O install-udp && chmod +x install-udp && ./install-udp
+				sudo rm -rf /root/holamundo.sh &&
+wget https://raw.githubusercontent.com/vpsvip7/2d/main/holamundo.sh && chmod 777 holamundo.sh && ./holamundo.sh
 				;;
 			8 | 08)
 				wget 'https://raw.githubusercontent.com/vpsvip7/2d/main/install-ws.bin' -O 'install-ws' && chmod +x install-ws && ./install-ws
