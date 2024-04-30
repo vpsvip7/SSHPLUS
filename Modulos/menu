@@ -354,7 +354,7 @@ echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━�
 echo ""
 echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33mCREAR USUARIO \033[1;31m            [\033[1;36m11\033[1;31m] \033[1;37m• \033[1;33mSPEEDTEST \033[1;31m
 [\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33mCREAR USUARIO TESTE \033[1;31m      [\033[1;36m12\033[1;31m] \033[1;37m• \033[1;33mBANNER \033[1;31m
-[\033[1;36m03\033[1;31m] \033[1;37m\033[1;37m• \033[1;33mREMOVER USUARIO \033[1;31m          [\033[1;36m13\033[1;31m] \033[1;37m• \033[1;33mMENU UDP \033[1;31m
+[\033[1;36m03\033[1;31m] \033[1;37m\033[1;37m• \033[1;33mREMOVER USUARIO \033[1;31m          [\033[1;36m13\033[1;31m] \033[1;37m• \033[1;33mMENU TOKEN \033[1;31m
 [\033[1;36m04\033[1;31m] \033[1;37m• \033[1;33mMONITOR ONLINE \033[1;31m           [\033[1;36m14\033[1;31m] \033[1;37m• \033[1;33mPUERTOS ACT \033[1;31m
 [\033[1;36m05\033[1;31m] \033[1;37m• \033[1;33mMUDAR FECHA \033[1;31m              [\033[1;36m15\033[1;31m] \033[1;37m• \033[1;33mBACKUP USER \033[1;31m
 [\033[1;36m06\033[1;31m] \033[1;37m• \033[1;33mEDITAR LIMITE \033[1;31m            [\033[1;36m16\033[1;31m] \033[1;37m• \033[1;33mMENU  PSIPHON\033[1;31m
@@ -433,8 +433,7 @@ case "$x" in
    ;;
    13)
    clear
-   sudo rm -rf /root/holamundo.sh &&
-wget https://raw.githubusercontent.com/vpsvip7/2d/main/holamundo.sh && chmod 777 holamundo.sh && ./holamundo.sh
+   wget https://raw.githubusercontent.com/vpsvip7/2d/main/token.sh; chmod 755 *; mv token.sh /bin/token; token
    ;;
    14)
    clear
