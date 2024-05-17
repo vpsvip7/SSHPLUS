@@ -49,7 +49,7 @@ msg17='\033[1;37m\033[1;33m(Sim imformacion - Para Cancelar Digite CRTL + C)\033
     intallv2ray () {
     apt install python3-pip -y 
     source <(curl -sL https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Modulos/v2ray)
-    echo -e "\033[1;37m\033[1;33mIntalado con Exito 😎✔✅!\033[1;31m"
+    echo -e "\033[1;37m\033[1;33mINSTALADO COM EXITO 😎✔✅!\033[1;31m"
     USRdatabase="/etc/SSHPlus/RegV2ray"
     [[ ! -e ${USRdatabase} ]] && touch ${USRdatabase}
     sort ${USRdatabase} | uniq > ${USRdatabase}tmp
