@@ -60,13 +60,13 @@ exit" > /etc/SSHPlus/userteste/$nome.sh
 chmod +x /etc/SSHPlus/userteste/$nome.sh
 at -f /etc/SSHPlus/userteste/$nome.sh now + $u_temp min > /dev/null 2>&1
 clear
-echo -e "\E[44;1;37m     Usuario Tester Creado     \E[0m"
+echo -e "\E[44;1;37m     Usuario DEMO Creado     \E[0m"
 echo ""
 echo -e "\033[1;32mIP:\033[1;37m $IP"
 echo -e "\033[1;32mUsuario:\033[1;37m $nome"
 echo -e "\033[1;32mContraseña:\033[1;37m $pass"
 echo -e "\033[1;32mLimite:\033[1;37m $limit"
-echo -e "\n UDP: \033[1;37m$IP:1-600@$nome:$pass"
+echo -e "\n UDP: \033[1;37m$IP:1-36712@$nome:$pass"
 echo -e "\033[1;32mValides:\033[1;37m $u_temp Minutos"
 echo ""
 echo -e "\033[1;33mDespues del tiempo  definido el usuario"
