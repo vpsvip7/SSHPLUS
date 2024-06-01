@@ -393,10 +393,10 @@ echo "$username $sshlimiter" >>/root/usuarios.db
         echo -e "\n Limite $sshlimiter Expira en: $gui "
     echo -e "\n  USUARIO UDP DONWEB 👇🏻🌜"
 	   echo -e "\n $IP:1-36712@$username:$password"
-   echo -e "\n  USUARIO UDP INET👇🏻🌛"
+   echo -e "\n  USUARIO UDP INETGAMING 👇🏻🌛"
      echo -e "\n $IP:1-65535@$username:$password"
    echo -e "\n  USUARIO WS MOVISTAR👇🏻🌞"
-      echo -e "\n  104.16.124.175:80@$username:$password"
+      echo -e "\n  movistar.v201.cloud:80@$username:$password"
     echo -e "\n  USUARIO WS CLARO👇🏻🌝"
      echo -e "\n  claro.v201.cloud:80@$username:$password"
      
