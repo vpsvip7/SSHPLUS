@@ -81,7 +81,6 @@ fun_ajuda() {
         env_msg+="[<b>02</b>] /info = VER informacion\n"
         env_msg+="[<b>03</b>] /ajuda = Informacoes sobre opcoes\n\n"
         env_msg+="⚠️ <i>OPCIONES DISPONIBLES</i>\n\n"
-       env_msg+="• <u>COMPRAR DROPLET 🇦🇷😎👉🏻</u> =  @diegovip7 \n\n"
         env_msg+="• <u>CREAR USUARIO</u> = Crear usuario ssh\n\n"
         env_msg+="• <u>CREAR DEMO</u> = Crear demo ssh\n\n"
         env_msg+="• <u>REMOVER</u> = Remove usuario ssh\n\n"
