@@ -35,5 +35,5 @@ sleep 1
 }
 fun_bar 'fun_start'
 echo ""
-echo "       SLOWDNS INICIADO COM SUCESSO!!!"
+echo "       SLOWDNS INICIADO CON EXITO!!!"
 sleep 2
