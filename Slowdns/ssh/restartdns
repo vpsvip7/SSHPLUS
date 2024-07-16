@@ -38,4 +38,4 @@ sleep 1
 fun_bar 'fun_start'
 sleep 2
 echo ""
-echo "  SlowDNS Reiniciado Com Sucesso! [✔]"
+echo "  SlowDNS Reiniciado Con Exito! [✔]"
