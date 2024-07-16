@@ -2,7 +2,7 @@
 clear
 slowdns () {
 echo -e "\033[1;31m════════════════════════════════════════════════════\033[0m"
-tput setaf 7 ; tput setab 4 ; tput bold ; printf '%40s%s%-12s\n' "MENU SLOWDNS MANAGER V3.0" ; tput sgr0
+tput setaf 7 ; tput setab 4 ; tput bold ; printf '%40s%s%-12s\n' "MENU SLOWDNS MANAGER V3.1" ; tput sgr0
 echo -e "\033[1;31m════════════════════════════════════════════════════\033[0m"
 echo -e "\033[0;36m#===================================================#\033[m"
 echo -e "\033[0;36m# .|'''.|'||                '||''|. '|.   '|'.|'''.|#\033[m"
@@ -27,7 +27,7 @@ echo -e "\033[0;36m#===================================================#\033[m"
     echo -e "\033[0;36m[11]\033[m | Remover Script"
     echo -e "\033[0;36m[00]\033[m | SALIR"
     echo ""
-    echo -ne "\033[0;36mO que desea hazer?:\0033[m " && read opcao
+    echo -ne "\033[0;36mO que desea hacer?:\0033[m " && read opcao
     case $opcao in
     1) Opcao1 ;;
     2) Opcao2 ;;
