@@ -109,7 +109,7 @@ echo ""
 echo ""
 echo -e "          \033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mACTUALIZANDO SISTEMA \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
 echo ""
-echo -e "    \033[1;33mACTUALIZACIONES ACOSTUMBRA DEMORAR UN TOKE!\033[0m"
+echo -e "    \033[1;33mACTUALIZACION ACOSTUMBRA DEMORAR UN POCO!\033[0m"
 echo ""
 fun_attlist () {
 apt-get update -y
@@ -121,7 +121,7 @@ clear
 echo ""
 echo -e "          \033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mINSTALANDO PAKETES \033[1;33m[\033[1;31m!\033[1;33m] \033[0m"
 echo ""
-echo -e "\033[1;33mALGUNOS PAKETES SON EXTREMAMENTE  NECESARIOS !\033[0m"
+echo -e "\033[1;33mALGUNOS PAQUETES SON EXTREMAMENTE  NECESARIOS !\033[0m"
 echo ""
 inst_pct () {
 _pacotes=("bc" "python" "speedtest-cli" "htop" "git" "screen" "nano" "unzip" "lsof" "netstat" "net-tools" "dos2unix" "nload" "jq" "curl" "figlet" "python3" "python-pip")
