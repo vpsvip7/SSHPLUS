@@ -42,7 +42,7 @@ clear; exit 1
 }
 }
 echo -e "\033[1;31m════════════════════════════════════════════════════\033[0m"
-tput setaf 7 ; tput setab 4 ; tput bold ; printf '%40s%s%-12s\n' "WEP AMIGO ESTO ES  SSHPLUS ARGENTINA⭐⭐⭐ " ; tput sgr0
+tput setaf 7 ; tput setab 4 ; tput bold ; printf '%40s%s%-12s\n' "......WEP AMIGO ESTO ES  SSHPLUS ARGENTINA⭐⭐⭐ " ; tput sgr0
 echo -e "\033[1;31m════════════════════════════════════════════════════\033[0m"
 echo ""
 echo -e "             \033[1;31mATENCION! \033[1;33mESTE SCRIPT IRA !\033[0m"
