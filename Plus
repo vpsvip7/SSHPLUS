@@ -20,7 +20,7 @@ echo -ne "  \033[1;33mESPERE SENTADO OK \033[1;37m- \033[1;33m["
 while true; do
 for((i=0; i<18; i++)); do
 echo -ne "\033[1;31m#🇦🇷🐣"
-sleep 0.5s
+sleep 0.6s
 done
 [[ -e $HOME/fim ]] && rm $HOME/fim && break
 echo -e "\033[1;33m]"
@@ -121,7 +121,7 @@ clear
 echo ""
 echo -e "          \033[1;33m[\033[1;31m!\033[1;33m] \033[1;32mINSTALANDO PAKETES \033[1;33m[\033[1;31m!\033[1;33m] \033[0m"
 echo ""
-echo -e "\033[1;33mALGUNOS PAQUETES SON EXTREMAMENTE  NECESARIOS !\033[0m"
+echo -e "\033[1;33mINSTALANDO PAQUETES VPS !\033[0m"
 echo ""
 inst_pct () {
 _pacotes=("bc" "python" "speedtest-cli" "htop" "git" "screen" "nano" "unzip" "lsof" "netstat" "net-tools" "dos2unix" "nload" "jq" "curl" "figlet" "python3" "python-pip")
