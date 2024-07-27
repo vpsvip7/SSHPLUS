@@ -112,7 +112,7 @@ echo ""
 echo -e "    \033[1;33mACTUALIZACION ACOSTUMBRA DEMORAR UN POCO!\033[0m"
 echo ""
 fun_attlist () {
-apt-get update -y
+apt-get uprate -y
 [[ ! -d /usr/share/.plus ]] && mkdir /usr/share/.plus
 echo "crz: $(date)" > /usr/share/.plus/.plus
 }
