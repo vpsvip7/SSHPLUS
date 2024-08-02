@@ -14,7 +14,7 @@ MSG = '101'
 COR = '<font color="yellow"><big><big>'
 FTAG = '</font></big></big>'
 DEFAULT_HOST = "127.0.0.1:22"
-RESPONSE = "HTTP/1.1 101 Web Socket Protocol Handshake\r\nConnection: Upgrade\r\nUpgrade: websocket\r\n\r\nHTTP/1.1 200 Connection Established\r\n\r\n"
+RESPONSE = "HTTP/1.1 101 internet premium\r\nConnection: Upgrade\r\nUpgrade: websocket\r\n\r\nHTTP/1.1 200 Connection Established\r\n\r\n"
  
 class Server(threading.Thread):
     def __init__(self, host, port):
