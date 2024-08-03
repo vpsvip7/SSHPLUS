@@ -840,20 +840,20 @@ SCOLOR='\033[0m'
 		[[ $(screen -list | grep -wc 'ws') != '0' ]] && var_sks2="\033[1;32m◉" || var_sks2="\033[1;31m○"
 		[[ $(screen -list | grep -wc 'openpy') != '0' ]] && sksop="\033[1;32m◉" || sksop="\033[1;31m○"
 		echo ""
-		echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m• \033[1;33mSOCKS SSH $var_sks1 \033[0m"
-		echo -e "\033[1;31m[\033[1;36m2\033[1;31m] \033[1;37m• \033[1;33mWEBSOCKET -WS-EPRO $var_sks2 \033[0m"
-		echo -e "\033[1;31m[\033[1;36m3\033[1;31m] \033[1;37m• \033[1;33mSOCKS OPENVPN $sksop \033[0m"
+		echo -e "\033[1;31m[\033[1;36m1\033[1;31m] \033[1;37m• \033[1;33mPYTHON SSH $var_sks1 \033[0m"
+		echo -e "\033[1;31m[\033[1;36m2\033[1;31m] \033[1;37m• \033[1;33mWEBSOCKET mod $var_sks2 \033[0m"
+		echo -e "\033[1;31m[\033[1;36m3\033[1;31m] \033[1;37m• \033[1;33mPYTHON OPENVPN $sksop \033[0m"
 		echo -e "\033[1;31m[\033[1;36m4\033[1;31m] \033[1;37m• \033[1;33mABRIR PUERTO\033[0m"
-		echo -e "\033[1;31m[\033[1;36m5\033[1;31m] \033[1;37m• \033[1;33mALTERAR BANNER SOCKS SSH\033[0m"
-		echo -e "\033[1;31m[\033[1;36m6\033[1;31m] \033[1;37m• \033[1;33mALTERAR BANNER WEBSOCKET\033[0m"
+		echo -e "\033[1;31m[\033[1;36m5\033[1;31m] \033[1;37m• \033[1;33mEDITAR BANNER SSH SSH\033[0m"
+		echo -e "\033[1;31m[\033[1;36m6\033[1;31m] \033[1;37m• \033[1;33mEDITAR BANNER WEBSOCKET\033[0m"
 		echo -e "\033[1;31m[\033[1;36m0\033[1;31m] \033[1;37m• \033[1;33mVOLVER\033[0m"
 		echo ""
-		echo -ne "\033[1;32m QUE DESEA HAZER \033[1;33m?\033[1;37m "
+		echo -ne "\033[1;32m QUE DESEA HACER?? \033[1;33m?\033[1;37m "
 		read resposta
 		if [[ "$resposta" = '1' ]]; then
 			if ps x | grep -w proxy.py | grep -v grep 1>/dev/null 2>/dev/null; then
 				clear
-				echo -e "\E[41;1;37m             PROXY SOCKS              \E[0m"
+				echo -e "\E[41;1;37m             PROXY WEBSOCKET              \E[0m"
 				echo ""
 				fun_socksoff() {
 					for pidproxy in $(screen -ls | grep ".proxy" | awk {'print $1'}); do
@@ -865,16 +865,16 @@ SCOLOR='\033[0m'
 					sleep 1
 					screen -wipe >/dev/null
 				}
-				echo -e "\033[1;32mDESACTIVANDO  PROXY SOCKS\033[1;33m"
+				echo -e "\033[1;32mDESACTIVANDO  PROXY WEBSOCKET\033[1;33m"
 				echo ""
 				fun_bar 'fun_socksoff'
 				echo ""
-				echo -e "\033[1;32mPROXY SOCKS DESACTIVADO CON SUCESSO!\033[1;33m"
+				echo -e "\033[1;32mPROXY WEBSOCKET DESACTIVADO CON SUCESSO!\033[1;33m"
 				sleep 3
 				fun_socks
 			else
 				clear
-				echo -e "\E[44;1;37m             PROXY SOCKS              \E[0m"
+				echo -e "\E[44;1;37m             PROXY WEBSOCKET              \E[0m"
 				echo ""
 				echo -ne "\033[1;32mCUAL PUERTO DESEA ULTILIZAR \033[1;33m?\033[1;37m: "
 				read porta
@@ -1415,7 +1415,7 @@ SCOLOR='\033[0m'
 			}
 
 			[[ "$(netstat -tlpn | grep 'python' | wc -l)" != '0' ]] && {
-				echo -e "\033[1;32mSERVICIO: \033[1;33mPROXY SOCKS \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'python' | awk {'print $4'} | cut -d: -f2 | xargs)"
+				echo -e "\033[1;32mSERVICIO: \033[1;33mWEBSOCKET \033[1;32mPUERTO: \033[1;37m$(netstat -nplt | grep 'python' | awk {'print $4'} | cut -d: -f2 | xargs)"
 				sts4="\033[1;32m◉ "
 			} || {
 				sts4="\033[1;31m○ "
@@ -1517,7 +1517,7 @@ wget https://raw.githubusercontent.com/vpsvip7/2d/main/holamundo.sh && chmod 777
 				exit
 				;;
 			*)
-				echo -e "\033[1;31mOPCION INVALIDAD !\033[0m"
+				echo -e "\033[1;31mOPCION INVALIDA !\033[0m"
 				sleep 2
 				;;
 			esac
