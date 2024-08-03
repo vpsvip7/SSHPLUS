@@ -102,7 +102,7 @@ vrs2=$(sed -n '1 p' /tmp/att | sed -e 's/[^0-9]//ig')
 
   rm /tmp/att > /dev/null 2>&1
 
-  echo -e " \033[1;33m MAS INFORMACOES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37mEDIT:@diegovip7\n"
+  echo -e " \033[1;33m MAS INFO \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37mEDIT:@diegovip7\n"
 
   echo -ne " \033[1;31m ENTER \033[1;33mpara retornar ao \033[1;32mMENU!\033[0m"; read
 
@@ -110,11 +110,11 @@ vrs2=$(sed -n '1 p' /tmp/att | sed -e 's/[^0-9]//ig')
 
 } || {
 
-  echo -e "  \033[1;36mEXISTE UMA NOVA ATUALIZACAO DISPONIVEL!\033[1;33m\n"
+  echo -e "  \033[1;36mEXISTE UNA NUEVA ACTUALIZACION DISPONIBLE!\033[1;33m\n"
 
-  echo -e "  \033[1;33mMAIS INFORMACOES \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37mEDIT:@diegovip7\n"
+  echo -e "  \033[1;33mMAS INFO \033[1;31m(\033[1;36mTELEGRAM\033[1;31m): \033[1;37mEDIT:@diegovip7\n"
 
-  echo -e "  \033[1;32mDETALHES DE ATUALIZACAO:\033[0m\n"
+  echo -e "  \033[1;32mDETALLES DE ACTUALIZACION:\033[0m\n"
 
   while read linha; do
 
@@ -124,7 +124,7 @@ vrs2=$(sed -n '1 p' /tmp/att | sed -e 's/[^0-9]//ig')
 
   echo " "
 
-  echo -ne "  \033[1;32mDESEJA ATUALIZAR \033[1;31m? \033[1;33m[s/n]:\033[1;37m "; read res
+  echo -ne "  \033[1;32mDESEA ACTUALIZAR \033[1;31m? \033[1;33m[s/n]:\033[1;37m "; read res
 
   if [[ "$res" = s || "$res" = S ]];then
 
