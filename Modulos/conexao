@@ -1428,10 +1428,10 @@ unzip ddos.zip
 				sts5="\e[1;31m○ "
 			}
 			[[ "$(netstat -tlpn | grep '/usr/local/sbin/ddos' | wc -l)" != '0' ]] && {
-				echo -e "\e[1;32mSERVICIO: \e[1;33mFIREWALL: \e[1;32mPUERTO: \e[1;37m$(netstat -nplt | grep 'ddos' | awk {'print $4'} | cut -d: -f2 | xargs)"
-				sts10="\e[1;32m◉ "
+				echo -e "\e[1;32mSERVICIO: \e[1;33mFIREWALL: \e[1;32mPUERTO: \e[1;37m$(netstat -nplt | grep '/usr/local/sbin/ddos' | awk {'print $4'} | cut -d: -f2 | xargs)"
+				ddos="\e[1;32m◉ "
 			} || {
-				sts10="\e[1;31m○ "
+				ddos="\e[1;31m○ "
 			}
 
 			[[ "$(netstat -tlpn | grep 'python' | wc -l)" != '0' ]] && {
@@ -1440,8 +1440,8 @@ unzip ddos.zip
 			} || {
 				sts4="\e[1;31m○ "
 			}
-			[[ -e "/etc/stunnel/stunnel.conf" ]] && {
-				echo -e "\e[1;32mSERVICO: \e[1;33mSSL TUNNEL \e[1;32mPUERTO: \e[1;37m$(netstat -nplt | grep 'stunnel' | awk {'print $4'} | cut -d: -f2 | xargs)"
+			[[ -e "/usr/local/sbin/ddos" ]] && {
+				echo -e "\e[1;32mSERVICO: \e[1;33mSSL TUNNEL \e[1;32mPUERTO: \e[1;37m$(netstat -nplt | grep 'ddos' | awk {'print $4'} | cut -d: -f2 | xargs)"
 				sts3="\e[1;32m◉ "
 			} || {
 				sts3="\e[1;31m○ "
@@ -1458,7 +1458,7 @@ unzip ddos.zip
 			} || {
 				sts1="\e[1;31m○ "
 			}
-			[[ "$(netstat -tunlp | grep 'sbin/wondershaper' | wc -l)" != '0' ]] && {
+			[[ "$(netstat -tunlp | grep '/usr/sbin/wondershaper' | wc -l)" != '0' ]] && {
 				trojansts="\e[1;32m◉ "
 			} || {
 				trojansts="\e[1;31m○ "
@@ -1470,19 +1470,19 @@ unzip ddos.zip
 			}
 			echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 			echo ""
-			echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33mOPENSSH $sts6\033[1;31m
+			echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;37m• \033[1;33mPUERTO DE TU VPS $sts6\033[1;31m
 [\033[1;36m02\033[1;31m] \033[1;37m• \033[1;33mSQUID PROXY $sts1\033[1;31m
-[\033[1;36m03\033[1;31m] \033[1;37m• \033[1;33mDROPBEAR $sts2\033[1;31m
-[\033[1;36m04\033[1;31m] \033[1;37m• \033[1;33mSSL+PY $sts5\033[1;31m
-[\033[1;36m05\033[1;31m] \033[1;37m• \033[1;33mWEBSOCKET  $sts4\033[1;31m
+[\033[1;36m03\033[1;31m] \033[1;37m• \033[1;33mMENU DROPBEAR $sts2\033[1;31m
+[\033[1;36m04\033[1;31m] \033[1;37m• \033[1;33mAUTOINSTALACION SSL+PY $sts5\033[1;31m
+[\033[1;36m05\033[1;31m] \033[1;37m• \033[1;33mMENU WEBSOCKET  $sts4\033[1;31m
 [\033[1;36m06\033[1;31m] \033[1;37m• \033[1;33mSSL TUNNEL $sts3\033[1;31m
 [\033[1;36m07\033[1;31m] \033[1;37m• \033[1;33mMENU UDP $sts7\033[1;31m
-[\033[1;36m08\033[1;31m] \033[1;37m• \033[1;33mWS-EPRO $sts8\033[1;31m
-[\033[1;36m09\033[1;31m] \033[1;37m• \033[1;33mSLOWDNS $sts9\033[1;31m
-[\033[1;36m10\033[1;31m] \033[1;37m• \033[1;33mV2RAY $xv2ray\033[1;31m
+[\033[1;36m08\033[1;31m] \033[1;37m• \033[1;33mINSTALAR WS-EPRO $sts8\033[1;31m
+[\033[1;36m09\033[1;31m] \033[1;37m• \033[1;33mMENU SLOWDNS $sts9\033[1;31m
+[\033[1;36m10\033[1;31m] \033[1;37m• \033[1;33mMENU V2RAY $xv2ray\033[1;31m
 [\033[1;36m11\033[1;31m] \033[1;37m• \033[1;33mWONDERSHAPER $trojansts\033[1;31m
-[\033[1;36m12\033[1;31m] \033[1;37m• \033[1;33mVOLVER \033[1;32m<\033[1;33m<\033[1;31m< \033[1;31m
-[\033[1;36m13\033[1;31m] \033[1;37m• \033[1;33mFIREW$sts10 \033[1;32m<\033[1;33m<\033[1;31m< \033[1;31m
+[\033[1;36m12\033[1;31m] \033[1;37m• \033[1;33mVOLVER AL MENU Inicial \033[1;32m<\033[1;33m<\033[1;31m< \033[1;31m
+[\033[1;36m13\033[1;31m] \033[1;37m• \033[1;33mFIREWALL$ddos \033[1;32m<\033[1;33m<\033[1;31m< \033[1;31m
 [\033[1;36m00\033[1;31m] \033[1;37m• \033[1;33mSALIR \033[1;32m<\033[1;33m<\033[1;31m< \033[0m"
 			echo ""
 			echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
