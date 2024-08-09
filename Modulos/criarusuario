@@ -268,14 +268,14 @@ echo -ne "\033[1;32mNome do usuário:\033[1;37m ";read username
 	exit 1
 }
 sizemin=$(echo ${#username})
-[[ $sizemin -lt 2 ]] && {
-	echo -e "\n${cor1}Você digitou um nome de usuário muito curto${scor}"
-	echo -e "${cor1}use no mínimo dois caracteres!${scor}\n"
+[[ $sizemin -lt 4 ]] && {
+	echo -e "\n${cor1}Escribiste un nombre de usuário muito corto${scor}"
+	echo -e "${cor1}use un mínimo 4 caracteres!${scor}\n"
 	exit 1
 }
 sizemax=$(echo ${#username})
 [[ $sizemax -gt 32 ]] && {
-	echo -e "\n${cor1}wep digitou un nombre de usuário mui grande"
+	echo -e "\n${cor1}wep Escribiste un nombre de usuário mui grande"
 	echo -e "${cor1}use un máximo 32 caracteres!${scor}\n"
 	exit 1
 }
@@ -302,17 +302,17 @@ echo -ne "\033[1;32mDias para expirar:\033[1;37m ";read dias
 	echo -e "\n${cor1}O número deve ser maior que zero!${scor}\n"
 	exit 1
 }
-echo -ne "\033[1;32mLimite de conexões:\033[1;37m ";read sshlimiter
+echo -ne "\033[1;32mLimite de conecion:\033[1;37m ";read sshlimiter
 [[ -z $sshlimiter ]] && {
-	echo -e "\n${cor1}Você deixou o limite de conexões vazio!${scor}\n"
+	echo -e "\n${cor1}Escribiste limite de conecion vazio!${scor}\n"
 	exit 1
 }
 [[ ${sshlimiter} != ?(+|-)+([0-9]) ]] && {
-	echo -e "\n${cor1}Você digitou um número de conexões inválido!${scor}\n"
+	echo -e "\n${cor1}Escribiste un número de conecion inválido!${scor}\n"
 	exit 1
 }
 [[ $sshlimiter -lt 1 ]] && {
-	echo -e "\n${cor1}Número de conexões simultâneas deve ser maior que zero!${scor}\n"
+	echo -e "\n${cor1}Número de conecion simultâneas deve ser maior que zero!${scor}\n"
 	exit 1
 }
 final=$(date "+%Y-%m-%d" -d "+$dias days")
