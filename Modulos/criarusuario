@@ -391,15 +391,15 @@ echo "$username $sshlimiter" >>/root/usuarios.db
 	clear
 	echo -e "\E[44;1;37m  USER CREADO 🇦🇷⭐⭐⭐🌍 !    \E[0m"
         echo -e "\n Limite $sshlimiter Expira en: $gui "
-    echo -e "\n  USUARIO UDP DONWEB 👇🏻🌜"
-	   echo -e "\n $IP:1-36712@$username:$password"
+    echo -e "\n  USUARIO UDP Universal 👇🏻🌜"
+	   echo -e "\n $IP:1-65535@$username:$password"
    echo -e "\n  USUARIO UDP INETGAMING 👇🏻🌛"
-     echo -e "\n $IP:1-65535@$username:$password"
+     echo -e "\n $IP:1-911@$username:$password"
    echo -e "\n  USUARIO WS MOVISTAR👇🏻🌞"
       echo -e "\n  104.16.122.175:80@$username:$password"
 echo -e "\n  USUARIO WS CLARO👇🏻🌞"
       echo -e "\n  sms.com:80@$username:$password"
-    echo -e "\n  USUARIO WS  PERSONAL👇🏻🌝"
+    echo -e "\n  USUARIO WEBSOCKET 👇🏻🌝"
      echo -e "\n  141.193.213.20:80@$username:$password"
      
 }
