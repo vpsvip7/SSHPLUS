@@ -10,7 +10,7 @@ ${comando[1]} -y > /dev/null 2>&1
 touch $HOME/fim
  ) > /dev/null 2>&1 &
  tput civis
-echo -ne "  \033[1;33mEspere \033[1;37m- \033[1;33m["
+echo -ne "  \033[1;33mESPERE SENTADO \033[1;37m- \033[1;33m["
 while true; do
    for((i=0; i<18; i++)); do
    echo -ne "\033[1;31m#"
@@ -21,12 +21,12 @@ while true; do
    sleep 1s
    tput cuu1
    tput dl1
-   echo -ne "  \033[1;33mEspere \033[1;37m- \033[1;33m["
+   echo -ne "  \033[1;33mESPERE2  \033[1;37m- \033[1;33m["
 done
 echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"
 tput cnorm
 }
-echo -e "\033[1;31m══════════════════════════════════════════\033[0m"
+echo -e "\033[1;31m═════════════════════════════════════════\033[0m"
 tput setaf 7 ; tput setab 4 ; tput bold ; printf '%40s%s%-12s\n' "INSTALLING SLOW DNS SSH" ; tput sgr0
 echo -e "\033[1;31m═══════════════════════════════════════════\033[0m"
 echo -e ""
@@ -35,7 +35,7 @@ echo -e "     slowdns for DNS tunneling with SSH."
 echo -e ""
 echo -e "         \033[1;33mInstaller made by @Laael and Modded/Translated by @KhaledAGN ❤️ \033[1;37m"
 echo -e ""
-echo -e "\033[1;31m══════════════════════════════════════════\033[0m"
+echo -e "\033[1;31m═════════════════════════════════════\033[0m"
 echo ""
 echo -e "UPDATING PACKAGE LIST..."
 fun_att () {
@@ -65,9 +65,9 @@ systemctl start rc-local
 fun_bar 'ipt_set'
 clear
 echo ""
-echo -e "\033[1;31m ATTENTION IN THIS STAGE! \033[1;33m"
+echo -e "\033[1;31m ATENCION esta Parte ! \033[1;33m"
 echo ""
-echo -ne "\033[1;32m ENTER YOUR NS (NAMESERVER)\033[1;37m: "; read nameserver
+echo -ne "\033[1;32m ENTER TU NS (NAMESERVER)\033[1;37m: "; read nameserver
 cd /etc/slowdns
 touch infons
 echo $nameserver > infons
@@ -84,10 +84,10 @@ cp restartdns /bin/
 }
 fun_bar 'set_ns'
 echo ""
-echo "Checking for existence of key"
+echo "Chequeando si existence un key"
 sleep 2
 echo ""
-echo "      Please wait...   "
+echo "      Comectando al Satelite ...   "
 sleep 2
 cd
 key1="/root/server.key"
@@ -100,12 +100,12 @@ echo ""
 key () {
 echo "How do you want to get your key?"
 echo ""
-echo "[ 1 ] | Usar existing key in file"
-echo "[ 2 ] | Delete file and generate new key"
+echo "[ 1 ] | Usar existente key en file"
+echo "[ 2 ] | Borrar key y generar nueva key"
 echo "[ 3 ] | Delete file and use default key"
-echo "[ x ] | Abort installation"
+echo "[ x ] | Abortar installation"
 echo ""
-echo -ne "Enter an option: " && read option
+echo -ne "Enter la option: " && read option
 case $option in
 1) Option1 ;;
 2) Option2 ;;
@@ -120,8 +120,8 @@ echo ""
 echo -e "FINISHING..."
 finish_ist () {
 cd /etc/slowdns
-iptables -I INPUT -p udp --dport 80 -j ACCEPT
-iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 80
+iptables -I INPUT -p udp --dport 22 -j ACCEPT
+iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 22
 ./startdns
 }
 fun_bar 'finish_ist'
@@ -148,8 +148,8 @@ cd /etc/slowdns/
 ./dns-server -gen-key -privkey-file /root/server.key -pubkey-file /root/server.pub
 echo -e "FINISHING..."
 finish_ist () {
-iptables -I INPUT -p udp --dport 80 -j ACCEPT
-iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 80
+iptables -I INPUT -p udp --dport 22 -j ACCEPT
+iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 22
 ./startdns
 cd
 }
@@ -181,8 +181,8 @@ sleep 1
 cd /etc/slowdns/
 echo -e "FINISHING..."
 finish_ist () {
-iptables -I INPUT -p udp --dport 80 -j ACCEPT
-iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 80
+iptables -I INPUT -p udp --dport 22 -j ACCEPT
+iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 22
 ./startdns
 cd
 }
@@ -212,8 +212,8 @@ echo ""
 key_gen () {
 echo "How do you want to get your key?"
 echo ""
-echo "[ 1 ] | Generate on installation"
-echo "[ 2 ] | Use the default key"
+echo "[ 1 ] | Generar en la  installacion"
+echo "[ 2 ] | Usar the default key"
 echo "[ x ] | Abort installation"
 echo ""
 echo -ne "Enter an option: " && read opc_key
@@ -230,8 +230,8 @@ cd /etc/slowdns/
 ./dns-server -gen-key -privkey-file /root/server.key -pubkey-file /root/server.pub
 echo -e "FINISHING..."
 finish_ist () {
-iptables -I INPUT -p udp --dport 80 -j ACCEPT
-iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 80
+iptables -I INPUT -p udp --dport 22 -j ACCEPT
+iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 22
 ./startdns
 cd
 }
@@ -262,14 +262,14 @@ sleep 1
 cd /etc/slowdns/
 echo -e "FINISHING..."
 finish_ist () {
-iptables -I INPUT -p udp --dport 80 -j ACCEPT
-iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 80
+iptables -I INPUT -p udp --dport 22 -j ACCEPT
+iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 22
 ./startdns
 cd
 }
 fun_bar 'finish_ist'
 clear
-echo -e "\033[1;31m INSTALLATION COMPLETED!\033[0m"
+echo -e "\033[1;31m INSTALACION COMPLETO!\033[0m"
 echo ""
 echo -ne "\033[1;33mYOUR NS:\033[0m " && cat /etc/slowdns/infons
 echo ""
