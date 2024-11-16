@@ -148,7 +148,7 @@ install_start(){
   repo_install
   mysis=$(echo "$VERSION_ID"|cut -d '.' -f1)
   #[[ ! $mysis = '22' ]] && add-apt-repository -y ppa:ondrej/php &>/dev/null
-  apt update -y; apt upgrade -y
+  apt update -y
   [[ "$VERSION_ID" = '9' ]] && source <(curl -sL https://deb.nodesource.com/setup_10.x)
 }
 
