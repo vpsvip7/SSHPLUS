@@ -128,23 +128,23 @@ error_fun(){
 
 post_reboot(){
   echo 'clear; sleep 2; /etc/ADMRufu/install.sh --continue' >> /root/.bashrc
-  title "INSTALADOR ADMRufu"
+  title "ADMRufu Rambo"
   print_center -ama "La instalacion continuara\ndespues del reinicio!!!"
   msg -bar
 }
 
 install_start(){
-  title "INSTALADOR ADMRufu"
+  title "ADMRufu Rambo"
   print_center -ama "A continuacion se actualizaran los paquetes\ndel systema. Esto podria tomar tiempo,\ny requerir algunas preguntas\npropias de las actualizaciones."
   msg -bar3
   read -rp "$(msg -verm2 " Desea continuar? [S/N]:") " -e -i S opcion
   [[ "$opcion" != @(s|S) ]] && stop_install
-  title "INSTALADOR ADMRufu"
+  title "ADMRufu Rambo"
   print_center -ama 'Esto modificara la hora y fecha automatica\nsegun la Zona horaria establecida.'
   msg -bar
   read -rp "$(msg -ama " Modificar la zona horaria? [S/N]:") " -e -i N opcion
   [[ "$opcion" != @(n|N) ]] && source <(curl -sSL "https://raw.githubusercontent.com/rudi9999/ADMRufu/main/online/timeZone.sh")
-  title "INSTALADOR ADMRufu"
+  title "ADMRufu Rambo"
   repo_install
   mysis=$(echo "$VERSION_ID"|cut -d '.' -f1)
   #[[ ! $mysis = '22' ]] && add-apt-repository -y ppa:ondrej/php &>/dev/null
@@ -173,7 +173,7 @@ source /etc/os-release; export PRETTY_NAME
 while :
 do
   case $1 in
-    -s|--start)install_start; post_reboot; time_reboot "15";;
+    -s|--start)install_start; post_reboot; time_reboot "5";;
     -c|--continue)sed -i '/Rufu/d' /root/.bashrc
                   install_continue
                   break;;
@@ -186,7 +186,7 @@ do
   esac
 done
 
-title "INSTALADOR ADMRufu"
+title "ADMRufu Rambo"
 fun_ip
 
 msg -ne " Verificando Datos: "
@@ -232,7 +232,7 @@ echo "$ver" > ${ADMRufu}/vercion
 echo -e "Idioma=es_ES.utf8\nRutaLocales=locale" > ${ADMRufu}/lang.ini
 
 title -ama '[Proyect by @Rufu99]'
-print_center -ama 'INSTALANDO SCRIPT ADMRufu'
+print_center -ama 'INSTALANDO ADMRufu Rambo'
 sleep 2; del 1
 
 [[ ! -d ${SCPinstal} ]] && mkdir ${SCPinstal}
