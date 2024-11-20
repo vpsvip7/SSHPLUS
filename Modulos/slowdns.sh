@@ -168,9 +168,11 @@ echo -e "With failure!!!"
  	clear
  	echo -e " ........ "
 echo -e "INSTALADOR SLOWDNS "
- 	echo -e "........ "
- 	echo -e "VER SLOWDNS informacion\n$" "$( "Start SlowDNS")" "$( "Reiniciar SlowDNS")" "$( "Parar SlowDNS")" "$("MOD by  SlowDNS")" 
- 	echo -e "Espere...."
+ 	clear
+scor='\033[0m'
+echo -e "\E[44;1;37m       ELEGIR   UNA   OPCION      \E[0m"
+echo -e "  [\033[1;36m1:\033[1;31m] \033[1;37m• \033[1;32mIniciar -Reiniciar Psi \033[1;31m"
+echo -e "  [\033[1;36m2:\033[1;31m] \033[1;37m• \033[1;33mVerificar Screen \033[1;31m    "
  	opcion=$(selection_fun 5)
  
  	case $opcion in
