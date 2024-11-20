@@ -169,7 +169,7 @@ echo -e "With failure!!!"
  	echo -e " ........ "
 echo -e "INSTALADOR SLOWDNS "
  	echo -e "........ "
- 	menu_func "VER SLOWDNS informacion\n$(msg -bar3)" "$(msg -verd "Start SlowDNS")" "$(msg -ama "Reiniciar SlowDNS")" "$(msg -verm2 "Parar SlowDNS")" "$(msg -verm2 "MOD by  SlowDNS")" 
+ 	menu_func "VER SLOWDNS informacion\n$" "$( "Start SlowDNS")" "$( "Reiniciar SlowDNS")" "$( "Parar SlowDNS")" "$("MOD by  SlowDNS")" 
  	echo -e "Espere...."
  	opcion=$(selection_fun 5)
  
