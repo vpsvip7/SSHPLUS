@@ -5,8 +5,8 @@
  info(){
  	clear
  	nodata(){
- 		msg -bar
- 		msg -ama "!NO SLOWDNS INFORMACION!"
+ 		echo -e " ........ "
+echo -e "!NO SLOWDNS INFORMACION!"
  		exit 0
  	}
  
@@ -79,7 +79,7 @@ echo -e " INSTALADO SLOWDNS "
  
      unset NS
      while [[ -z $NS ]]; do
-     	msg -ama "Your NS domain (Nameserver): "
+echo -e "Your NS domain (Nameserver): "
      	read NS
      	tput cuu1 && tput dl1
      done
