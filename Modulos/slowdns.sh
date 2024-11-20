@@ -32,12 +32,9 @@
  		exit 0
  	fi
  
- 	msg -bar
- 	msg -ama "DATA DE TU SLOWDNS CONNECTION"
- 	msg -bar
- 	msg -ama "Your NS (Nameserver): $(cat ${ADM_slow}/domain_ns)"
- 	msg -bar
- 	msg -ama "Your public key: $(cat ${ADM_slow}/server.pub)"
+ 	echo -e "No datos "
+ echo -e "Your NS (Nameserver): $(cat ${ADM_slow}/domain_ns)"
+ 	echo -e "Your public key: $(cat ${ADM_slow}/server.pub)"
  	
  	exit 0
  }
@@ -62,7 +59,7 @@
   }
  
  ini_slow(){
- 	msg -bra "SLOWDNS INSTALLER"
+echo -e " INSTALADO SLOWDNS "
  	drop_port
  	n=1
      for i in $DPB; do
@@ -74,13 +71,11 @@
          num_opc="$n"
          let n++ 
      done
-     msg -bar
      opc=$(selection_fun $num_opc)
      echo "${drop[$opc]}" > ${ADM_slow}/puerto
      PORT=$(cat ${ADM_slow}/puerto)
-     msg -bra "SLOWDNS INSTALLER"
+    echo -e "SLOWDNS INSTALLER"
      echo -e " $(msg -ama "Connection port through SlowDNS:") $(msg -verd "$PORT")"
-     msg -bar
  
      unset NS
      while [[ -z $NS ]]; do
@@ -90,28 +85,27 @@
      done
      echo "$NS" > ${ADM_slow}/domain_ns
      echo -e " $(msg -ama "Your NS domain (Nameserver)") $(msg -verd "$NS")"
-     msg -bar
+     echo -e "Espere..... "
  
      if [[ ! -e ${ADM_inst}/dns-server ]]; then
-     	msg -ama " Downloading binary...."
+  echo -e " Downloading binary...."
      	if wget -O ${ADM_inst}/dns-server https://raw.githubusercontent.com/khaledagn/VPS-AGN_English_Official/master/LINKS-LIBRARIES/dns-server &>/dev/null ; then
      		chmod +x ${ADM_inst}/dns-server
-     		msg -verd "[OK]"
+echo -e "[OK]"
      	else
-     		msg -verm "[fail]"
-     		msg -bar
-     		msg -ama "Could not download binary"
-     		msg -verm "Installation canceled"
+echo -e "[fail]"
+echo -e "Could not download binary"
+echo -e "Installation canceled"
      		
      		exit 0
      	fi
-     	msg -bar
+     	echo -e "Espere.. "
      fi
  
      [[ -e "${ADM_slow}/server.pub" ]] && pub=$(cat ${ADM_slow}/server.pub)
  
      if [[ ! -z "$pub" ]]; then
-     	msg -ama " Use existing key [Y/N]: "
+echo -e " Use existing key [Y/N]: "
      	read ex_key
  
      	case $ex_key in
@@ -130,24 +124,23 @@
      	${ADM_inst}/dns-server -gen-key -privkey-file ${ADM_slow}/server.key -pubkey-file ${ADM_slow}/server.pub &>/dev/null
      	echo -e " $(msg -ama "Your key:") $(msg -verd "$(cat ${ADM_slow}/server.pub)")"
      fi
-     msg -bar
-     msg -ama "    Iniciando SlowDNS...."
+
+   echo -e "   Iniciando SlowDNS...."
  
      iptables -I INPUT -p udp --dport 5300 -j ACCEPT
      iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 5300
  
      if screen -dmS slowdns ${ADM_inst}/dns-server -udp :5300 -privkey-file ${ADM_slow}/server.key $NS 127.0.0.1:$PORT ; then
-     	msg -verd "Successfully!!!"
+     	echo -e "Successfully!!!"
      else
-     	msg -verm "With failure!!!"
+echo -e "With failure!!!"
      fi
      exit 0
  }
  
  reset_slow(){
  	clear
- 	msg -bar
- 	msg -ama "    Reiniciando SlowDNS...."
+echo -e " Reiniciando SlowDNS...."
  	screen -ls | grep slowdns | cut -d. -f1 | awk '{print $1}' | xargs kill
  	NS=$(cat ${ADM_slow}/domain_ns)
  	PORT=$(cat ${ADM_slow}/puerto)
