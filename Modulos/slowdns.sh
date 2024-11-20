@@ -1,7 +1,7 @@
 #!/bin/bash
  #by @vps10
- ADM_inst="/etc/VPS-AGN/Slow/install" && [[ ! -d ${ADM_inst} ]] && exit
- ADM_slow="/etc/VPS-AGN/Slow/Key" && [[ ! -d ${ADM_slow} ]] && exit
+ ADM_inst="/etc/SSHPlus/Slow/install" && [[ ! -d ${ADM_inst} ]] && exit
+ ADM_slow="/etc/SSHPlus/Slow/Key" && [[ ! -d ${ADM_slow} ]] && exit
  info(){
  	clear
  	nodata(){
