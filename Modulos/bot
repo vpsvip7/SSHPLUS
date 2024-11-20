@@ -981,9 +981,9 @@ fun_teste() {
         return 0
     } || {
         ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
-            --text "$(echo -e "✅ <b>Criado2 con sucesso</b> ✅\n\n <code>$(cat /etc/IP):80@$usuario:1234</code>\n\n
-  <code>$(cat /etc/IP):1-36712@$usuario:1234</code>\n\n
-  <code>$(cat /etc/IP):1-65535@$usuario:1234</code>\n\n⏳ Expira en: $t_time $hrs")" \
+            --text "$(echo -e "✅ <b>Creado2 con sucesso</b> ✅\n\n <code>uc.com:80@$usuario:1234</code>\n\n
+  <code>$(cat /etc/adm-lite/slow/dnsi/domain_ns)</code>\n\n
+  <code>$(cat /etc/adm-lite/slow/dnsi/server.pub)</code>\n\n⏳ Expira en: $t_time $hrs")" \
             --parse_mode html
         return 0
     }
@@ -2008,7 +2008,7 @@ while :; do
                             --reply_markup "$(ShellBot.ForceReply)"
                     } || {
                         ShellBot.sendMessage --chat_id ${message_from_id[$id]} \
-                            --text "<code>✅ USUARIO CREADO1 OK ✅\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nVENCE EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)</code>\n\nWs-Claro:\n <code>sms.com:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\nUDP Inet: \n<code>$(cat /etc/IP):1-65535@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\nWS Personal:\n <code>141.193.213.20:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\nMOVISTAR:\n <code>104.16.122.175:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nEXPIRA EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)" \
+                            --text "<code>✅ USUARIO CREADO1 OK ✅\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nVENCE EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)</code>\n\nUSUARIO:\n <code>uc.com:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\nNS: \n<code>$(cat /etc/adm-lite/slow/dnsi/domain_ns)</code>\n\nKEY_pub:\n <code>$(cat /etc/adm-lite/slow/dnsi/server.pub)</code>\n\nKEY-key:\n <code>$(cat /etc/adm-lite/slow/dnsi/server.key) </code>\n\nUSUARIO UDP:\n <code>$IP:1-65535@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\n" \
                             --parse_mode html
                         break
                     }
