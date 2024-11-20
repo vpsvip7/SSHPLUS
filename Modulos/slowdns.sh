@@ -145,20 +145,20 @@ echo -e " Reiniciando SlowDNS...."
  	NS=$(cat ${ADM_slow}/domain_ns)
  	PORT=$(cat ${ADM_slow}/puerto)
  	if screen -dmS slowdns /etc/slowdns/dns-server -udp :5300 -privkey-file /root/server.key $NS 127.0.0.1:$PORT ;then
- 		msg -verd "Successfully!!!"
+ 		echo -e "Successfully!!!"
  	else
- 		msg -verm "With failure!!!"
+echo -e "With failure!!!"
  	fi
  	exit 0
  }
  stop_slow(){
  	clear
- 	msg -bar
- 	msg -ama "    Pararando SlowDNS...."
+ 	echo -e "...... "
+echo -e "  Pararando SlowDNS...."
  	if screen -ls | grep slowdns | cut -d. -f1 | awk '{print $1}' | xargs kill ; then
- 		msg -verd "Successfully!!!"
+echo -e "Successfully!!!"
  	else
- 		msg -verm "With failure!!!"
+echo -e "With failure!!!"
  	fi
  	exit 0
  }
@@ -166,11 +166,11 @@ echo -e " Reiniciando SlowDNS...."
  while :
  do
  	clear
- 	msg -bar
- 	msg -ama "INSTALADOR SLOWDNS "
- 	msg -bar
+ 	echo -e " ........ "
+echo -e "INSTALADOR SLOWDNS "
+ 	echo -e "........ "
  	menu_func "VER SLOWDNS informacion\n$(msg -bar3)" "$(msg -verd "Start SlowDNS")" "$(msg -ama "Reiniciar SlowDNS")" "$(msg -verm2 "Parar SlowDNS")" "$(msg -verm2 "MOD by  SlowDNS")" 
- 	msg -bar
+ 	echo -e "Espere...."
  	opcion=$(selection_fun 5)
  
  	case $opcion in
