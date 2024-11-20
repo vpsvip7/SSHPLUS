@@ -27,15 +27,15 @@ echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"
 tput cnorm
 }
 clear
-echo -e "\033[1;31m═════════════════════════════════════════════════\033[0m"
+echo -e "\033[1;31m═════════════════════════════════════════\033[0m"
 tput setaf 7 ; tput setab 4 ; tput bold ; printf '%40s%s%-12s\n' "SLOWDNS MANAGER INSTALLER" ; tput sgr0
-echo -e "\033[1;31m════════════════════════════════════════════════\033[0m"
+echo -e "\033[1;31m════════════════════════════════════\033[0m"
 echo -e ""
 echo -e "    instalador en castellano AR"
 echo -e "    SlowDNS conecion mode."
 echo -e ""
 echo -e "         \033[1;33mModded/Translated by @KhaledAGN vip7 \033[1;37m"
-echo -e "\033[1;31m═══════════════════════════════════════════════\033[0m"
+echo -e "\033[1;31m═════════════════════════════════════\033[0m"
 echo ""
 echo -e "DOWLOADING DEPENDENCIES..."
 echo ""
@@ -68,12 +68,12 @@ sleep 2
 }
 fun_bar 'fun_dnscf'
 clear
-echo -e "\033[1;31m════════════════════════════════════════════════════\033[0m"
+echo -e "\033[1;31m════════════════════════════════════════\033[0m"
 tput setaf 7 ; tput setab 4 ; tput bold ; printf '%40s%s%-12s\n' "SLOWDNS MANAGER INSTALLER" ; tput sgr0
-echo -e "\033[1;31m════════════════════════════════════════════════════\033[0m"
+echo -e "\033[1;31m═══════════════════════════════════════\033[0m"
 echo ""
 echo -e "          \033[1;33mINSTALLACION COMPLETADO!\033[0m          "
 echo ""
 echo -e "Para abrir el menu, use el comando: \033[1;33mslowdns\033[0m"
 cd
-rm install2
+rm -rf install2
