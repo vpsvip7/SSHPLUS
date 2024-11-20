@@ -51,7 +51,7 @@ wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/refs/heads/main/slowdns-s
 wget https://raw.githubusercontent.com/khaledagn/DNS-AGN/main/slowdns-ssl; chmod +x slowdns-ssl
 wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/refs/heads/main/Slowdns/slowdns-socks; chmod +x slowdns-socks
 wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/refs/heads/main/Slowdns/slowdns; chmod +x slowdns; cp slowdns /bin/
-wget https://raw.githubusercontent.com/khaledagn/DNS-AGN/main/stopdns; chmod +x stopdns
+wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/refs/heads/main/Slowdns/stopdns; chmod +x stopdns
 }
 fun_bar 'fun_att'
 echo -e "CONFIGURANDO FIREWALL..."
@@ -63,7 +63,7 @@ fun_bar 'fun_ports'
 echo -e "Ajustes CLOUDFLARE DNS..."
 echo ""
 fun_dnscf () {
-sudo apt update
+apt update
 sleep 2
 }
 fun_bar 'fun_dnscf'
