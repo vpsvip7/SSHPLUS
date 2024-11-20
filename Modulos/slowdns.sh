@@ -169,7 +169,6 @@ echo -e "With failure!!!"
  	echo -e " ........ "
 echo -e "INSTALADOR SLOWDNS "
  	clear
-scor='\033[0m'
 echo -e "\E[44;1;37m       ELEGIR   UNA   OPCION      \E[0m"
 echo -e "  [\033[1;36m1:\033[1;31m] \033[1;37m• \033[1;32mIniciar -Reiniciar Psi \033[1;31m"
 echo -e "  [\033[1;36m2:\033[1;31m] \033[1;37m• \033[1;33mVerificar Screen \033[1;31m    "
@@ -178,8 +177,8 @@ echo  -e "    [\033[1;36m4\033[1;31m] \033[1;37m• \033[1;33mVer Codigo Tarjet 
 echo  -e  "  [\033[1;36m5:\033[1;31m] \033[1;37m• \033[1;33mTestear Velocidad \033[1;31m  "
 echo  -e  "   [\033[1;36m5:\033[1;31m] \033[1;37m• \033[1;33mProbar Velocidsd \033[1;31m  "
 echo  -e " [\033[1;36m7:\033[1;31m] \033[1;37m• \033[1;33mLimpiar Ram \033[1;31m"
-echo  -e "     [\033[1;36m8:\033[1;31m] \033[1;37m• \033[1;33mBorrar Psiphon \033[1;31m "
-echo  -e "  [\033[1;36m41\033[1;31m] \033[1;37m• \033[1;33mVer Conectados \033[1;31m "
+echo  -e "[\033[1;36m8:\033[1;31m] \033[1;37m• \033[1;33mBorrar Psiphon \033[1;31m "
+echo  -e "[\033[1;36m41\033[1;31m] \033[1;37m• \033[1;33mVer Conectados \033[1;31m "
  	opcion=$(selection_fun 5)
  
  	case $opcion in
