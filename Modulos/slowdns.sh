@@ -179,7 +179,6 @@ echo  -e  "   [\033[1;36m5:\033[1;31m] \033[1;37m• \033[1;33mProbar Velocidsd 
 echo  -e " [\033[1;36m7:\033[1;31m] \033[1;37m• \033[1;33mLimpiar Ram \033[1;31m"
 echo  -e "[\033[1;36m8:\033[1;31m] \033[1;37m• \033[1;33mBorrar Psiphon \033[1;31m "
 echo  -e "[\033[1;36m41\033[1;31m] \033[1;37m• \033[1;33mVer Conectados \033[1;31m "
- 	opcion=$(selection_fun 5)
  
  	case $opcion in
  		1)info;;
