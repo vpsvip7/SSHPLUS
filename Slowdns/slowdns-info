@@ -1,5 +1,5 @@
 #!/bin/bash
-echo -e "\033[1;36m ESTAS SÃO SUAS INFORMAÇÕES!\033[0m"
+echo -e "\033[1;36m ESTAS SON SU INFO!\033[0m"
 echo ""
 echo -ne "TU NS (Nameserver): " && cat /etc/slowdns/infons
 echo ""
