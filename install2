@@ -63,8 +63,7 @@ fun_bar 'fun_ports'
 echo -e "Ajustes CLOUDFLARE DNS..."
 echo ""
 fun_dnscf () {
-sudo systemctl disable systemd-resolved.service && sudo systemctl stop systemd-resolved.service && sudo mv /etc/resolv.conf /etc/resolv.conf.bkp && echo "nameserver 1.1.1.1" > /etc/resolv.conf
-sudo systemctl enable systemd-resolved.service && sudo systemctl start systemd-resolved.service
+sudo apt update
 sleep 2
 }
 fun_bar 'fun_dnscf'
