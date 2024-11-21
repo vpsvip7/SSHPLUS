@@ -57,7 +57,7 @@ fun_bar 'fun_att'
 echo -e "CONFIGURANDO FIREWALL..."
 echo ""
 fun_ports () {
-apt install firewalld -y && sudo firewall-cmd && sudo firewall-cmd --zone=public --permanent --add-port=53/udp && sudo firewall-cmd --zone=public --permanent --add-port=5300/udp && sudo firewall-cmd && sudo firewall-cmd --zone=public --permanent --add-port=2222/tcp && sudo firewall-cmd --reload
+apt update
 }
 fun_bar 'fun_ports'
 echo -e "DEFININDO DNS DE CLOUDFLARE..."
