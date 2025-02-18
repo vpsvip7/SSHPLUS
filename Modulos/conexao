@@ -1458,7 +1458,7 @@ unzip ddos.zip
 			} || {
 				sts1="\e[1;31m○ "
 			}
-			[[ "$(netstat -tunlp | grep '/usr/sbin/wondershaper' | wc -l)" != '0' ]] && {
+			[[ "$(netstat -tunlp | grep '/usr/sbin/tc' | wc -l)" != '0' ]] && {
 				trojansts="\e[1;32m◉ "
 			} || {
 				trojansts="\e[1;31m○ "
