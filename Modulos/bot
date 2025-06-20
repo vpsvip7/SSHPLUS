@@ -1,7 +1,7 @@
 #!/bin/bash
 #===================================================
 #   SCRIPT: BOT SSHPLUS MANAGER
-#   FECHA⏳ ATT: 2 de Julio 2024
+#   FECHA⏳ ATT: 20 de Junio 2025
 #   DESENVOLVIDO POR: CRAZY_VPN
 #   API SHELLBOT: SHAMAN
 #   CONTATO TELEGRAM: http://t.me/crazy_vpn
@@ -33,7 +33,7 @@ fun_menu() {
     }
     [[ -d /etc/bot/suspensos/${message_from_username} ]] && {
         ShellBot.sendMessage --chat_id ${message_chat_id[$id]} \
-            --text "$(echo -e "🚫 WEP Estas suspendido uu 🚫\n\nCONTACTE O ADMINISTRADOR")"
+            --text "$(echo -e "🚫 WEP Estas Suspendido uu 🚫\n\nCONTACTE O ADMINISTRADOR")"
         return 0
     }
     if [[ "$(grep -w "${message_from_username}" $ativos | grep -wc 'revenda')" != '0' ]]; then
@@ -141,7 +141,7 @@ fun_ajuda() {
         env_msg+="⚠️ <i>Comandos Disponibles</i>\n\n"
         env_msg+="[<b>01</b>] /menu = Exibe menu\n"
         env_msg+="[<b>02</b>] /info = Exibe info\n"
-        env_msg+="[<b>03</b>] /ajuda = info sobre opcoes\n\n"
+        env_msg+="[<b>03</b>] /ayuda = info sobre opcoes\n\n"
         env_msg+="⚠️ <i>Opciones Disponibles</i>\n\n"
         env_msg+="• <u>CREAR USUARIO</u> = Crea usuario ssh\n\n"
         env_msg+="• <u>CREAR TESTE</u> = Crea teste ssh\n\n"
