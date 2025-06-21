@@ -17,10 +17,10 @@ echo -e "\033[1;31m[\033[1;36m1\033[1;31m]\033[1;37m • \033[1;33mAGREGAR BANNE
 echo -e "\033[1;31m[\033[1;36m2\033[1;31m]\033[1;37m • \033[1;33mBORRAR BANNER"
 echo -e "\033[1;31m[\033[1;36m3\033[1;31m]\033[1;37m • \033[1;33mVOLVER"
 echo ""
-echo -ne "\033[1;32m QUE DESEA HACER\033[1;31m ?\033[1;37m : "; read resp
+echo -ne "\033[1;32m QUE DESEA HACER ??\033[1;31m ?\033[1;37m : "; read resp
 if [[ "$resp" = "1" ]]; then
 echo ""
-echo -ne "\033[1;32m CUAL MENSAJE DESEA EXIBIR\033[1;31m ?\033[1;37m : "; read msg1
+echo -ne "\033[1;32m CUAL MENSAJE DESEA MOSTRAR ?\033[1;31m ?\033[1;37m : "; read msg1
 if [[ -z "$msg1" ]]; then
 	echo -e "\n\033[1;31mCampo vacio o invalido !\033[0m"
 	sleep 2
@@ -31,7 +31,7 @@ echo -e "\033[1;31m[\033[1;36m02\033[1;31m]\033[1;33m FUENTE MEDIA"
 echo -e "\033[1;31m[\033[1;36m03\033[1;31m]\033[1;33m FUENTE GRANDE"
 echo -e "\033[1;31m[\033[1;36m04\033[1;31m]\033[1;33m FUENTE GIGANTE"
 echo ""
-echo -ne "\033[1;32m CUAL O TAMAÑO DE FUENTE\033[1;31m ?\033[1;37m : "; read opc
+echo -ne "\033[1;32m CUAL O TAMAÑO DE FUENTE ??\033[1;31m ?\033[1;37m : "; read opc
 if [[ "$opc" = "1" ]] || [[ "$opc" = "01" ]]; then
 _size='6'
 elif [[ "$opc" = "2" ]] || [[ "$opc" = "02" ]]; then
@@ -51,7 +51,7 @@ echo -e "\033[1;31m[\033[1;36m06\033[1;31m]\033[1;33m CYANO"
 echo -e "\033[1;31m[\033[1;36m07\033[1;31m]\033[1;33m NARANJA"
 echo -e "\033[1;31m[\033[1;36m08\033[1;31m]\033[1;33m ROJO"
 echo -e "\033[1;31m[\033[1;36m09\033[1;31m]\033[1;33m PRETO"
-echo -e "\033[1;31m[\033[1;36m10\033[1;31m]\033[1;33m SEN COLOR"
+echo -e "\033[1;31m[\033[1;36m10\033[1;31m]\033[1;33m SIM COLOR"
 echo ""
 echo -ne "\033[1;32m CUAL A COLOR\033[1;31m ?\033[1;37m : "; read ban_cor
 if [[ "$ban_cor" = "1" ]] || [[ "$ban_cor" = "01" ]]; then
