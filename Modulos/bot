@@ -2008,7 +2008,7 @@ while :; do
                             --reply_markup "$(ShellBot.ForceReply)"
                     } || {
                         ShellBot.sendMessage --chat_id ${message_from_id[$id]} \
-                            --text "<code>✅ USUARIO CREADO1 OK ✅\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nVENCE EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)</code>\n\nUSUARIO:\n <code>uc.com:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\nNS: \n<code>$(cat /etc/adm-lite/slow/dnsi/domain_ns)</code>\n\nKEY_pub:\n <code>$(cat /etc/adm-lite/slow/dnsi/server.pub)</code>\n\nKEY-key:\n <code>$(cat /etc/adm-lite/slow/dnsi/server.key) </code>\n\nUSUARIO UDP:\n <code>$IP:1-65535@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\n" \
+                            --text "<code>✅ USUARIO CREADO1 OK ✅\nLIMITE: $(awk -F " " '/Limite/ {print $2}' $CAD_ARQ)\nVENCE EN: $(awk -F " " '/Validade/ {print $2}' $CAD_ARQ)</code>\n\nUSUARIO:\n <code>www.personal.com.ar:80@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\nNS: \n<code>$(cat /etc/adm-lite/slow/dnsi/domain_ns)</code>\n\nKEY_pub:\n <code>$(cat /etc/adm-lite/slow/dnsi/server.pub)</code>\n\nKEY-key:\n <code>$(cat /etc/adm-lite/slow/dnsi/server.key) </code>\n\nUSUARIO SSL:\n <code>www.personal.com.ar:443@$(awk -F " " '/Nome/ {print $2}' $CAD_ARQ):$(awk -F " " '/Senha/ {print $2}' $CAD_ARQ)</code>\n\n" \
                             --parse_mode html
                         break
                     }
