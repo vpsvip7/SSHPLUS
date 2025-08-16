@@ -8,9 +8,9 @@ IP2=$(wget -qO- http://whatismyip.akamai.com/)
 [[ "$IP" != "$IP2" ]] && ipdovps="$IP2" || ipdovps="$IP"
 echo -e "$ipdovps" >/etc/IP
 lst=$1 && lst1=$2 && lst2=$3 && key1=$4 && key2=crz
-echo -e "America/Argentina" >/etc/timezone
-ln -fs /usr/share/zoneinfo/America/Argentina /etc/localtime >/dev/null 2>&1
-dpkg-reconfigure --frontend noninteractive tzdata >/dev/null 2>&1
+echo -e "America/Argentina/Buenos_Aires" >/etc/timezone
+ln -fs /usr/share/zoneinfo/America/Argentina/Buenos_Aires /etc/localtime >/dev/null 2>&1
+sudo timedatectl set-timezone America/Argentina/Buenos_Aires >/dev/null 2>&1
 [[ -z $lst1 ]] && {
 	rm -rf $_Ink/list >/dev/null 2>&1 && cat /dev/null >~/.bash_history && history -c && exit 0
 }
