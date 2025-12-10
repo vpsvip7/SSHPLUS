@@ -395,8 +395,8 @@ echo "$username $sshlimiter" >>/root/usuarios.db
 	   echo -e "\n $IP:1-911@$username:$password"
    echo -e "\n  USUARIO UDP INETGAMING 👇🏻🌛"
      echo -e "\n $IP:1-911@$username:$password"
-   echo -e "\n  USUARIO WS MOVISTAR👇🏻🌞"
-      echo -e "\n  104.16.122.175:80@$username:$password"
+   echo -e "\n  USUARIO WS PERSONAL👇🏻🌞"
+      echo -e "\n  www.personal.com.ar:80@$username:$password"
      
 }
      echo -e "Argentina🇦🇷🌎⭐⭐⭐"
