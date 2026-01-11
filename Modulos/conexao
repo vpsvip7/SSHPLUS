@@ -844,9 +844,9 @@ unzip ddos.zip
 		clear
 		echo -e "\E[44;1;37m             PROXY WEBSOCKET             \E[0m"
 		echo ""
-		[[ $(netstat -nplt | grep -wc 'python') != '0' ]] && {
+		[[ $(netstat -nplt | grep -wc 'python3') != '0' ]] && {
 			sks='\e[1;32mON'
-			echo -e "\e[1;33mPUERTOS\e[1;37m: \e[1;32m$(netstat -nplt | grep 'python' | awk {'print $4'} | cut -d: -f2 | xargs)"
+			echo -e "\e[1;33mPUERTOS\e[1;37m: \e[1;32m$(netstat -nplt | grep 'python3' | awk {'print $4'} | cut -d: -f2 | xargs)"
 		} || {
 			sks='\e[1;31mOFF'
 		}
@@ -902,12 +902,12 @@ unzip ddos.zip
 				verif_ptrs $porta
 				fun_inisocks() {
 					sleep 1
-					screen -dmS proxy python /etc/SSHPlus/proxy.py $porta
+					screen -dmS proxy python3 /etc/SSHPlus/proxy.py $porta
 					[[ $(grep -wc "proxy.py" /etc/autostart) = '0' ]] && {
-						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'proxy' -X quit;  screen -dmS proxy python /etc/SSHPlus/proxy.py $porta; }" >>/etc/autostart
+						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'proxy' -X quit;  screen -dmS proxy python3 /etc/SSHPlus/proxy.py $porta; }" >>/etc/autostart
 					} || {
 						sed -i '/proxy.py/d' /etc/autostart
-						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'proxy' -X quit;  screen -dmS proxy python /etc/SSHPlus/proxy.py $porta; }" >>/etc/autostart
+						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'proxy' -X quit;  screen -dmS proxy python3 /etc/SSHPlus/proxy.py $porta; }" >>/etc/autostart
 					}
 				}
 				echo ""
@@ -957,12 +957,12 @@ unzip ddos.zip
 				verif_ptrs $porta
 				fun_iniwssocks() {
 					sleep 1
-					screen -dmS ws python /etc/SSHPlus/wsproxy.py $porta
+					screen -dmS python3 /etc/SSHPlus/wsproxy.py $porta
 					[[ $(grep -wc "wsproxy.py" /etc/autostart) = '0' ]] && {
-						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'ws' -X quit;  screen -dmS ws python /etc/SSHPlus/wsproxy.py $porta; }" >>/etc/autostart
+						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'ws' -X quit;  screen -dmS  python3 /etc/SSHPlus/wsproxy.py $porta; }" >>/etc/autostart
 					} || {
 						sed -i '/wsproxy.py/d' /etc/autostart
-						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'ws' -X quit;  screen -dmS ws python /etc/SSHPlus/wsproxy.py $porta; }" >>/etc/autostart
+						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'ws' -X quit;  screen -dmS  python3 /etc/SSHPlus/wsproxy.py $porta; }" >>/etc/autostart
 					}
 				}
 				echo ""
@@ -1017,12 +1017,12 @@ unzip ddos.zip
 						sed -i "s/$listoldop/$listopen/" /etc/SSHPlus/open.py
 					}
 					sleep 1
-					screen -dmS openpy python /etc/SSHPlus/open.py $porta
+					screen -dmS openpy python3 /etc/SSHPlus/open.py $porta
 					[[ $(grep -wc "open.py" /etc/autostart) = '0' ]] && {
-						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'openpy' -X quit;  screen -dmS openpy python /etc/SSHPlus/open.py $porta; }" >>/etc/autostart
+						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'openpy' -X quit;  screen -dmS openpy python3 /etc/SSHPlus/open.py $porta; }" >>/etc/autostart
 					} || {
 						sed -i '/open.py/d' /etc/autostart
-						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'openpy' -X quit;  screen -dmS openpy python /etc/SSHPlus/open.py $porta; }" >>/etc/autostart
+						echo -e "netstat -tlpn | grep -w $porta > /dev/null || {  screen -r -S 'openpy' -X quit;  screen -dmS openpy python3 /etc/SSHPlus/open.py $porta; }" >>/etc/autostart
 					}
 				}
 				echo ""
@@ -1036,7 +1036,7 @@ unzip ddos.zip
 			fi
 		elif [[ "$resposta" = '4' ]]; then
 			if ps x | grep proxy.py | grep -v grep 1>/dev/null 2>/dev/null; then
-				sockspt=$(netstat -nplt | grep 'python' | awk {'print $4'} | cut -d: -f2 | xargs)
+				sockspt=$(netstat -nplt | grep 'python3' | awk {'print $4'} | cut -d: -f2 | xargs)
 				clear
 				echo -e "\E[44;1;37m            PROXY SOCKS             \E[0m"
 				echo ""
@@ -1057,7 +1057,7 @@ unzip ddos.zip
 				echo ""
 				abrirptsks() {
 					sleep 1
-					screen -dmS proxy python /etc/SSHPlus/proxy.py $porta
+					screen -dmS proxy python3 /etc/SSHPlus/proxy.py $porta
 					sleep 1
 				}
 				fun_bar 'abrirptsks'
@@ -1141,14 +1141,14 @@ unzip ddos.zip
 				fun_bar 'fun_msgsocks'
 				restartsocks() {
 					if ps x | grep proxy.py | grep -v grep 1>/dev/null 2>/dev/null; then
-						echo -e "$(netstat -nplt | grep 'python' | awk {'print $4'} | cut -d: -f2 | xargs)" >/tmp/Pt_sks
+						echo -e "$(netstat -nplt | grep 'python3' | awk {'print $4'} | cut -d: -f2 | xargs)" >/tmp/Pt_sks
 						for pidproxy in $(screen -ls | grep ".proxy" | awk {'print $1'}); do
 							screen -r -S "$pidproxy" -X quit
 						done
 						screen -wipe >/dev/null
 						_Ptsks="$(cat /tmp/Pt_sks)"
 						sleep 1
-						screen -dmS proxy python /etc/SSHPlus/proxy.py $_Ptsks
+						screen -dmS proxy python3 /etc/SSHPlus/proxy.py $_Ptsks
 						rm /tmp/Pt_sks
 					fi
 				}
@@ -1236,14 +1236,14 @@ unzip ddos.zip
 				fun_bar 'fun_msgsocks'
 				restartwssocks() {
 					if ps x | grep wsproxy.py | grep -v grep 1>/dev/null 2>/dev/null; then
-						echo -e "$(netstat -nplt | grep 'python' | awk {'print $4'} | cut -d: -f2 | xargs)" >/tmp/Pt_wssks
+						echo -e "$(netstat -nplt | grep 'python3' | awk {'print $4'} | cut -d: -f2 | xargs)" >/tmp/Pt_wssks
 						for pidproxy in $(screen -ls | grep ".ws" | awk {'print $1'}); do
 							screen -r -S "$pidproxy" -X quit
 						done
 						screen -wipe >/dev/null
 						_Ptwssks="$(cat /tmp/Pt_wssks)"
 						sleep 1
-						screen -dmS ws python /etc/SSHPlus/wsproxy.py $_Ptwssks
+						screen -dmS  python3 /etc/SSHPlus/wsproxy.py $_Ptwssks
 						rm /tmp/Pt_wssks
 					fi
 				}
@@ -1422,7 +1422,7 @@ unzip ddos.zip
 			}
 
 			[[ "$(netstat -tlpn | grep 'stunnel4' | wc -l)" != '0' ]] && {
-				echo -e "\e[1;32mSERVICIO: \e[1;33mSSL+PY: \e[1;32mPUERTO: \e[1;37m$(netstat -nplt | grep 'python' | awk {'print $4'} | cut -d: -f2 | xargs)"
+				echo -e "\e[1;32mSERVICIO: \e[1;33mSSL+PY: \e[1;32mPUERTO: \e[1;37m$(netstat -nplt | grep 'python3' | awk {'print $4'} | cut -d: -f2 | xargs)"
 				sts5="\e[1;32m◉ "
 			} || {
 				sts5="\e[1;31m○ "
@@ -1434,8 +1434,8 @@ unzip ddos.zip
 				ddos="\e[1;31m○ "
 			}
 
-			[[ "$(netstat -tlpn | grep 'python' | wc -l)" != '0' ]] && {
-				echo -e "\e[1;32mSERVICIO: \e[1;33mPROXY SOCKS \e[1;32mPUERTO: \e[1;37m$(netstat -nplt | grep 'python' | awk {'print $4'} | cut -d: -f2 | xargs)"
+			[[ "$(netstat -tlpn | grep 'python3' | wc -l)" != '0' ]] && {
+				echo -e "\e[1;32mSERVICIO: \e[1;33mPROXY SOCKS \e[1;32mPUERTO: \e[1;37m$(netstat -nplt | grep 'python3' | awk {'print $4'} | cut -d: -f2 | xargs)"
 				sts4="\e[1;32m◉ "
 			} || {
 				sts4="\e[1;31m○ "
