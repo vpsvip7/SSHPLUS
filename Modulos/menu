@@ -1,11 +1,16 @@
 #!/bin/bash
 # Definir colores y efectos
-verde="\e[1;32m"  # Cian bold
+verde="\e[1;32m"  # verde bold
+v="\e[0;32m"  # verde normal
 azul="\e[1;34m"  # azul bold
+az="\e[0;34m"  # azul bold
 cyan="\e[1;36m"  # cyan bold
 rojo="\e[1;31m"  # Rojo bold
+r="\e[0;31m"  # Rojo normal
 blanco="\e[1;37m"  # Blanco bold
+b="\e[0;37m"  # Blanco normal
 amarillo="\e[1;33m"  # Amarillo bold
+a="\e[0;33m"  # Amarillo nornal
 fin="\e[0m"   # fin del color
 fun_bar () {
 comando[0]="$1"
@@ -233,16 +238,16 @@ _userexp=$(printf '%-5s' "$_expuser")
 _tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
 clear
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-echo -e "${cyan}SISTEMA            MEMORIA RAM      PROCESADOR "
-echo -e "${rojo}OS: ${amarillo}$_system ${rojo}Total:${verde}$_ram ${rojo}Nucleos: ${amarillo}$_core\e[0m"
-echo -e "${rojo}mod: ${verde}diegovip7🇦🇷  ${rojo}En uso: ${verde}$_usor ${rojo}En uso: ${verde}$_usop\e[0m"
+echo -e "${cyan}SISTEMA         MEMORIA RAM      PROCESADOR "
+echo -e "${amarillo} $_system   Ram:${verde}$_ram     Cpu: ${amarillo}$_core\e[0m"
+echo -e "${rojo}mod: ${verde}diegovip7🇦🇷   ${verde}$_usor  ${verde}$_usop\e[0m"
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 [[ ! -e /tmp/att ]]  && {
-    echo -e "${verde}Onlines:${amarillo} $_onlin     ${rojo}Expirados: ${amarillo}$_userexp ${amarillo}Total: ${verde}$_tuser\e[0m"
+    echo -e "${amarillo} Onlines:${verde} $_onlin     ${blanco}Expirados: ${rojo}$_userexp ${amarillo}Total: ${verde}$_tuser\e[0m"
     var01='${amarillo}•'
 } || {
-    echo -e "  ${amarillo}[${rojo}!${amarillo}]  ${verde}EXISTE UNA ACTUALIZACION DISPONIBLE  ${amarillo}[${rojo}!${amarillo}]\e[0m"
-    var01="${verde}!"
+    echo -e "  ${rojo} ACTUALIZACION DISPONIBLE  ${rojo}!✅${fin}"
+    var01="${verde}✓✓"
 }
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo ""
@@ -319,7 +324,7 @@ esac
 while true $x != "ok"
 do
 stsl=$(ps x | grep "limiter"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
-stson=$(ps x | grep "onlineapp"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
+pyt=$(ps x | grep "python3"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
 stsu=$(ps x | grep "udpvpn"|grep -v grep > /dev/null && echo -e "${verde}◉ " || echo -e "${rojo}○ ")
 if [[ "$(grep -c "Ubuntu" /etc/issue.net)" = "1" ]]; then
 system=$(cut -d' ' -f1 /etc/issue.net)
@@ -337,36 +342,37 @@ _ons=$(ps -x | grep sshd | grep -v root | grep priv | wc -l)
 [[ -e /etc/openvpn/openvpn-status.log ]] && _onop=$(grep -c "10.8.0" /etc/openvpn/openvpn-status.log) || _onop="0"
 [[ -e /etc/default/dropbear ]] && _drp=$(ps aux | grep dropbear | grep -v grep | wc -l) _ondrp=$(($_drp - 1)) || _ondrp="0"
 _onli=$(($_ons + $_onop + $_ondrp))
-_ram=$(printf ' %-9s' "$(free -h | grep -i mem | awk {'print $2'})")
-_usor=$(printf '%-8s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
-_usop=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
+_ram=$(printf ' %-2s' "$(free -h | grep -i mem | awk {'print $2'})")
+_usor=$(printf '%-2s' "$(free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }')")
+usop=$(printf '%-1s' "$(top -bn1 | awk '/Cpu/ { cpu = "" 100 - $8 "%" }; END { print cpu }')")
 _core=$(printf '%-1s' "$(grep -c cpu[0-9] /proc/stat)")
 _system=$(printf '%-14s' "$system")
 _hora=$(printf '%(%H:%M:%S)T')
-_onlin=$(printf '%-5s' "$_onli")
+_onlin=$(printf '%-3s' "$_onli")
+# O usando vmstat
+CPU_IDLE=$(vmstat 1 2 | tail -1 | awk '{print $15}')
+CPU_USAGE=$((100 - CPU_IDLE))
 _userexp=$(printf '%-5s' "$_expuser")
 _tuser=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
 clear
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-echo -e "${cyan}SISTEMA            MEMORIA RAM      PROCESADOR "
-echo -e "${rojo}OS: ${amarillo}$_system${rojo}Total:${amarillo}$_ram ${rojo}Nucleos: ${verde}$_core\e[0m"
-echo -e "${rojo}Pais: ${amarillo}AR🇦🇷     ${rojo}En uso: ${amarillo}$_usor ${rojo}En uso: ${amarillo}$_usop\e[0m"
-echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-echo -e "${amarillo}Onlines:${verde} $_onlin     ${rojo}Expirados: ${verde}$_userexp ${rojo}Total: ${verde}$_tuser\e[0m"
+echo -e "${cyan} SISTEMA        MEMORIA RAM      PROCESADOR "
+echo -e "${a} $_system   Ram:${a}$_ram  ${rojo} Cpu:${v} $_core \e[0m"
+echo -e "${rojo} Argentina🇦🇷     💾${v}$_usor     🖥${v} $CPU_USAGE% \e[0m"
+echo -e "${a} Onlines:${v} $_onlin    ${v}Expirados:${r} $_userexp ${b}Total:${v}$_tuser \e[0m"
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
-echo ""
 echo -e "
-  ${cyan}-01-${amarillo}CREAR USUARIO          ${cyan}-11- ${amarillo}SPEEDTEST  
-  ${cyan}-02-${amarillo}USUARIO DEMO           ${cyan}-12- ${amarillo}BANNER 
-  ${cyan}-03-${amarillo}REMOVER USUARIO        ${cyan}-13-  ${amarillo}MENU TOKEN 
-  ${cyan}-04-${amarillo}MONITOR ONLINE         ${cyan}-14- ${amarillo}PUERTOS ACTIVOS
-  ${cyan}-05-${amarillo}EDITAR FECHA           ${cyan}-15- ${amarillo}BACKUP USER  
-  ${cyan}-06-${amarillo}EDITAR LIMITE          ${cyan}-16- ${amarillo}MENU  Python3
-  ${cyan}-07-${amarillo}EDITAR CONTRASEÑA      ${cyan}-17- ${amarillo}LIMITER $stsl
-  ${cyan}-08-${amarillo}BORRAR EXPIRADOS       ${cyan}-18- ${amarillo}BAD VPN $stsu         
-  ${cyan}-09-${amarillo}INFO DE  USUARIOS     ${cyan}-19- ${amarillo}LIMPIAR RAM $stson   
-  ${cyan}-10-${amarillo} MENU INSTALADOR      ${cyan}-20-${amarillo}INFO VPS   ${fin}     
-  ${cyan}-00-${amarillo}SALIR                 ${cyan}-21-${amarillo}Mas 
+  ${v}-01-${amarillo}CREAR USUARIO          ${v}-11- ${amarillo}SPEEDTEST  
+  ${v}-02-${amarillo}USUARIO DEMO           ${v}-12- ${amarillo}BANNER ${a}ssh
+  ${v}-03-${amarillo}REMOVER USUARIO        ${v}-13-  ${amarillo}MENU TOKEN 
+  ${v}-04-${amarillo}MONITOR ONLINE         ${v}-14- ${amarillo}PUERTOS ACTIVOS
+  ${v}-05-${amarillo}EDITAR FECHA           ${v}-15- ${amarillo}BACKUP USER  
+  ${v}-06-${amarillo}EDITAR LIMITE          ${v}-16- ${amarillo}MENU PYTHON3 $pyt
+  ${v}-07-${amarillo}EDITAR CONTRASEÑA      ${v}-17- ${amarillo}LIMITER $stsl
+  ${v}-08-${amarillo}BORRAR EXPIRADOS       ${v}-18- ${amarillo}BAD VPN $stsu         
+  ${v}-09-${amarillo}INFO DE  USUARIOS     ${v}-19- ${amarillo}LIMPIAR RAM $stson   
+  ${v}-10-${amarillo} MENU INSTALADOR      ${v}-20-${amarillo}INFO VPS   ${fin}     
+  ${r}-00-${amarillo}SALIR❌                 ${v}-21-${amarillo}Menu2 
   ${fin}${rojo}"
 echo ""
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
@@ -472,7 +478,7 @@ case "$x" in
    menu2
    ;;
    0 | 00)
-   echo -e "${rojo}Saliendo...\e[0m"
+   echo -e "${rojo}C H A U U U U 🖐🏻🤚🏻✌🏻✌🏻👍🏻👍🏻...\e[0m"
    sleep 2
    clear
    exit;
