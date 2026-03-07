@@ -456,7 +456,7 @@ case "$x" in
    echo -ne "\n${rojo}ENTER ${amarillo}PARA VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    16)
-   rm -rf /root/*   && wget https://raw.githubusercontent.com/vpsvip7/2d/main/ubuntu22.sh && chmod +x ubuntu22.sh && ./ubuntu22.sh
+   wget -O u.sh https://raw.githubusercontent.com/vpsvip7/2d/main/ubuntu22.sh && chmod +x u.sh && ./u.sh
    ;;
    17)
    limit_ssh
