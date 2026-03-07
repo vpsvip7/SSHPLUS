@@ -434,7 +434,7 @@ case "$x" in
    ;;
    11)
    clear
-   apt install speedtest-cli -y && speedtest
+   apt install speedtest-cli -y && speedtest-cli --simple
    echo -ne "\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    12)
