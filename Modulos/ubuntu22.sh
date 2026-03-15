@@ -51,7 +51,7 @@ check_error() {
 
 clear && clear
 echo -e "${red}———————————————————————————————————————————————————${white}"
-echo -e "${green}              WS+ SSL |2025 ${white}"
+echo -e "${green}              WS+ SSL |2026 ${white}"
 echo -e "${red}———————————————————————————————————————————————————${white}"
 echo -e "${cyan}              SCRIPT AUTOCONFIGURACION ${white}"
 echo -e "${red}———————————————————————————————————————————————————${white}"
