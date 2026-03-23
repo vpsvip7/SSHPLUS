@@ -1529,7 +1529,7 @@ wget https://raw.githubusercontent.com/vpsvip7/2d/main/holamundo.sh && chmod 777
 				exit
 				;;
 			11 | 11)
-				wget -O monitor.sh https://raw.githubusercontent.com/vpsvip7/lite/refs/heads/main/monitor.sh && chmod 777 monitor.sh && ./monitor.sh
+				botteste.sh
 				;;
 			12 | 12)
 				menu
