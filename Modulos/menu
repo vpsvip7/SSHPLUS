@@ -256,7 +256,7 @@ ${cyan}-21-${amarillo} ADICIONAR HOST      ${cyan}-28- ${amarillo} EDITAR CONTRA
 ${cyan}-22-${amarillo} REMOVER HOST        ${cyan}-29- ${amarillo} AUTO INICIO $autm  
 ${cyan}-23-${amarillo} REINICIAR SISTEMA    ${cyan}-30- ${amarillo} ACTUALIZAR SCRIPT 
 ${cyan}-24-${amarillo} REINICIAR SERVICIOS  ${cyan}-31-${amarillo} BORRAR SCRIPT                 ${cyan} -25- ${amarillo} BLOCK TORRENT $stsf   ${cyan} -32- ${amarillo} VOLVER  
-${cyan}-26- ${amarillo} BOT TELEGRAM $stsbot     ${cyan}-00- ${amarillo} SALIR❌                      ${cyan} -27- ${amarillo} BOT TESTE $stsbotteste ${rojo}"
+${cyan}-26- ${amarillo} BOT TELEGRAM $stsbot     ${cyan}-00- ${amarillo} SALIR❌                      ${cyan} -27- ${amarillo} TRAFIC RED $stsbotteste ${rojo}"
 echo ""
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo ""
