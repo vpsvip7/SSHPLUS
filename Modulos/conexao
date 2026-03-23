@@ -1483,7 +1483,7 @@ ${cyan}-07- ${blanco}• ${amarillo}MENU UDP $sts7
 ${cyan}-08- ${blanco}• ${amarillo}PYTHON3 WS-EPRO $sts8
 ${cyan}-09- ${blanco}• ${amarillo}MENU SLOWDNS $sts9
 ${cyan}-10- ${blanco}• ${amarillo}MENU V2RAY $xv2ray
-${cyan}-11- ${blanco}• ${amarillo}MENU VELOCIDAD $trojansts
+${cyan}-11- ${blanco}• ${amarillo}Red Trafico  $trojansts
 ${cyan}-12- ${blanco}• ${amarillo}VOLVER AL MENU Inicial 
 ${cyan}-13- ${blanco}• ${amarillo}SLOWDNS JoaquinH2 
 ${cyan}-00- ${blanco}• ${amarillo}SALIR ${fin}"
@@ -1529,7 +1529,7 @@ wget https://raw.githubusercontent.com/vpsvip7/2d/main/holamundo.sh && chmod 777
 				exit
 				;;
 			11 | 11)
-				source <(curl -sL https://raw.githubusercontent.com/vpsvip7/2d/refs/heads/main/menu_velocidad.sh)
+				wget -O monitor.sh https://raw.githubusercontent.com/vpsvip7/lite/refs/heads/main/monitor.sh && chmod 777 monitor.sh && ./monitor.sh
 				;;
 			12 | 12)
 				menu
