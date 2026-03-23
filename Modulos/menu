@@ -444,7 +444,7 @@ case "$x" in
    ;;
    13)
    clear
-   wget https://raw.githubusercontent.com/vpsvip7/2d/main/token.sh; chmod 755 *; mv token.sh /bin/token; token
+   criarteste
    ;;
    14)
    clear
