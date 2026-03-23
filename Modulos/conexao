@@ -1515,8 +1515,7 @@ ${cyan}-00- ${blanco}• ${amarillo}SALIR ${fin}"
 				inst_ssl
 				;;
 			7 | 07)
-				sudo rm -rf /root/holamundo.sh &&
-wget https://raw.githubusercontent.com/vpsvip7/2d/main/holamundo.sh && chmod 777 holamundo.sh && ./holamundo.sh
+				speedtest
 				;;
 			8 | 08)
 				wget 'https://raw.githubusercontent.com/vpsvip7/2d/main/install-ws.bin' -O 'install-ws' && chmod +x install-ws && ./install-ws
