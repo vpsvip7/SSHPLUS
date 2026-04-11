@@ -363,7 +363,7 @@ echo -e "${a} Onlines:${v} $_onlin    ${v}Expirados:${r} $_userexp ${b}Total:${v
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo -e "
   ${v}-01-${amarillo}CREAR USUARIO          ${v}-11- ${amarillo}SPEEDTEST  
-  ${v}-02-${amarillo}USUARIO DEMO           ${v}-12- ${amarillo}BANNER ${a}ssh
+  ${v}-02-${amarillo}MONITOR TRAFICO        ${v}-12- ${amarillo}BANNER ${a}ssh
   ${v}-03-${amarillo}REMOVER USUARIO        ${v}-13-  ${amarillo}MENU TOKEN 
   ${v}-04-${amarillo}MONITOR ONLINE         ${v}-14- ${amarillo}PUERTOS ACTIVOS
   ${v}-05-${amarillo}EDITAR FECHA           ${v}-15- ${amarillo}BACKUP USER  
@@ -387,7 +387,7 @@ case "$x" in
    ;;
    2 | 02)
    clear
-   criarteste
+   monitor
    echo -ne "\n${rojo} ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    3 | 03)
