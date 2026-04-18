@@ -20,15 +20,14 @@ fun_prog ()
 echo -ne "\033[1;33mREINICIANDO OPENSSH "; fun_prog 'service ssh restart'
 echo ""
 sleep 1
-if [[ -e /etc/squid/squid.conf ]]; then
-echo -ne "\033[1;33mREINICIANDO SQUID PROXY "; fun_prog 'service squid restart'
-echo ""
-sleep 1
-elif [[ -e /etc/squid3/squid.conf ]]; then
-echo -ne "\033[1;33mREINICIANDO SQUID PROXY "; fun_prog 'service squid3 restart'
+
+# CAMBIO: Ahora reinicia Python3 (matando y relanzando tu script)
+if [[ -e /usr/bin/python3 ]]; then
+echo -ne "\033[1;33mREINICIANDO PYTHON3 "; fun_prog 'pkill -f python3; sleep 1; /usr/bin/python3  &'
 echo ""
 sleep 1
 fi
+
 if [[ -e /etc/stunnel/stunnel.conf ]]; then
 echo -ne "\033[1;33mREINICIANDO SSL TUNNEL "; fun_prog 'service stunnel4 restart'
 echo ""
