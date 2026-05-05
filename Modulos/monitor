@@ -334,7 +334,7 @@ _update_session_logs() {
 			if [[ -z "${_S_ACTIVE[$u]:-}" ]]; then
 				_S_ACTIVE["$u"]=1
 				_S_START_TS["$u"]=$(date +%s)
-				_S_START_ISO["$u"]=$(sshplus_now_iso)
+				_S_START_ISO["$u"]=$(date +%ss)
 				_S_BYTES_START["$u"]="$now_bytes"
 				_S_BYTES_START_DOWN["$u"]="${_L_now_down[$u]:-0}"
 				_S_BYTES_START_UP["$u"]="${_L_now_up[$u]:-0}"
@@ -348,7 +348,7 @@ _update_session_logs() {
 				start_ts="${_S_START_TS[$u]:-0}"
 				[[ -z "$start_ts" ]] && start_ts=0
 				end_ts=$(date +%s)
-				end_iso=$(sshplus_now_iso)
+				end_iso=$(date +%ss)
 				delta_sec=$(( end_ts - start_ts ))
 				(( delta_sec < 0 )) && delta_sec=0
 				delta_hms=$(_sec_to_hms "$delta_sec")
