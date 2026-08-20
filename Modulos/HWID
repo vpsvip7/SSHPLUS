@@ -1,0 +1,110 @@
+#!/bin/bash
+#==============================================
+#	@kiritosshxd
+#=============================================
+IP=$(cat /etc/IP)
+cor1='\033[41;1;37m'
+cor2='\033[44;1;37m'
+scor='\033[0m'
+fun_bar() {
+    comando[0]="$1"
+    comando[1]="$2"
+    (
+        [[ -e $HOME/fim ]] && rm $HOME/fim
+        ${comando[0]} >/dev/null 2>&1
+        ${comando[1]} >/dev/null 2>&1
+        touch $HOME/fim
+    ) >/dev/null 2>&1 &
+    tput civis
+    echo -ne "\033[1;33m AGUARDE \033[1;37m- \033[1;33m["
+    while true; do
+        for ((i = 0; i < 18; i++)); do
+            echo -ne "\033[1;31m#"
+            sleep 0.1s
+        done
+        [[ -e $HOME/fim ]] && rm $HOME/fim && break
+        echo -e "\033[1;33m]"
+        sleep 1s
+        tput cuu1
+        tput dl1
+        echo -ne "\033[1;33m AGUARDE \033[1;37m- \033[1;33m["
+    done
+    echo -e "\033[1;33m]\033[1;37m -\033[1;32m OK !\033[1;37m"
+    tput cnorm
+}
+[[ ! -e /usr/lib/sshplus ]] && exit 0
+tput setaf 7;tput setab 4;tput bold;printf '%30s%s%-15s\n' "CREAR USER SSH";tput sgr0
+echo ""
+echo -ne "\033[1;32m NOMBRE DE USUARIO:\033[1;37m ";read username
+[[ -z $username ]] && {
+	echo -e "\n${cor1} Nombre de usuario vacio o invalido!${scor}\n"
+	exit 1
+}
+[[ "$(grep -wc $username /etc/passwd)" != '0' ]] && {
+	echo -e "\n${cor1}Este usuario ya existe. intente otro nombre!${scor}\n"
+	exit 1
+}
+[[ ${username} != ?(+|-)+([a-zA-Z0-9]) ]] && {
+	echo -e "\n${cor1}Usted escribio un nombre de usuário inválido!${scor}"
+	echo -e "${cor1} No use espacios, acentos o caracteres especial !${scor}\n"
+	exit 1
+}
+sizemin=$(echo ${#username})
+[[ $sizemin -lt 4 ]] && {
+	echo -e "\n${cor1}Escribiste un nombre de usuário mui corto ${scor}"
+	echo -e "${cor1} use un mínimo 4 caracter !${scor}\n"
+	exit 1
+}
+sizemax=$(echo ${#username})
+[[ $sizemax -gt 42 ]] && {
+	echo -e "\n${cor1} wep Escribiste un nombre de usuário mui grande"
+	echo -e "${cor1} use un máximo 42 caracter !${scor}\n"
+	exit 1
+}
+password="$username"
+echo -e "\033[1;32m Contraseña generada:\033[1;37m $password"
+echo -ne "\033[1;32m Dias para expirar:\033[1;37m ";read dias
+[[ -z $dias ]] && {
+	echo -e "\n${cor1} Numero de dias vazio!${scor}\n"
+	exit 1
+}
+[[ ${dias} != ?(+|-)+([0-9]) ]] && {
+	echo -e "\n${cor1} Usted Escribio un número de dias inválido!${scor}\n"
+	exit 1
+}
+[[ $dias -lt 1 ]] && {
+	echo -e "\n${cor1} el número debe ser mayor que cero!${scor}\n"
+	exit 1
+}
+echo -ne "\033[1;32m Limite de conecion:\033[1;37m ";read sshlimiter
+[[ -z $sshlimiter ]] && {
+	echo -e "\n${cor1} Escribiste limite de conecion vacio! ${scor}\n"
+	exit 1
+}
+[[ ${sshlimiter} != ?(+|-)+([0-9]) ]] && {
+	echo -e "\n${cor1} Escribiste un número de conecion inválido! ${scor}\n"
+	exit 1
+}
+[[ $sshlimiter -lt 1 ]] && {
+	echo -e "\n${cor1} Número de conecion simultaneas debe ser mayor que cero!${scor}\n"
+	exit 1
+}
+final=$(date "+%Y-%m-%d" -d "+$dias days")
+gui=$(date "+%d/%m/%Y" -d "+$dias days")
+pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+useradd -e $final -M -s /bin/false -p $pass $username >/dev/null 2>&1 &
+echo "$password" >/etc/SSHPlus/senha/$username
+echo "$username $sshlimiter" >>/root/usuarios.db
+  {
+	clear
+	echo -e "\E[44;1;37m  USER CREADO 🇦🇷⭐⭐⭐🌍 !    \E[0m"
+        echo -e "\n Limite $sshlimiter Expira en: $gui "
+    echo -e "\n  USUARIO  👇🏻🌜"
+	   echo -e "\n $username"
+   echo -e "\n  CONTRASEÑA 👇🏻🌛"
+     echo -e "\n $password"
+   echo -e "\n  USUARIO WS PERSONAL👇🏻🌞"
+      echo -e "\n  www.personal.com.ar:80@$username:$password"
+     
+}
+     echo -e "Argentina🇦🇷🌎⭐⭐⭐"
