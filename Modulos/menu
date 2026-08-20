@@ -362,12 +362,12 @@ echo -e "${rojo} Argentina🇦🇷     💾${v}$_usor     🖥${v} $CPU_USAGE% \
 echo -e "${a} Onlines:${v} $_onlin    ${v}Expirados:${r} $_userexp ${b}Total:${v}$_tuser \e[0m"
 echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\e[0m"
 echo -e "
-  ${v}-01-${amarillo}CREAR USUARIO          ${v}-11- ${amarillo}SPEEDTEST  
-  ${v}-02-${amarillo}MONITOR TRAFICO        ${v}-12- ${amarillo}BANNER ${a}ssh
+  ${v}-01-${amarillo}USUARIO Normal        ${v}-11- ${amarillo}SPEEDTEST  
+  ${v}-02-${amarillo}Usuario HWID         ${v}-12- ${amarillo}BANNER ${a}ssh
   ${v}-03-${amarillo}REMOVER USUARIO        ${v}-13-  ${amarillo}MENU TOKEN 
-  ${v}-04-${amarillo}MONITOR ONLINE         ${v}-14- ${amarillo}PUERTOS ACTIVOS
+  ${v}-04-${amarillo}MONITOR ONLINE      ${v}-14- ${amarillo}PUERTOS ACTIVOS
   ${v}-05-${amarillo}EDITAR FECHA           ${v}-15- ${amarillo}BACKUP USER  
-  ${v}-06-${amarillo}EDITAR LIMITE          ${v}-16- ${amarillo}Auto PYTHON3 $pyt
+  ${v}-06-${amarillo}EDITAR LIMITE          ${v}-16- ${amarillo}MONITOR User
   ${v}-07-${amarillo}EDITAR CONTRASEÑA      ${v}-17- ${amarillo}LIMITER $stsl
   ${v}-08-${amarillo}BORRAR EXPIRADOS       ${v}-18- ${amarillo}BAD VPN $stsu         
   ${v}-09-${amarillo}INFO DE  USUARIOS     ${v}-19- ${amarillo}LIMPIAR RAM $stson   
@@ -387,7 +387,7 @@ case "$x" in
    ;;
    2 | 02)
    clear
-   monitor
+   HWID
    echo -ne "\n${rojo} ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    3 | 03)
@@ -456,7 +456,7 @@ case "$x" in
    echo -ne "\n${rojo}ENTER ${amarillo}PARA VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    16)
-   ubuntu22
+   bash monitor
    ;;
    17)
    limit_ssh
