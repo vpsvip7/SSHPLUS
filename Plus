@@ -126,7 +126,7 @@ echo ""
 echo -e "\033[1;33mINSTALANDO PAQUETES VPS !\033[0m"
 echo ""
 inst_pct () {
-_pacotes=("bc" "python" "speedtest-cli" "htop" "git" "screen" "nano" "unzip" "lsof" "netstat" "net-tools" "dos2unix" "nload" "jq" "curl" "figlet" "python3" "python-pip")
+_pacotes=("bc" "python" "ufw" "speedtest-cli" "htop" "git" "screen" "nano" "unzip" "lsof" "netstat" "net-tools" "dos2unix" "nload" "jq" "curl" "figlet" "python3" "python-pip")
 for _prog in ${_pacotes[@]}; do
 apt install $_prog -y
 done
