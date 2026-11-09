@@ -1,0 +1,541 @@
+#!/bin/bash
+# ==========================================================
+#  VIGIA v1.0 - Control de abuso por usuario (servidores SSH/VPN)
+#  Instalar:  bash vigia      (se copia solo a /usr/local/bin/vigia)
+#  Uso:       vigia           -> menú
+#             vigia --auto    -> revisión automática (la usa el cron)
+# ==========================================================
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+CONF_DIR="/etc/vigia"
+CONF="$CONF_DIR/config"
+BLOQ="$CONF_DIR/bloqueados"        # usuario|fecha|motivo
+PUERTOS_BLOQ="$CONF_DIR/puertos"   # puerto|proto|fecha
+AVISOS="$CONF_DIR/avisos"          # usuario|tipo|epoch (evita alertas repetidas)
+ALERTAS="/var/log/vigia.log"
+PUERTOS_CORREO="25|110|143|465|587|993|995"
+CRON="/etc/cron.d/vigia"
+UID_MIN=1000
+UID_MAX=60000
+
+G='\e[1;32m'; Y='\e[1;33m'; R='\e[1;31m'; C='\e[1;36m'; W='\e[1;37m'; N='\e[0m'
+
+[[ $EUID -ne 0 ]] && { echo "Ejecutá este script como root."; exit 1; }
+mkdir -p "$CONF_DIR"; touch "$BLOQ" "$PUERTOS_BLOQ" "$ALERTAS" "$AVISOS"
+
+guardar_conf() {
+cat > "$CONF" <<EOF
+# Ventana de análisis del registro en minutos (1-59)
+VENTANA=${VENTANA:-10}
+# Máximo de IPs distintas en puertos "raros" dentro de la ventana
+MAX_DESTINOS=${MAX_DESTINOS:-40}
+# Máximo de puertos distintos dentro de la ventana
+MAX_PUERTOS=${MAX_PUERTOS:-15}
+# Máximo de conexiones a medio abrir (SYN-SENT) al mismo tiempo
+MAX_SYN=${MAX_SYN:-30}
+# Máximo de servidores de correo distintos en 1 hora (detección de checkers)
+MAX_CORREO=${MAX_CORREO:-10}
+# 1 = bloquear automáticamente a quien supere los límites
+AUTO_BLOQUEO=${AUTO_BLOQUEO:-0}
+# Puertos normales que NO se registran (máximo 15, separados por coma)
+PUERTOS_OK="${PUERTOS_OK:-53,80,443,853,993,995,465,587,5222,5223,5228,8080,8443}"
+EOF
+}
+[[ -f $CONF ]] || guardar_conf
+# shellcheck source=/dev/null
+source "$CONF"
+# Configs de versiones anteriores: completar valores nuevos
+if [[ -z $MAX_CORREO ]]; then MAX_CORREO=10; guardar_conf; fi
+
+# ---------------- utilidades ----------------
+linea()  { echo -e "${C}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${N}"; }
+titulo() { clear; linea; echo -e "${W}  $1${N}"; linea; }
+pausa()  { echo; echo -ne "${W}Enter para volver...${N}"; read -r _; }
+pedir()  { echo -ne "${W}$1${N}"; read -r RESP; }
+nombre() { local n; n=$(getent passwd "$1" | cut -d: -f1); echo "${n:-uid$1}"; }
+bloqueado() { awk -F'|' -v u="$1" '$1==u{f=1} END{exit !f}' "$BLOQ"; }
+
+guardar_reglas() {
+  if command -v netfilter-persistent >/dev/null; then
+    netfilter-persistent save >/dev/null 2>&1
+  else
+    mkdir -p /etc/iptables && iptables-save > /etc/iptables/rules.v4
+  fi
+}
+
+# Crea/repara las cadenas de iptables a partir de los archivos de config
+asegurar_reglas() {
+  iptables -N VIGIA_BLOCK 2>/dev/null
+  iptables -N VIGIA_LOG 2>/dev/null
+
+  # Registro: conexiones NUEVAS de clientes a puertos que no son los normales
+  iptables -F VIGIA_LOG
+  iptables -A VIGIA_LOG -o lo -j RETURN
+  iptables -A VIGIA_LOG -p tcp -m multiport --dports "$PUERTOS_OK" -j RETURN
+  iptables -A VIGIA_LOG -p tcp --syn -m owner --uid-owner "$UID_MIN-$UID_MAX" \
+    -m limit --limit 120/min --limit-burst 200 \
+    -j LOG --log-prefix "VIGIA: " --log-uid --log-level 4
+
+  # Bloqueos (usuarios y puertos), reconstruidos desde los archivos
+  iptables -F VIGIA_BLOCK
+  local u id p proto
+  while IFS='|' read -r u _; do
+    [[ -z $u ]] && continue
+    id=$(id -u "$u" 2>/dev/null) && iptables -A VIGIA_BLOCK -m owner --uid-owner "$id" -j REJECT
+  done < "$BLOQ"
+  while IFS='|' read -r p proto _; do
+    [[ -z $p ]] && continue
+    iptables -A VIGIA_BLOCK -p "$proto" --dport "$p" -m owner --uid-owner "$UID_MIN-$UID_MAX" -j REJECT
+  done < "$PUERTOS_BLOQ"
+
+  iptables -C OUTPUT -j VIGIA_LOG   2>/dev/null || iptables -I OUTPUT 1 -j VIGIA_LOG
+  iptables -C OUTPUT -j VIGIA_BLOCK 2>/dev/null || iptables -I OUTPUT 1 -j VIGIA_BLOCK
+}
+
+# Conexiones actuales agrupadas por usuario: uid total ips_distintas puertos_distintos
+por_uid() {
+  ss -tnpeH state "$1" 2>/dev/null | awk -v a="$UID_MIN" -v b="$UID_MAX" '
+    $4 ~ /^(127\.|\[::ffff:127\.)/ {next}
+    match($0,/uid:[0-9]+/) {
+      u=substr($0,RSTART+4,RLENGTH-4)+0; if(u<a||u>b) next
+      ip=$4; port=ip; sub(/:[0-9]+$/,"",ip); sub(/.*:/,"",port)
+      c[u]++
+      if(!((u,ip) in s)){s[u,ip]=1; d[u]++}
+      if(!((u,port) in q)){q[u,port]=1; p[u]++}
+    }
+    END{for(u in c) print u, c[u], d[u], p[u]}' | sort -k2,2nr
+}
+
+# Lee el registro del kernel (últimos N minutos)
+leer_log() {
+  if command -v journalctl >/dev/null; then
+    journalctl -k --since "$1 min ago" -o cat 2>/dev/null
+  else
+    tail -n 20000 /var/log/kern.log 2>/dev/null
+  fi | grep -E 'VIGIA: |MAIL-OUT: '
+}
+
+# Eventos del registro: uid ip_destino puerto
+eventos() {
+  leer_log "$1" | awk -v ok="$PUERTOS_OK" '
+    BEGIN{n=split(ok,a,","); for(i=1;i<=n;i++) okp[a[i]]=1}
+    {u=d=p=""
+    for(i=1;i<=NF;i++){
+      if($i~/^UID=/)u=substr($i,5); else if($i~/^DST=/)d=substr($i,5); else if($i~/^DPT=/)p=substr($i,5)}
+    if(u!="" && !(p in okp)) print u,d,p}'
+}
+
+# Resumen del registro por usuario: uid intentos ips puertos lista_puertos
+resumen_log() {
+  eventos "$1" | awk '{
+    t[$1]++
+    if(!(($1,$2) in D)){D[$1,$2]=1; nd[$1]++}
+    if(!(($1,$3) in P)){P[$1,$3]=1; np[$1]++; pl[$1]=pl[$1] (pl[$1]?",":"") $3}
+  } END{for(u in t) print u, t[u], nd[u], np[u], pl[u]}' | sort -k3,3nr
+}
+
+bloquear() {  # $1 usuario  $2 motivo
+  id "$1" &>/dev/null || return 1
+  bloqueado "$1" && return 0
+  usermod -L "$1" 2>/dev/null
+  echo "$1|$(date '+%F %H:%M')|$2" >> "$BLOQ"
+  asegurar_reglas; guardar_reglas
+  pkill -KILL -u "$1" 2>/dev/null
+  return 0
+}
+
+desbloquear() {
+  usermod -U "$1" 2>/dev/null
+  awk -F'|' -v u="$1" '$1!=u' "$BLOQ" > "$BLOQ.tmp" && mv "$BLOQ.tmp" "$BLOQ"
+  asegurar_reglas; guardar_reglas
+}
+
+ofrecer_bloqueo() {
+  echo
+  pedir "Usuario a bloquear (Enter = ninguno): "
+  [[ -z $RESP ]] && return
+  local u=$RESP
+  if ! id "$u" &>/dev/null; then echo -e "${R}El usuario no existe.${N}"; pausa; return; fi
+  pedir "Motivo: "
+  bloquear "$u" "${RESP:-manual}" && echo -e "${G}✔ $u bloqueado y desconectado.${N}"
+  pausa
+}
+
+# ---------------- opciones del menú ----------------
+op_conexiones() {
+  titulo "CONEXIONES ACTIVAS POR USUARIO"
+  declare -A ses
+  local uid c d p col
+  while read -r uid; do ((ses[$uid]++)); done < <(ps -eo uid=,comm= | \
+    awk -v a="$UID_MIN" -v b="$UID_MAX" '$2=="sshd" && $1>=a && $1<=b {print $1}')
+  printf "${W}%-16s %9s %11s %13s${N}\n" USUARIO SESIONES CONEXIONES "IPs DISTINTAS"
+  while read -r uid c d p; do
+    [[ -z $uid ]] && continue
+    col=$G; (( c > 150 )) && col=$Y; (( c > 300 )) && col=$R
+    printf "${col}%-16s %9s %11s %13s${N}\n" "$(nombre "$uid")" "${ses[$uid]:-0}" "$c" "$d"
+  done < <(por_uid established)
+  echo -e "\n${G}verde${N} normal   ${Y}amarillo${N} >150 conexiones   ${R}rojo${N} >300"
+  ofrecer_bloqueo
+}
+
+op_escaneo_vivo() {
+  titulo "ESCANEO EN VIVO (conexiones sin respuesta)"
+  local hay=0 uid c d p col
+  printf "${W}%-16s %10s %13s %10s${N}\n" USUARIO "SIN RESP." "IPs DISTINTAS" PUERTOS
+  while read -r uid c d p; do
+    [[ -z $uid ]] && continue; hay=1
+    col=$G; (( c >= MAX_SYN / 2 )) && col=$Y; (( c >= MAX_SYN )) && col=$R
+    printf "${col}%-16s %10s %13s %10s${N}\n" "$(nombre "$uid")" "$c" "$d" "$p"
+  done < <(por_uid syn-sent)
+  (( hay )) || echo -e "${G}Nadie está escaneando en este momento.${N}"
+  echo -e "\nLímite actual: ${Y}$MAX_SYN${N} conexiones sin respuesta a la vez."
+  ofrecer_bloqueo
+}
+
+op_registro() {
+  titulo "ANALIZAR REGISTRO (puertos fuera de lo normal)"
+  pedir "¿Cuántos minutos hacia atrás? [$VENTANA]: "
+  local min=${RESP:-$VENTANA} hay=0 uid t nd np pl col
+  [[ $min =~ ^[0-9]+$ ]] || min=$VENTANA
+  echo
+  printf "${W}%-16s %9s %6s %8s  %s${N}\n" USUARIO INTENTOS IPs PUERTOS "PUERTOS USADOS"
+  while read -r uid t nd np pl; do
+    [[ -z $uid ]] && continue; hay=1
+    col=$G; (( nd >= MAX_DESTINOS || np >= MAX_PUERTOS )) && col=$R
+    printf "${col}%-16s %9s %6s %8s  %s${N}\n" "$(nombre "$uid")" "$t" "$nd" "$np" "${pl:0:28}"
+  done < <(resumen_log "$min")
+  (( hay )) || echo -e "${G}Sin intentos a puertos raros en los últimos $min min.${N}"
+  echo -e "\nEn ${R}rojo${N}: más de $MAX_DESTINOS IPs o $MAX_PUERTOS puertos distintos (posible escaneo)."
+  ofrecer_bloqueo
+}
+
+op_detalle() {
+  titulo "DETALLE DE USUARIO"
+  pedir "Usuario: "; local u=$RESP uid
+  uid=$(id -u "$u" 2>/dev/null) || { echo -e "${R}El usuario no existe.${N}"; pausa; return; }
+  echo
+  bloqueado "$u" && echo -e "${R}⚠ Este usuario está BLOQUEADO.${N}\n"
+  echo -e "${Y}Sesiones abiertas:${N} $(pgrep -u "$uid" -x sshd | wc -l)"
+  echo -e "\n${Y}Destinos actuales más usados (IP:puerto):${N}"
+  ss -tnpeH state established 2>/dev/null | awk -v id="uid:$uid" '
+    $4 !~ /^(127\.|\[::ffff:127\.)/ { for(i=5;i<=NF;i++) if($i==id){print $4; break} }' \
+    | sort | uniq -c | sort -rn | head -15
+  echo -e "\n${Y}Puertos raros intentados (última hora):${N}"
+  eventos 60 | awk -v id="$uid" '$1==id{print $3}' | sort | uniq -c | sort -rn | head -10 \
+    | awk '{printf "  puerto %-6s %s intentos\n",$2,$1}'
+  echo -e "\n${Y}IPs distintas contactadas en puertos raros (última hora):${N} $(eventos 60 | awk -v id="$uid" '$1==id{print $2}' | sort -u | wc -l)"
+  pausa
+}
+
+op_puertos() {
+  titulo "PUERTOS MÁS INTENTADOS"
+  pedir "¿Cuántos minutos hacia atrás? [60]: "
+  local min=${RESP:-60} p n us
+  [[ $min =~ ^[0-9]+$ ]] || min=60
+  echo
+  printf "${W}%-8s %9s  %s${N}\n" PUERTO INTENTOS USUARIOS
+  while read -r p n us; do
+    printf "${Y}%-8s${N} %9s  %s\n" "$p" "$n" "$us"
+  done < <(eventos "$min" | while read -r uid _ port; do echo "$port $(nombre "$uid")"; done | awk '
+    {c[$1]++; if(!(($1,$2) in s)){s[$1,$2]=1; l[$1]=l[$1] (l[$1]?",":"") $2}}
+    END{for(p in c) print p, c[p], l[p]}' | sort -k2,2nr | head -20)
+  pausa
+}
+
+# Resuelve una IP -> RES_PTR (nombre inverso) y RES_ORG (dueño), con caché
+declare -A CACHE_PTR CACHE_ORG
+resolver() {
+  local ip=$1
+  if [[ -z ${CACHE_ORG[$ip]} ]]; then
+    CACHE_PTR[$ip]=$(timeout 3 getent hosts "$ip" | awk '{print $2}')
+    CACHE_ORG[$ip]=$(timeout 8 whois "$ip" 2>/dev/null | grep -m1 -iE '^(OrgName|org-name|netname|descr):' | cut -d: -f2- | xargs)
+    : "${CACHE_ORG[$ip]:=-}"
+  fi
+  RES_PTR=${CACHE_PTR[$ip]:--}
+  RES_ORG=${CACHE_ORG[$ip]}
+}
+
+fila_destino() {  # n ip puerto
+  local col=$N
+  [[ $3 =~ ^($PUERTOS_CORREO)$ ]] && col=$Y
+  printf "${col}%4s  %-16s %-6s %-40s %s${N}\n" "$1" "$2" "$3" "${RES_PTR:0:40}" "${RES_ORG:0:30}"
+}
+
+op_rastrear() {
+  titulo "RASTREAR DESTINOS DE UN USUARIO"
+  if ! command -v whois >/dev/null; then
+    echo -e "${Y}Instalando whois...${N}"; apt-get install -y whois >/dev/null 2>&1
+  fi
+  pedir "Usuario: "; local u=$RESP uid
+  uid=$(id -u "$u" 2>/dev/null) || { echo -e "${R}El usuario no existe.${N}"; pausa; return; }
+  echo -e "\n${G}[1]${Y} Puertos raros (registro)  ${G}[2]${Y} Conexiones activas  ${G}[3]${Y} Ambos${N}"
+  pedir "Opción [3]: "; local modo=${RESP:-3} min=60
+  if [[ $modo != 2 ]]; then
+    pedir "¿Cuántos minutos hacia atrás? [60]: "; [[ $RESP =~ ^[0-9]+$ ]] && min=$RESP
+  fi
+  echo -e "\n${C}Consultando dueños de las IPs, puede tardar un poco...${N}"
+
+  local n ip port dst mail_ips=0
+  declare -A orgs_mail
+
+  if [[ $modo == 1 || $modo == 3 ]]; then
+    echo -e "\n${W}▶ PUERTOS RAROS - últimos $min min${N}"
+    printf "${W}%4s  %-16s %-6s %-40s %s${N}\n" VECES IP PUERTO "NOMBRE (DNS)" DUEÑO
+    local hay=0
+    while read -r n ip port; do
+      [[ -z $ip || $ip == 127.* ]] && continue
+      hay=1; resolver "$ip"; fila_destino "$n" "$ip" "$port"
+      if [[ $port =~ ^($PUERTOS_CORREO)$ ]]; then
+        ((mail_ips++)); orgs_mail[$RES_ORG]=1
+      fi
+    done < <(eventos "$min" | awk -v id="$uid" '$1==id{print $2, $3}' | sort | uniq -c | sort -rn | head -40)
+    (( hay )) || echo -e "${G}  Sin intentos a puertos raros.${N}"
+  fi
+
+  if [[ $modo == 2 || $modo == 3 ]]; then
+    echo -e "\n${W}▶ CONEXIONES ACTIVAS AHORA${N}"
+    printf "${W}%4s  %-16s %-6s %-40s %s${N}\n" CONEX IP PUERTO "NOMBRE (DNS)" DUEÑO
+    while read -r n dst; do
+      [[ -z $dst ]] && continue
+      ip=${dst%:*}; port=${dst##*:}
+      resolver "$ip"; fila_destino "$n" "$ip" "$port"
+    done < <(ss -tnpeH state established 2>/dev/null | awk -v id="uid:$uid" '
+      $4 !~ /^(127\.|\[::ffff:127\.)/ { for(i=5;i<=NF;i++) if($i==id){print $4; break} }' \
+      | sort | uniq -c | sort -rn | head -25)
+  fi
+
+  echo; linea
+  if (( mail_ips >= MAX_CORREO && ${#orgs_mail[@]} >= 5 )); then
+    echo -e "${R}⚠ POSIBLE CHECKER DE CORREOS:${N} contactó ${R}$mail_ips${N} servidores de correo de ${R}${#orgs_mail[@]}${N} empresas distintas."
+    echo -e "${R}  Recomendado: bloquear este usuario.${N}"
+  elif (( mail_ips > 0 )); then
+    echo -e "${Y}Usa puertos de correo sin cifrar ($mail_ips servidores).${N} Si son pocos y siempre los mismos, es un cliente de correo mal configurado."
+  else
+    echo -e "${G}Sin actividad sospechosa de correo.${N}"
+  fi
+  echo -e "Las líneas en ${Y}amarillo${N} son puertos de correo."
+  ofrecer_bloqueo
+}
+
+op_bloquear() {
+  titulo "BLOQUEAR USUARIO"
+  echo -e "Bloquea la cuenta, corta todo su tráfico y lo desconecta.\n"
+  ofrecer_bloqueo
+}
+
+op_desbloquear() {
+  titulo "DESBLOQUEAR USUARIO"
+  [[ -s $BLOQ ]] || { echo -e "${G}No hay usuarios bloqueados.${N}"; pausa; return; }
+  awk -F'|' '{printf "  %-16s %s  %s\n",$1,$2,$3}' "$BLOQ"
+  echo; pedir "Usuario a desbloquear: "
+  [[ -z $RESP ]] && return
+  if bloqueado "$RESP"; then desbloquear "$RESP"; echo -e "${G}✔ $RESP desbloqueado.${N}"
+  else echo -e "${R}Ese usuario no está en la lista.${N}"; fi
+  pausa
+}
+
+op_lista() {
+  titulo "USUARIOS BLOQUEADOS"
+  if [[ -s $BLOQ ]]; then
+    printf "${W}%-16s %-17s %s${N}\n" USUARIO FECHA MOTIVO
+    awk -F'|' '{printf "%-16s %-17s %s\n",$1,$2,$3}' "$BLOQ"
+  else echo -e "${G}No hay usuarios bloqueados.${N}"; fi
+  pausa
+}
+
+op_bloquear_puerto() {
+  titulo "BLOQUEAR PUERTO DE SALIDA (para todos los clientes)"
+  echo -e "Ejemplos: 25 (spam), 143 (IMAP), 6881 (torrent), 3389 (RDP), 23 (telnet)\n"
+  pedir "Puerto: "; local p=$RESP
+  [[ $p =~ ^[0-9]+$ ]] && (( p >= 1 && p <= 65535 )) || { echo -e "${R}Puerto inválido.${N}"; pausa; return; }
+  pedir "Protocolo [1] tcp  [2] udp  [3] ambos: "
+  local protos
+  case $RESP in 2) protos="udp";; 3) protos="tcp udp";; *) protos="tcp";; esac
+  for pr in $protos; do
+    awk -F'|' -v p="$p" -v r="$pr" '$1==p && $2==r{f=1} END{exit !f}' "$PUERTOS_BLOQ" || \
+      echo "$p|$pr|$(date '+%F %H:%M')" >> "$PUERTOS_BLOQ"
+  done
+  asegurar_reglas; guardar_reglas
+  echo -e "${G}✔ Puerto $p ($protos) bloqueado para los clientes.${N}"
+  pausa
+}
+
+op_desbloquear_puerto() {
+  titulo "DESBLOQUEAR PUERTO"
+  [[ -s $PUERTOS_BLOQ ]] || { echo -e "${G}No hay puertos bloqueados por VIGIA.${N}"; pausa; return; }
+  awk -F'|' '{printf "  %-7s %-4s desde %s\n",$1,$2,$3}' "$PUERTOS_BLOQ"
+  echo; pedir "Puerto a desbloquear: "
+  [[ -z $RESP ]] && return
+  awk -F'|' -v p="$RESP" '$1!=p' "$PUERTOS_BLOQ" > "$PUERTOS_BLOQ.tmp" && mv "$PUERTOS_BLOQ.tmp" "$PUERTOS_BLOQ"
+  asegurar_reglas; guardar_reglas
+  echo -e "${G}✔ Puerto $RESP desbloqueado.${N}"
+  pausa
+}
+
+op_alertas() {
+  titulo "ÚLTIMAS ALERTAS"
+  if [[ -s $ALERTAS ]]; then tail -n 30 "$ALERTAS"; else echo -e "${G}Sin alertas.${N}"; fi
+  echo; pedir "¿Borrar historial de alertas? (s/N): "
+  [[ $RESP == [sS] ]] && : > "$ALERTAS" && echo -e "${G}✔ Borrado.${N}"
+  pausa
+}
+
+escribir_cron() {
+  echo "*/$VENTANA * * * * root /usr/local/bin/vigia --auto >/dev/null 2>&1" > "$CRON"
+}
+
+op_monitor() {
+  titulo "MONITOR AUTOMÁTICO"
+  if [[ -f $CRON ]]; then
+    echo -e "Estado: ${G}ACTIVADO${N} (revisa cada $VENTANA min)"
+    pedir "¿Desactivarlo? (s/N): "
+    [[ $RESP == [sS] ]] && rm -f "$CRON" && echo -e "${Y}Monitor desactivado.${N}"
+  else
+    echo -e "Estado: ${R}DESACTIVADO${N}"
+    pedir "¿Activarlo? (s/N): "
+    [[ $RESP == [sS] ]] && escribir_cron && echo -e "${G}✔ Monitor activado (cada $VENTANA min).${N}"
+  fi
+  echo
+  echo -e "Autobloqueo: $([[ $AUTO_BLOQUEO == 1 ]] && echo -e "${G}SI${N}" || echo -e "${R}NO${N}")"
+  pedir "¿Cambiar autobloqueo? (s/N): "
+  if [[ $RESP == [sS] ]]; then
+    if [[ $AUTO_BLOQUEO == 1 ]]; then AUTO_BLOQUEO=0; else AUTO_BLOQUEO=1; fi
+    guardar_conf
+    echo -e "Autobloqueo ahora: $([[ $AUTO_BLOQUEO == 1 ]] && echo -e "${G}SI${N}" || echo -e "${R}NO${N}")"
+  fi
+  pausa
+}
+
+op_config() {
+  titulo "CONFIGURAR LÍMITES"
+  local v
+  pedir "Ventana de análisis en minutos (1-59) [$VENTANA]: "; v=${RESP:-$VENTANA}
+  [[ $v =~ ^[0-9]+$ ]] && (( v >= 1 && v <= 59 )) && VENTANA=$v
+  pedir "Máx. IPs distintas en puertos raros [$MAX_DESTINOS]: "; v=${RESP:-$MAX_DESTINOS}
+  [[ $v =~ ^[0-9]+$ ]] && MAX_DESTINOS=$v
+  pedir "Máx. puertos distintos [$MAX_PUERTOS]: "; v=${RESP:-$MAX_PUERTOS}
+  [[ $v =~ ^[0-9]+$ ]] && MAX_PUERTOS=$v
+  pedir "Máx. conexiones sin respuesta a la vez [$MAX_SYN]: "; v=${RESP:-$MAX_SYN}
+  [[ $v =~ ^[0-9]+$ ]] && MAX_SYN=$v
+  pedir "Máx. servidores de correo distintos por hora [$MAX_CORREO]: "; v=${RESP:-$MAX_CORREO}
+  [[ $v =~ ^[0-9]+$ ]] && (( v >= 2 )) && MAX_CORREO=$v
+  echo -e "\nPuertos normales (no se registran): ${Y}$PUERTOS_OK${N}"
+  echo -e "Para cambiarla escribí la lista COMPLETA separada por comas (ej: 53,80,443,5228)."
+  pedir "Lista nueva (Enter = dejar como está): "
+  if [[ -n $RESP ]]; then
+    if [[ $RESP =~ ^[0-9]+(,[0-9]+)+$ ]] && [[ ,$RESP, == *,443,* ]] && (( $(tr ',' '\n' <<< "$RESP" | wc -l) <= 15 )); then
+      PUERTOS_OK=$RESP
+    else echo -e "${R}Lista inválida (debe incluir 443 y tener entre 2 y 15 puertos). Se mantiene la anterior.${N}"; fi
+  fi
+  guardar_conf
+  [[ -f $CRON ]] && escribir_cron
+  asegurar_reglas; guardar_reglas
+  echo -e "${G}✔ Configuración guardada.${N}"
+  pausa
+}
+
+op_reparar() {
+  titulo "REPARAR REGLAS"
+  asegurar_reglas; guardar_reglas
+  iptables -L OUTPUT -n --line-numbers | head -5
+  echo; iptables -L VIGIA_BLOCK -n | tail -n +3
+  echo -e "\n${G}✔ Reglas de VIGIA activas y guardadas.${N}"
+  pausa
+}
+
+# ---------------- modo automático (cron) ----------------
+# Registra una alerta (máx. 1 por usuario y tipo cada hora) y bloquea si corresponde
+alertar() {  # $1 usuario  $2 tipo  $3 motivo
+  local ahora ultimo fecha
+  ahora=$(date +%s); fecha=$(date '+%F %H:%M')
+  ultimo=$(awk -F'|' -v u="$1" -v t="$2" '$1==u && $2==t {print $3}' "$AVISOS" | tail -1)
+  (( ahora - ${ultimo:-0} < 3600 )) && return
+  awk -F'|' -v u="$1" -v t="$2" '!($1==u && $2==t)' "$AVISOS" > "$AVISOS.tmp" && mv "$AVISOS.tmp" "$AVISOS"
+  echo "$1|$2|$ahora" >> "$AVISOS"
+  echo "$fecha | $1 | $3" >> "$ALERTAS"
+  if [[ $AUTO_BLOQUEO == 1 ]] && bloquear "$1" "AUTO $3"; then
+    echo "$fecha | $1 | BLOQUEADO AUTOMÁTICAMENTE" >> "$ALERTAS"
+  fi
+}
+
+modo_auto() {
+  asegurar_reglas
+  local u uid t nd np pl c d p n
+
+  # 1) Escaneo: muchas IPs o puertos raros en la ventana
+  while read -r uid t nd np pl; do
+    [[ -z $uid ]] && continue
+    (( nd >= MAX_DESTINOS || np >= MAX_PUERTOS )) || continue
+    u=$(nombre "$uid"); bloqueado "$u" && continue
+    alertar "$u" escaneo "escaneo: $nd IPs / $np puertos en ${VENTANA}min (${pl:0:40})"
+  done < <(resumen_log "$VENTANA")
+
+  # 2) Escaneo en vivo: muchas conexiones sin respuesta a la vez
+  while read -r uid c d p; do
+    [[ -z $uid ]] && continue
+    (( c >= MAX_SYN )) || continue
+    u=$(nombre "$uid"); bloqueado "$u" && continue
+    alertar "$u" synsent "$c conexiones sin respuesta a la vez ($d IPs / $p puertos)"
+  done < <(por_uid syn-sent)
+
+  # 3) Checker de correos: muchos servidores de correo distintos en 1 hora
+  while read -r uid n; do
+    [[ -z $uid ]] && continue
+    (( n >= MAX_CORREO )) || continue
+    u=$(nombre "$uid"); bloqueado "$u" && continue
+    alertar "$u" correo "posible checker de correos: $n servidores de correo distintos en 1 hora"
+  done < <(eventos 60 | awk -v re="^($PUERTOS_CORREO)$" '$3 ~ re && !(($1,$2) in s) {s[$1,$2]=1; n[$1]++}
+           END{for(u in n) print u, n[u]}')
+}
+
+# ---------------- menú ----------------
+op() { printf "${G}-%02d-${Y}%-26s${G}-%02d-${Y}%s${N}\n" "$1" "$2" "$3" "$4"; }
+
+menu() {
+  local o em ea nb
+  while true; do
+    # shellcheck source=/dev/null
+    source "$CONF"
+    [[ -f $CRON ]] && em="${G}ON${N}" || em="${R}OFF${N}"
+    [[ $AUTO_BLOQUEO == 1 ]] && ea="${G}SI${N}" || ea="${R}NO${N}"
+    nb=$(grep -c . "$BLOQ")
+    clear; linea
+    echo -e "${W}            🛡  VIGIA - CONTROL DE ABUSO${N}"
+    echo -e "   Monitor: $em   Autobloqueo: $ea   Bloqueados: ${Y}$nb${N}"
+    linea
+    op 1 "CONEXIONES X USUARIO"  8 "LISTA BLOQUEADOS"
+    op 2 "ESCANEO EN VIVO"       9 "BLOQUEAR PUERTO"
+    op 3 "ANALIZAR REGISTRO"    10 "DESBLOQUEAR PUERTO"
+    op 4 "DETALLE DE USUARIO"   11 "VER ALERTAS"
+    op 5 "PUERTOS MAS INTENTADOS" 12 "MONITOR AUTOMATICO"
+    op 6 "BLOQUEAR USUARIO"     13 "CONFIGURAR LIMITES"
+    op 7 "DESBLOQUEAR USUARIO"  14 "REPARAR REGLAS"
+    printf "${G}-15-${Y}%-26s${R}-00-SALIR ❌${N}\n" "RASTREAR DESTINOS"
+    linea
+    echo -ne "${W}Opción: ${N}"; read -r o
+    [[ $o =~ ^[0-9]+$ ]] && o=$((10#$o))
+    case $o in
+      1) op_conexiones ;;       2) op_escaneo_vivo ;;
+      3) op_registro ;;         4) op_detalle ;;
+      5) op_puertos ;;          6) op_bloquear ;;
+      7) op_desbloquear ;;      8) op_lista ;;
+      9) op_bloquear_puerto ;; 10) op_desbloquear_puerto ;;
+     11) op_alertas ;;         12) op_monitor ;;
+     13) op_config ;;          14) op_reparar ;;
+     15) op_rastrear ;;
+      0) clear; exit 0 ;;
+    esac
+  done
+}
+
+# Autoinstalación: si se ejecuta desde otro lugar, se copia a /usr/local/bin/vigia
+DESTINO=/usr/local/bin/vigia
+if [[ $1 != --auto && $(readlink -f "$0") != "$DESTINO" ]]; then
+  cp -f "$0" "$DESTINO" && chmod +x "$DESTINO"
+  echo -e "${G}✔ VIGIA instalado en $DESTINO. Desde ahora abrilo con: vigia${N}"; sleep 2
+fi
+
+case "$1" in
+  --auto) modo_auto ;;
+  *) asegurar_reglas; guardar_reglas; menu ;;
+esac
