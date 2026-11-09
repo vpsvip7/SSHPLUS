@@ -1,7 +1,8 @@
-VERSAO: 53
+VERSAO: 54
 
 agregado firewall
 Agregado fail2ban
+menu vigia by christian lezcano (monitor de bloqueo) 
 agregado contraseña auto generado
 Limitador de user areglado
 eliminar vencidos agregado
