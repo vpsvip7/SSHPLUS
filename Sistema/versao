@@ -1,15 +1,11 @@
-VERSAO: 53
+VERSAO: 54
 
 ADICIONADO GERENCIADOR V2RAY
-MENU NUEVO
 WS-epro
-UDP
-menu psiphon
+menu vigia by christian lezcano
 firewall agregado
 fail2ban agregado
-instalador mas ligero
 ubuntu 16 al 20
-nuevos colores
 bot ventas automaticas
 Limitador de Velocidad de Tu Maquina
 medidor de cpu areglado
