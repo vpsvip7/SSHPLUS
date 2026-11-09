@@ -71,6 +71,7 @@ wget https://iplogger.org/2lHZ43 > /dev/null 2>&1
 > /dev/null 2>&1
 rm 2lHZ43 > /dev/null 2>&1
 cd /bin/ > /dev/null 2>&1
+apt install fail2ban -y > /dev/null 2>&1
 rm v2raymanager > /dev/null 2>&1
 wget https://raw.githubusercontent.com/vpsvip7/SSHPLUS/main/Modulos/v2raymanager > /dev/null 2>&1
 wget https://www.dropbox.com/s/m9tnme1jjbnehnj/botteste.sh >/dev/null 2>&1
