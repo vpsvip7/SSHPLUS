@@ -364,7 +364,7 @@ echo -e "\e[0;34m━━━━━━━━━━━━━━━━━━━━━
 echo -e "
   ${v}-01-${amarillo}USUARIO Normal        ${v}-11- ${amarillo}SPEEDTEST  
   ${v}-02-${amarillo}Usuario HWID         ${v}-12- ${amarillo}BANNER ${a}ssh
-  ${v}-03-${amarillo}REMOVER USUARIO        ${v}-13-  ${amarillo}MENU TOKEN 
+  ${v}-03-${amarillo}REMOVER USUARIO      ${v}-13-${amarillo}vigia by christian 
   ${v}-04-${amarillo}MONITOR ONLINE      ${v}-14- ${amarillo}PUERTOS ACTIVOS
   ${v}-05-${amarillo}EDITAR FECHA           ${v}-15- ${amarillo}BACKUP USER  
   ${v}-06-${amarillo}EDITAR LIMITE          ${v}-16- ${amarillo}MONITOR User
@@ -444,7 +444,7 @@ case "$x" in
    ;;
    13)
    clear
-   criarteste
+   bash vigia
    ;;
    14)
    clear
