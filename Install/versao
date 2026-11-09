@@ -1,21 +1,14 @@
-VERSAO: 52
+VERSAO: 53
 
-menu UDP mejorado
-Puerto UDP editado
-ADICIONADO Wondershaper
-Agregado menu UDP
-agregado menu Ws-epro
-Agregado menu Psiphon3
-Agregado menu ws mod
+agregado firewall
+Agregado fail2ban
 agregado contraseña auto generado
-nuevo color 2026
-baner principal eliminado
 Limitador de user areglado
-Limitador de Velocidad agregado
+eliminar vencidos agregado
 monitor de Cpu areglado 
 
 
-ultima edicion 23-08-2026
+ultima edicion 9-11-2026
 
 @diegovip7
 
