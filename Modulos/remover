@@ -21,11 +21,12 @@ database="/root/usuarios.db"
 clear
 tput setaf 7 ; tput setab 4 ; tput bold ; printf '%32s%s%-13s\n' "Remover Usuário SSH" ; tput sgr0
 echo ""
-echo -e "\033[1;31m[\033[1;36m1\033[1;31m]\033[1;33m REMOVER UM USUARIO"
-echo -e "\033[1;31m[\033[1;36m2\033[1;31m]\033[1;33m REMOVER TODOS USUARIOS"
-echo -e "\033[1;31m[\033[1;36m3\033[1;31m]\033[1;33m VOLTAR"
+echo -e "\033[1;31m[\033[1;36m1\033[1;31m]\033[1;33m ELIMINAR UN USUARIO"
+echo -e "\033[1;31m[\033[1;36m2\033[1;31m]\033[1;33m EMILINAR TODOS LOS USUARIOS"
+echo -e "\033[1;31m[\033[1;36m3\033[1;31m]\033[1;33m ELIMINAR USUARIOS VENCIDOS"
+echo -e "\033[1;31m[\033[1;36m4\033[1;31m]\033[1;33m VOLVER"
 echo ""
-read -p "$(echo -e "\033[1;32mOQUE DESEJA FAZER\033[1;31m ?\033[1;37m : ")" -e -i 1 resp
+read -p "$(echo -e "\033[1;32m QUE DESEA HACER\033[1;31m ?\033[1;37m : ")" -e -i 1 resp
 if [[ "$resp" = "1" ]]; then
 clear
 tput setaf 7 ; tput setab 4 ; tput bold ; printf '%32s%s%-13s\n' "Remover Usuário SSH" ; tput sgr0
@@ -44,20 +45,20 @@ while read _user; do
 done <<< "${_userT}"
 echo ""
 num_user=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody | wc -l)
-echo -ne "\033[1;32mDigite ou selecione um usuario \033[1;33m[\033[1;36m1\033[1;31m-\033[1;36m$num_user\033[1;33m]\033[1;37m: " ; read option
+echo -ne "\033[1;32mEscribe o selecione un usuario \033[1;33m[\033[1;36m1\033[1;31m-\033[1;36m$num_user\033[1;33m]\033[1;37m: " ; read option
 user=$(echo -e "${_userPass}" | grep -E "\b$option\b" | cut -d: -f2)
 if [[ -z $option ]]; then
-	tput setaf 7 ; tput setab 1 ; tput bold ; echo "" ; echo "  Usuario vazio ou inválido!   " ; echo "" ; tput sgr0
+	tput setaf 7 ; tput setab 1 ; tput bold ; echo "" ; echo "  Usuario vacio o inválido!   " ; echo "" ; tput sgr0
 	exit 1
 elif [[ -z $user ]]; then
-	tput setaf 7 ; tput setab 1 ; tput bold ; echo "" ; echo " Usuário vazio ou inválido! " ; echo "" ; tput sgr0
+	tput setaf 7 ; tput setab 1 ; tput bold ; echo "" ; echo " Usuario vacio o inválido! " ; echo "" ; tput sgr0
 	exit 1
 else
 	if cat /etc/passwd |grep -w $user > /dev/null; then
 		echo ""
 		pkill -f "$user" > /dev/null 2>&1
 		deluser --force $user > /dev/null 2>&1
-		echo -e "\E[41;1;37m Usuario $user removido com sucesso! \E[0m"
+		echo -e "\E[41;1;37m Usuario $user removido con exito! \E[0m"
 		grep -v ^$user[[:space:]] /root/usuarios.db > /tmp/ph ; cat /tmp/ph > /root/usuarios.db
 		rm /etc/SSHPlus/senha/$user 1>/dev/null 2>/dev/null
 		if [[ -e /etc/openvpn/server.conf ]]; then
@@ -69,7 +70,7 @@ else
 		if [[ `grep -c $user /tmp/rem` -eq 0 ]]; then
 			deluser --force $user > /dev/null 2>&1
 			echo ""
-			echo -e "\E[41;1;37m Usuario $user removido com sucesso! \E[0m"
+			echo -e "\E[41;1;37m Usuario $user removido con exito! \E[0m"
 			grep -v ^$user[[:space:]] /root/usuarios.db > /tmp/ph ; cat /tmp/ph > /root/usuarios.db
 			rm /etc/SSHPlus/senha/$user 1>/dev/null 2>/dev/null
 			if [[ -e /etc/openvpn/server.conf ]]; then
@@ -81,7 +82,7 @@ else
 			tput setaf 7 ; tput setab 4 ; tput bold ; echo "" ; echo "Usuário conectado. Desconectando..." ; tput sgr0
 			pkill -f "$user" > /dev/null 2>&1
 			deluser --force $user > /dev/null 2>&1
-			echo -e "\E[41;1;37m Usuario $user removido com sucesso! \E[0m"
+			echo -e "\E[41;1;37m Usuario $user removido con exito! \E[0m"
 			grep -v ^$user[[:space:]] /root/usuarios.db > /tmp/ph ; cat /tmp/ph > /root/usuarios.db
 			rm /etc/SSHPlus/senha/$user 1>/dev/null 2>/dev/null
 			if [[ -e /etc/openvpn/server.conf ]]; then
@@ -90,14 +91,14 @@ else
 			exit 1
 		fi
 	else
-		tput setaf 7 ; tput setab 4 ; tput bold ; echo "" ; echo "O usuário $user não existe!" ; echo "" ; tput sgr0
+		tput setaf 7 ; tput setab 4 ; tput bold ; echo "" ; echo "O usuário $user no existe!" ; echo "" ; tput sgr0
 	fi
 fi
 elif [[ "$resp" = "2" ]]; then
 	clear
 	tput setaf 7 ; tput setab 4 ; tput bold ; printf '%32s%s%-13s\n' "Remover Usuário SSH" ; tput sgr0
 	echo ""
-	echo -ne "\033[1;33mREALMENTE DESEJA REMOVER TODOS USUARIOS \033[1;37m[s/n]: "; read opc	
+	echo -ne "\033[1;33mREALMENTE DESEA REMOVER TODOS LOS USUARIOS \033[1;37m[s/n]: "; read opc	
 	if [[ "$opc" = "s" ]]; then
 	echo -e "\n\033[1;33mAguarde\033[1;32m.\033[1;31m.\033[1;33m.\033[0m"
 		for user in $(cat /etc/passwd |awk -F : '$3 > 900 {print $1}' |grep -vi "nobody"); do
@@ -109,18 +110,66 @@ elif [[ "$resp" = "2" ]]; then
 		done
 		rm $HOME/usuarios.db && touch $HOME/usuarios.db
         rm *.zip > /dev/null 2>&1
-		echo -e "\n\033[1;32mUSUARIOS REMOVIDOS COM SUCESSO!\033[0m"
+		echo -e "\n\033[1;32mUSUARIOS REMOVIDOS CON Exito!\033[0m"
 		sleep 2
 		menu
 	else
-		echo -e "\n\033[1;31mRetornando ao menu...\033[0m"
+		echo -e "\n\033[1;31mVolviendo al menu...\033[0m"
 		sleep 2
 		menu
 	fi
 elif [[ "$resp" = "3" ]]; then
+	clear
+	tput setaf 7 ; tput setab 4 ; tput bold ; printf '%32s%s%-13s\n' "Remover Usuário SSH" ; tput sgr0
+	echo ""
+	echo -e "\033[1;33mBuscando usuarios vencidos...\033[0m"
+	echo ""
+	hoy=$(date +%s)
+	_vencidos=""
+	for user in $(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody); do
+		exp=$(chage -l "$user" 2>/dev/null | grep "Account expires" | cut -d: -f2 | sed 's/^ *//')
+		if [[ -n "$exp" && "$exp" != "never" ]]; then
+			exp_epoch=$(date -d "$exp" +%s 2>/dev/null)
+			if [[ -n "$exp_epoch" && "$exp_epoch" -lt "$hoy" ]]; then
+				_vencidos+="$user "
+			fi
+		fi
+	done
+	if [[ -z "$_vencidos" ]]; then
+		echo -e "\033[1;32mNo hay usuarios vencidos.\033[0m"
+		sleep 2
+		menu
+	else
+		echo -e "\033[1;33mUsuarios vencidos encontrados:\033[0m"
+		for u in $_vencidos; do
+			echo -e "\033[1;31m - $u\033[0m"
+		done
+		echo ""
+		echo -ne "\033[1;33mREALMENTE DESEA REMOVER ESTOS USUARIOS \033[1;37m[s/n]: "; read opc
+		if [[ "$opc" = "s" ]]; then
+			echo -e "\n\033[1;33mAguarde\033[1;32m.\033[1;31m.\033[1;33m.\033[0m"
+			for user in $_vencidos; do
+				pkill -f "$user" > /dev/null 2>&1
+				deluser --force $user > /dev/null 2>&1
+				grep -v ^$user[[:space:]] /root/usuarios.db > /tmp/ph ; cat /tmp/ph > /root/usuarios.db
+				rm /etc/SSHPlus/senha/$user 1>/dev/null 2>/dev/null
+				if [[ -e /etc/openvpn/server.conf ]]; then
+					remove_ovp $user
+				fi
+			done
+			echo -e "\n\033[1;32mUSUARIOS VENCIDOS REMOVIDOS CON EXITO!\033[0m"
+			sleep 2
+			menu
+		else
+			echo -e "\n\033[1;31mVolviendo al menu...\033[0m"
+			sleep 2
+			menu
+		fi
+	fi
+elif [[ "$resp" = "4" ]]; then
 	menu
 else
-	echo -e "\n\033[1;31mOpcao invalida !\033[0m"
+	echo -e "\n\033[1;31mOpcion invalida !\033[0m"
 	sleep 1.5s
 	menu
 fi
