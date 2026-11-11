@@ -425,7 +425,7 @@ case "$x" in
    9 | 09)
    clear
    infousers
-   echo -ne "\n${rojo}Argentina🤠 🇦🇷 ${amarillo} VPS: ${verde}wep!\e[0m
+   echo -ne "\n${rojo}Argentina🤠 diegovip7🇦🇷 ${amarillo} VPS: ${verde}wep!\e[0m
 \n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    10)
@@ -434,7 +434,7 @@ case "$x" in
    ;;
    11)
    clear
-   apt install speedtest-cli -y && speedtest-cli --simple
+   python3 speedtest_vps.py
    echo -ne "\n${rojo}ENTER ${amarillo}para VOLVER al ${verde}MENU!\e[0m"; read
    ;;
    12)
