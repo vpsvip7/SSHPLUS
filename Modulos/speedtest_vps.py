@@ -78,7 +78,7 @@ def subida(mb, hilos):
 
 
 def main():
-    p = argparse.ArgumentParser(description="Test de velocidad VPS")
+    p = argparse.ArgumentParser(description="Test de velocidad VIP7")
     p.add_argument("--mb", type=int, default=100, help="MB a descargar (default 100)")
     p.add_argument("--subida-mb", type=int, default=25, help="MB a subir (default 25)")
     p.add_argument("--hilos", type=int, default=4, help="Conexiones paralelas (default 4)")
