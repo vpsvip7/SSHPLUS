@@ -1,11 +1,12 @@
-VERSAO: 54
+VERSAO: 55
 
+speed test opcion 11 aregaldo
 agregado firewall
 Agregado fail2ban
 menu vigia by christian lezcano (monitor de bloqueo) 
 agregado contraseña auto generado
 Limitador de user areglado
-eliminar vencidos agregado
+eliminar vencidos agregado opcion 3 y 3
 monitor de Cpu areglado 
 
 
