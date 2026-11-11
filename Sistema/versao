@@ -1,12 +1,10 @@
-VERSAO: 54
+VERSAO: 55
 
-ADICIONADO GERENCIADOR V2RAY
-WS-epro
+test de velocidad opcion 11 reparado
+
 menu vigia by christian lezcano
 firewall agregado
 fail2ban agregado
-ubuntu 16 al 20
-bot ventas automaticas
 Limitador de Velocidad de Tu Maquina
 medidor de cpu areglado
 Ssl +py auto instalacion
