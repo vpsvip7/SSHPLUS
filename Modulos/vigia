@@ -4,6 +4,7 @@
 #  Instalar:  bash vigia      (se copia solo a /usr/local/bin/vigia)
 #  Uso:       vigia           -> menú
 #             vigia --auto    -> revisión automática (la usa el cron)
+#             vigia --trafico -> control de tráfico diario (la usa el cron, cada minuto)
 # ==========================================================
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
@@ -12,6 +13,7 @@ CONF="$CONF_DIR/config"
 BLOQ="$CONF_DIR/bloqueados"        # usuario|fecha|motivo
 PUERTOS_BLOQ="$CONF_DIR/puertos"   # puerto|proto|fecha
 AVISOS="$CONF_DIR/avisos"          # usuario|tipo|epoch (evita alertas repetidas)
+TRAFICO="$CONF_DIR/trafico"        # uid|dia|bytes_de_hoy|ultimo_contador
 ALERTAS="/var/log/vigia.log"
 PUERTOS_CORREO="25|110|143|465|587|993|995"
 CRON="/etc/cron.d/vigia"
@@ -21,7 +23,7 @@ UID_MAX=60000
 G='\e[1;32m'; Y='\e[1;33m'; R='\e[1;31m'; C='\e[1;36m'; W='\e[1;37m'; N='\e[0m'
 
 [[ $EUID -ne 0 ]] && { echo "Ejecutá este script como root."; exit 1; }
-mkdir -p "$CONF_DIR"; touch "$BLOQ" "$PUERTOS_BLOQ" "$ALERTAS" "$AVISOS"
+mkdir -p "$CONF_DIR"; touch "$BLOQ" "$PUERTOS_BLOQ" "$ALERTAS" "$AVISOS" "$TRAFICO"
 
 guardar_conf() {
 cat > "$CONF" <<EOF
@@ -37,6 +39,13 @@ MAX_SYN=${MAX_SYN:-30}
 MAX_CORREO=${MAX_CORREO:-10}
 # 1 = bloquear automáticamente a quien supere los límites
 AUTO_BLOQUEO=${AUTO_BLOQUEO:-0}
+# Horas tras las cuales se desbloquea solo a los bloqueados AUTOMÁTICAMENTE (0 = nunca)
+HORAS_DESBLOQUEO=${HORAS_DESBLOQUEO:-5}
+# Límite de tráfico por usuario y por día, en GB (0 = sin límite)
+LIMITE_SEMANA_GB=${LIMITE_SEMANA_GB:-0}
+LIMITE_FINDE_GB=${LIMITE_FINDE_GB:-0}
+# Usuarios que nunca se bloquean por tráfico (separados por coma)
+EXENTOS="${EXENTOS:-}"
 # Puertos normales que NO se registran (máximo 15, separados por coma)
 PUERTOS_OK="${PUERTOS_OK:-53,80,443,853,993,995,465,587,5222,5223,5228,8080,8443}"
 EOF
@@ -46,6 +55,8 @@ EOF
 source "$CONF"
 # Configs de versiones anteriores: completar valores nuevos
 if [[ -z $MAX_CORREO ]]; then MAX_CORREO=10; guardar_conf; fi
+if [[ -z $HORAS_DESBLOQUEO ]]; then HORAS_DESBLOQUEO=5; guardar_conf; fi
+if [[ -z $LIMITE_SEMANA_GB ]]; then LIMITE_SEMANA_GB=0; LIMITE_FINDE_GB=0; guardar_conf; fi
 
 # ---------------- utilidades ----------------
 linea()  { echo -e "${C}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${N}"; }
@@ -73,7 +84,14 @@ asegurar_reglas() {
   iptables -A VIGIA_LOG -o lo -j RETURN
   iptables -A VIGIA_LOG -p tcp -m multiport --dports "$PUERTOS_OK" -j RETURN
   iptables -A VIGIA_LOG -p tcp --syn -m owner --uid-owner "$UID_MIN-$UID_MAX" \
-    -m limit --limit 120/min --limit-burst 200 \
+    -m limit --limit 300/min --limit-burst 500 \
+    -j LOG --log-prefix "VIGIA: " --log-uid --log-level 4
+
+  # Lo mismo para UDP (sin SYN: se registra el primer paquete de cada flujo nuevo).
+  # Usa su propio límite, así un flood UDP no tapa el registro TCP ni al revés.
+  iptables -A VIGIA_LOG -p udp -m multiport --dports "$PUERTOS_OK" -j RETURN
+  iptables -A VIGIA_LOG -p udp -m conntrack --ctstate NEW -m owner --uid-owner "$UID_MIN-$UID_MAX" \
+    -m limit --limit 300/min --limit-burst 500 \
     -j LOG --log-prefix "VIGIA: " --log-uid --log-level 4
 
   # Bloqueos (usuarios y puertos), reconstruidos desde los archivos
@@ -90,6 +108,8 @@ asegurar_reglas() {
 
   iptables -C OUTPUT -j VIGIA_LOG   2>/dev/null || iptables -I OUTPUT 1 -j VIGIA_LOG
   iptables -C OUTPUT -j VIGIA_BLOCK 2>/dev/null || iptables -I OUTPUT 1 -j VIGIA_BLOCK
+
+  asegurar_contadores
 }
 
 # Conexiones actuales agrupadas por usuario: uid total ips_distintas puertos_distintos
@@ -125,7 +145,7 @@ eventos() {
     if(u!="" && !(p in okp)) print u,d,p}'
 }
 
-# Resumen del registro por usuario: uid intentos ips puertos lista_puertos
+# Resumen del registro por usuario: uid Clip ips puertos lista_puertos
 resumen_log() {
   eventos "$1" | awk '{
     t[$1]++
@@ -145,6 +165,9 @@ bloquear() {  # $1 usuario  $2 motivo
 }
 
 desbloquear() {
+  local motivo
+  motivo=$(awk -F'|' -v u="$1" '$1==u{print $3; exit}' "$BLOQ")
+  [[ $motivo == LIMITE* ]] && reiniciar_trafico "$1"   # desbloqueo manual = cuota nueva
   usermod -U "$1" 2>/dev/null
   awk -F'|' -v u="$1" '$1!=u' "$BLOQ" > "$BLOQ.tmp" && mv "$BLOQ.tmp" "$BLOQ"
   asegurar_reglas; guardar_reglas
@@ -198,13 +221,13 @@ op_registro() {
   local min=${RESP:-$VENTANA} hay=0 uid t nd np pl col
   [[ $min =~ ^[0-9]+$ ]] || min=$VENTANA
   echo
-  printf "${W}%-16s %9s %6s %8s  %s${N}\n" USUARIO INTENTOS IPs PUERTOS "PUERTOS USADOS"
+  printf "${W}%-16s %9s %6s %8s  %s${N}\n" USUARIO CLIP IPs PUERTOS "PUERTOS USADOS"
   while read -r uid t nd np pl; do
     [[ -z $uid ]] && continue; hay=1
     col=$G; (( nd >= MAX_DESTINOS || np >= MAX_PUERTOS )) && col=$R
     printf "${col}%-16s %9s %6s %8s  %s${N}\n" "$(nombre "$uid")" "$t" "$nd" "$np" "${pl:0:28}"
   done < <(resumen_log "$min")
-  (( hay )) || echo -e "${G}Sin intentos a puertos raros en los últimos $min min.${N}"
+  (( hay )) || echo -e "${G}Sin Visitas a puertos raros en los últimos $min min.${N}"
   echo -e "\nEn ${R}rojo${N}: más de $MAX_DESTINOS IPs o $MAX_PUERTOS puertos distintos (posible escaneo)."
   ofrecer_bloqueo
 }
@@ -222,7 +245,7 @@ op_detalle() {
     | sort | uniq -c | sort -rn | head -15
   echo -e "\n${Y}Puertos raros intentados (última hora):${N}"
   eventos 60 | awk -v id="$uid" '$1==id{print $3}' | sort | uniq -c | sort -rn | head -10 \
-    | awk '{printf "  puerto %-6s %s intentos\n",$2,$1}'
+    | awk '{printf "  puerto %-6s %s visitas\n",$2,$1}'
   echo -e "\n${Y}IPs distintas contactadas en puertos raros (última hora):${N} $(eventos 60 | awk -v id="$uid" '$1==id{print $2}' | sort -u | wc -l)"
   pausa
 }
@@ -233,7 +256,7 @@ op_puertos() {
   local min=${RESP:-60} p n us
   [[ $min =~ ^[0-9]+$ ]] || min=60
   echo
-  printf "${W}%-8s %9s  %s${N}\n" PUERTO INTENTOS USUARIOS
+  printf "${W}%-8s %9s  %s${N}\n" PUERTO VISITAS USUARIOS
   while read -r p n us; do
     printf "${Y}%-8s${N} %9s  %s\n" "$p" "$n" "$us"
   done < <(eventos "$min" | while read -r uid _ port; do echo "$port $(nombre "$uid")"; done | awk '
@@ -289,7 +312,7 @@ op_rastrear() {
         ((mail_ips++)); orgs_mail[$RES_ORG]=1
       fi
     done < <(eventos "$min" | awk -v id="$uid" '$1==id{print $2, $3}' | sort | uniq -c | sort -rn | head -40)
-    (( hay )) || echo -e "${G}  Sin intentos a puertos raros.${N}"
+    (( hay )) || echo -e "${G}  Sin Visitas a puertos raros.${N}"
   fi
 
   if [[ $modo == 2 || $modo == 3 ]]; then
@@ -381,13 +404,16 @@ op_alertas() {
 }
 
 escribir_cron() {
-  echo "*/$VENTANA * * * * root /usr/local/bin/vigia --auto >/dev/null 2>&1" > "$CRON"
+  {
+    echo "*/$VENTANA * * * * root /usr/local/bin/vigia --auto >/dev/null 2>&1"
+    echo "* * * * * root /usr/local/bin/vigia --trafico >/dev/null 2>&1"
+  } > "$CRON"
 }
 
 op_monitor() {
   titulo "MONITOR AUTOMÁTICO"
   if [[ -f $CRON ]]; then
-    echo -e "Estado: ${G}ACTIVADO${N} (revisa cada $VENTANA min)"
+    echo -e "Estado: ${G}ACTIVADO${N} (escaneos cada $VENTANA min, tráfico cada 1 min)"
     pedir "¿Desactivarlo? (s/N): "
     [[ $RESP == [sS] ]] && rm -f "$CRON" && echo -e "${Y}Monitor desactivado.${N}"
   else
@@ -419,6 +445,16 @@ op_config() {
   [[ $v =~ ^[0-9]+$ ]] && MAX_SYN=$v
   pedir "Máx. servidores de correo distintos por hora [$MAX_CORREO]: "; v=${RESP:-$MAX_CORREO}
   [[ $v =~ ^[0-9]+$ ]] && (( v >= 2 )) && MAX_CORREO=$v
+  pedir "Horas para desbloquear solo a los bloqueados automáticamente (0 = nunca) [$HORAS_DESBLOQUEO]: "; v=${RESP:-$HORAS_DESBLOQUEO}
+  [[ $v =~ ^[0-9]+$ ]] && (( v <= 720 )) && HORAS_DESBLOQUEO=$v
+  pedir "Tráfico máx. por usuario, lunes a viernes, en GB por día (0 = sin límite) [$LIMITE_SEMANA_GB]: "; v=${RESP:-$LIMITE_SEMANA_GB}
+  [[ $v =~ ^[0-9]+(\.[0-9]+)?$ ]] && LIMITE_SEMANA_GB=$v
+  pedir "Tráfico máx. por usuario, sábado y domingo, en GB por día (0 = sin límite) [$LIMITE_FINDE_GB]: "; v=${RESP:-$LIMITE_FINDE_GB}
+  [[ $v =~ ^[0-9]+(\.[0-9]+)?$ ]] && LIMITE_FINDE_GB=$v
+  pedir "Usuarios sin límite de tráfico, separados por coma (- = ninguno) [${EXENTOS:--}]: "
+  if [[ -n $RESP ]]; then
+    if [[ $RESP == - ]]; then EXENTOS=""; else EXENTOS=${RESP// /}; fi
+  fi
   echo -e "\nPuertos normales (no se registran): ${Y}$PUERTOS_OK${N}"
   echo -e "Para cambiarla escribí la lista COMPLETA separada por comas (ej: 53,80,443,5228)."
   pedir "Lista nueva (Enter = dejar como está): "
@@ -443,6 +479,139 @@ op_reparar() {
   pausa
 }
 
+# ---------------- límite de tráfico por día ----------------
+# Cuenta lo que mueven las conexiones que abren los propios usuarios (túneles SSH), subida y
+# bajada, solo IPv4. Cada conexión nueva se marca con el uid del usuario (connmark, bits altos
+# 0xffff0000) y reglas iptables por usuario cuentan los bytes. Los contadores se acumulan por día.
+gb() { awk -v b="${1:-0}" 'BEGIN{printf "%.2f", b/1073741824}'; }   # bytes -> GB (1 GB = 1024^3)
+
+limite_hoy_bytes() {
+  local g=$LIMITE_SEMANA_GB
+  (( $(date +%u) >= 6 )) && g=$LIMITE_FINDE_GB
+  awk -v g="${g:-0}" 'BEGIN{printf "%.0f", g*1073741824}'
+}
+
+# Crea las cadenas y, por cada usuario, las reglas que faltan. Nunca borra reglas
+# (así se conservan los contadores). Usa -w para esperar el candado de iptables.
+asegurar_contadores() {
+  local ipt="iptables -w" m=0xffff0000 uid mark t
+  local -A hm ho hi
+  $ipt -N VIGIA_MARK 2>/dev/null
+  $ipt -N VIGIA_ACCT_O 2>/dev/null
+  $ipt -N VIGIA_ACCT_I 2>/dev/null
+
+  # Enganches arriba de todo, para que ningún ACCEPT anterior los saltee
+  $ipt -C OUTPUT -m connmark ! --mark "0x0/$m" -j VIGIA_ACCT_O 2>/dev/null || \
+    $ipt -I OUTPUT 1 -m connmark ! --mark "0x0/$m" -j VIGIA_ACCT_O
+  $ipt -C OUTPUT -m conntrack --ctstate NEW -m owner --uid-owner "$UID_MIN-$UID_MAX" -j VIGIA_MARK 2>/dev/null || \
+    $ipt -I OUTPUT 1 -m conntrack --ctstate NEW -m owner --uid-owner "$UID_MIN-$UID_MAX" -j VIGIA_MARK
+  $ipt -C INPUT -m connmark ! --mark "0x0/$m" -j VIGIA_ACCT_I 2>/dev/null || \
+    $ipt -I INPUT 1 -m connmark ! --mark "0x0/$m" -j VIGIA_ACCT_I
+
+  while read -r t; do hm[$t]=1; done < <($ipt -S VIGIA_MARK 2>/dev/null | grep -o 'vg:[0-9]*')
+  while read -r t; do ho[$t]=1; done < <($ipt -S VIGIA_ACCT_O 2>/dev/null | grep -o 'vg:[0-9]*')
+  while read -r t; do hi[$t]=1; done < <($ipt -S VIGIA_ACCT_I 2>/dev/null | grep -o 'vg:[0-9]*')
+  while IFS=: read -r _ _ uid _; do
+    [[ $uid =~ ^[0-9]+$ ]] && (( uid >= UID_MIN && uid <= UID_MAX )) || continue
+    mark=$(printf '0x%x' $(( uid << 16 )))
+    [[ -n ${hm[vg:$uid]} ]] || $ipt -A VIGIA_MARK -m owner --uid-owner "$uid" -m comment --comment "vg:$uid" -j CONNMARK --set-xmark "$mark/$m"
+    [[ -n ${ho[vg:$uid]} ]] || $ipt -A VIGIA_ACCT_O -m connmark --mark "$mark/$m" -m comment --comment "vg:$uid"
+    [[ -n ${hi[vg:$uid]} ]] || $ipt -A VIGIA_ACCT_I -m connmark --mark "$mark/$m" -m comment --comment "vg:$uid"
+  done < <(getent passwd)
+}
+
+# Bytes acumulados por usuario en los contadores de iptables (subida + bajada): uid|bytes
+contadores() {
+  { iptables -w -nvxL VIGIA_ACCT_O 2>/dev/null; iptables -w -nvxL VIGIA_ACCT_I 2>/dev/null; } | awk '
+    match($0,/vg:[0-9]+/) { u=substr($0,RSTART+3,RLENGTH-3); t[u]+=$2 }
+    END{ for(u in t) printf "%s|%.0f\n", u, t[u] }'
+}
+
+# Pasa lo contado desde la última vez al total del día. Si el contador bajó (reinicio del
+# servidor o de las reglas) cuenta todo el valor nuevo. Cambia el día -> el total vuelve a 0.
+actualizar_trafico() {
+  local hoy; hoy=$(date +%F)
+  (
+    flock -x 9
+    contadores > "$TRAFICO.cnt"
+    awk -F'|' -v hoy="$hoy" '
+      FILENAME==ARGV[1] { cnt[$1]=$2+0; next }
+      {
+        u=$1; dia=$2; acum=$3+0; ult=$4+0
+        if (u in cnt) {
+          c=cnt[u]; delta=(c>=ult)?c-ult:c
+          if (dia!=hoy) { acum=0; dia=hoy }
+          acum+=delta; ult=c; visto[u]=1
+        }
+        printf "%s|%s|%.0f|%.0f\n", u, dia, acum, ult
+      }
+      END { for (u in cnt) if (!(u in visto)) printf "%s|%s|%.0f|%.0f\n", u, hoy, 0, cnt[u] }
+    ' "$TRAFICO.cnt" "$TRAFICO" > "$TRAFICO.tmp" && mv "$TRAFICO.tmp" "$TRAFICO"
+    rm -f "$TRAFICO.cnt"
+  ) 9> "$CONF_DIR/trafico.lock"
+}
+
+reiniciar_trafico() {  # $1 usuario: pone en 0 lo usado hoy
+  local uid; uid=$(id -u "$1" 2>/dev/null) || return
+  (
+    flock -x 9
+    awk -F'|' -v OFS='|' -v u="$uid" '$1==u{$3=0} {print}' "$TRAFICO" > "$TRAFICO.tmp" && mv "$TRAFICO.tmp" "$TRAFICO"
+  ) 9> "$CONF_DIR/trafico.lock"
+}
+
+# Bloquea a quien llegó al límite de hoy (no depende de AUTO_BLOQUEO ni toca a los EXENTOS)
+control_trafico() {
+  local lim hoy fecha uid dia acum ult u g
+  lim=$(limite_hoy_bytes)
+  (( lim > 0 )) || return
+  hoy=$(date +%F); fecha=$(date '+%F %H:%M')
+  while IFS='|' read -r uid dia acum ult; do
+    [[ -z $uid || $dia != "$hoy" ]] && continue
+    (( acum >= lim )) || continue
+    u=$(getent passwd "$uid" | cut -d: -f1); [[ -z $u ]] && continue
+    [[ ,$EXENTOS, == *,$u,* ]] && continue
+    bloqueado "$u" && continue
+    g="$(gb "$acum") GB de $(gb "$lim") GB"
+    echo "$fecha | $u | LIMITE DIARIO DE TRAFICO superado: $g" >> "$ALERTAS"
+    bloquear "$u" "LIMITE diario ($g)" && echo "$fecha | $u | BLOQUEADO POR LIMITE DE TRAFICO" >> "$ALERTAS"
+  done < "$TRAFICO"
+}
+
+modo_trafico() {
+  asegurar_contadores
+  desbloqueo_automatico
+  actualizar_trafico
+  control_trafico
+}
+
+op_trafico() {
+  titulo "TRAFICO DE HOY POR USUARIO"
+  asegurar_contadores; actualizar_trafico
+  local hoy lim uid dia acum ult col pct u hay=0
+  hoy=$(date +%F); lim=$(limite_hoy_bytes)
+  printf "${W}%-16s %12s %9s${N}\n" USUARIO "USADO (GB)" "% LIMITE"
+  while IFS='|' read -r uid dia acum ult; do
+    (( acum > 0 )) || continue
+    hay=1; u=$(nombre "$uid"); col=$G; pct="-"
+    if (( lim > 0 )); then
+      pct=$(( acum * 100 / lim ))
+      (( pct >= 70 )) && col=$Y
+      (( pct >= 100 )) && col=$R
+      pct="$pct%"
+    fi
+    printf "${col}%-16s %12s %9s${N}\n" "$u" "$(gb "$acum")" "$pct"
+  done < <(awk -F'|' -v h="$hoy" '$2==h' "$TRAFICO" | sort -t'|' -k3,3nr | head -30)
+  (( hay )) || echo -e "${G}Todavía no hay tráfico registrado hoy.${N}"
+  echo
+  if (( lim > 0 )); then
+    echo -e "Límite de hoy: ${Y}$(gb "$lim") GB${N} por usuario ($( (( $(date +%u) >= 6 )) && echo "fin de semana" || echo "entre semana"))"
+  else
+    echo -e "Límite de hoy: ${R}sin límite${N} (se configura en la opción 13)"
+  fi
+  echo -e "Cuenta solo el tráfico de las conexiones que abren los usuarios (IPv4)."
+  ofrecer_bloqueo
+}
+
 # ---------------- modo automático (cron) ----------------
 # Registra una alerta (máx. 1 por usuario y tipo cada hora) y bloquea si corresponde
 alertar() {  # $1 usuario  $2 tipo  $3 motivo
@@ -458,8 +627,32 @@ alertar() {  # $1 usuario  $2 tipo  $3 motivo
   fi
 }
 
+# Desbloqueo automático:
+#  - motivo "AUTO ...": pasadas HORAS_DESBLOQUEO horas (0 = nunca)
+#  - motivo "LIMITE ...": al empezar el día siguiente
+# Los bloqueos manuales no se tocan.
+desbloqueo_automatico() {
+  local limite=$(( ${HORAS_DESBLOQUEO:-0} * 3600 )) ahora hoy u f m t item txt lista=()
+  ahora=$(date +%s); hoy=$(date +%F)
+  while IFS='|' read -r u f m; do
+    [[ -z $u ]] && continue
+    if [[ $m == LIMITE* ]]; then
+      [[ ${f%% *} != "$hoy" ]] && lista+=("$u|nuevo día, cuota renovada")
+    elif [[ $m == AUTO* ]] && (( limite > 0 )); then
+      t=$(date -d "$f" +%s 2>/dev/null) || continue
+      (( ahora - t >= limite )) && lista+=("$u|pasaron ${HORAS_DESBLOQUEO}h")
+    fi
+  done < "$BLOQ"
+  for item in "${lista[@]}"; do
+    IFS='|' read -r u txt <<< "$item"
+    desbloquear "$u"
+    echo "$(date '+%F %H:%M') | $u | DESBLOQUEADO AUTOMÁTICAMENTE ($txt)" >> "$ALERTAS"
+  done
+}
+
 modo_auto() {
   asegurar_reglas
+  desbloqueo_automatico
   local u uid t nd np pl c d p n
 
   # 1) Escaneo: muchas IPs o puertos raros en la ventana
@@ -510,7 +703,8 @@ menu() {
     op 5 "PUERTOS MAS INTENTADOS" 12 "MONITOR AUTOMATICO"
     op 6 "BLOQUEAR USUARIO"     13 "CONFIGURAR LIMITES"
     op 7 "DESBLOQUEAR USUARIO"  14 "REPARAR REGLAS"
-    printf "${G}-15-${Y}%-26s${R}-00-SALIR ❌${N}\n" "RASTREAR DESTINOS"
+    op 15 "RASTREAR DESTINOS"   16 "TRAFICO POR USUARIO"
+    echo -e "${R}-00-SALIR ❌${N}"
     linea
     echo -ne "${W}Opción: ${N}"; read -r o
     [[ $o =~ ^[0-9]+$ ]] && o=$((10#$o))
@@ -522,7 +716,7 @@ menu() {
       9) op_bloquear_puerto ;; 10) op_desbloquear_puerto ;;
      11) op_alertas ;;         12) op_monitor ;;
      13) op_config ;;          14) op_reparar ;;
-     15) op_rastrear ;;
+     15) op_rastrear ;;       16) op_trafico ;;
       0) clear; exit 0 ;;
     esac
   done
@@ -530,12 +724,18 @@ menu() {
 
 # Autoinstalación: si se ejecuta desde otro lugar, se copia a /usr/local/bin/vigia
 DESTINO=/usr/local/bin/vigia
-if [[ $1 != --auto && $(readlink -f "$0") != "$DESTINO" ]]; then
+if [[ $1 != --auto && $1 != --trafico && $(readlink -f "$0") != "$DESTINO" ]]; then
   cp -f "$0" "$DESTINO" && chmod +x "$DESTINO"
   echo -e "${G}✔ VIGIA instalado en $DESTINO. Desde ahora abrilo con: vigia${N}"; sleep 2
 fi
 
+# Cron de una versión anterior (sin control de tráfico): actualizarlo
+[[ -f $CRON ]] && ! grep -q -- '--trafico' "$CRON" && escribir_cron
+
 case "$1" in
-  --auto) modo_auto ;;
+  --auto|--trafico)
+    # una sola pasada a la vez (si hay otra corriendo, espera hasta 50 s y se rinde)
+    exec 8>"$CONF_DIR/vigia.lock"; flock -w 50 8 || exit 0
+    if [[ $1 == --auto ]]; then modo_auto; else modo_trafico; fi ;;
   *) asegurar_reglas; guardar_reglas; menu ;;
 esac
