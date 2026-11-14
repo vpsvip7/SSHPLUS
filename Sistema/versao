@@ -1,4 +1,4 @@
-VERSAO: 55
+VERSAO: 57
 
 test de velocidad opcion 11 reparado
 
@@ -6,10 +6,11 @@ menu vigia by christian lezcano
 firewall agregado
 fail2ban agregado
 Limitador de Velocidad de Tu Maquina
+limite de gigas x usuario en el panel vigia
 medidor de cpu areglado
 Ssl +py auto instalacion
 
-ultima edicion: 9-11-2026
+ultima edicion: 14-11-2026
 
 @vps10
 
