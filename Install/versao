@@ -1,9 +1,10 @@
-VERSAO: 56
+VERSAO: 57
 
-speed test opcion 11 aregaldo
+speed test opcion 11 creado nuevo
 agregado firewall
 Agregado fail2ban
 menu vigia by christian lezcano (monitor de bloqueo) 
+limitar los usuarios x gigas en el menu vigia
 agregado contraseña auto generado
 Limitador de user areglado
 badvpn auto instalaciom
