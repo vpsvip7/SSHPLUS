@@ -463,7 +463,7 @@ case "$x" in
    ;;
    18)
    clear
-   badvpn
+   badvpn.sh
    exit;
    ;;
    19)
